@@ -81,7 +81,7 @@ function closePopup() {
 				<tr>
 								<td>
 <input name="password"  type="password" value="" id="password" placeholder="Password">
-	<span onclick="togglePasswordVisibility()" style="cursor: pointer; padding: 5px 5px; color: grey; border: 1px solid #ccc; border-radius: 5px;" id="showHideButton" >Hide or show password inputs</span>
+	<span onclick="togglePasswordVisibility()" style="cursor: pointer; padding: 5px 5px; color: grey; opacity: 60%; border: 1px solid #ccc; border-radius: 5px;" id="showHideButton" >Show password inputs</span>
 	
 	<script>
 	function togglePasswordVisibility() {
@@ -124,7 +124,7 @@ function closePopup() {
 
   inputs.forEach(function(input) {
     input.addEventListener('focus', function() {
-      this.style.backgroundColor = '#ffffff';
+      this.style.backgroundColor = '#e0f2f1';
       this.style.transition = 'background-color 0.5s ease';
     });
 
