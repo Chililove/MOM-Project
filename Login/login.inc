@@ -54,7 +54,7 @@ password1 = (Trim(Replace(Request.Form("password"),"'","")))
 	Else
 			' No username or password
 			s =1 
-			strErr = "B�de brugernavn og adgangskode skal angives!"
+			strErr = "Brugernavn og adgangskode skal begge angives!"
 	End If
 
 End If

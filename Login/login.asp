@@ -124,7 +124,7 @@ function closePopup() {
 
   inputs.forEach(function(input) {
     input.addEventListener('focus', function() {
-      this.style.backgroundColor = '#e0f2f1';
+      this.style.backgroundColor = '#ffffff';
       this.style.transition = 'background-color 0.5s ease';
     });
 
