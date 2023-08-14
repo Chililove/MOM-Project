@@ -1,0 +1,18 @@
+﻿<Products>
+	<Product>
+		<ProductCode>1</ProductCode>
+		<ProductName>tekst1</ProductName>
+	</Product>
+	<Product>
+		<ProductCode>2</ProductCode>
+		<ProductName>tekst2</ProductName>
+	</Product>
+	<Product>
+		<ProductCode>3</ProductCode>
+		<ProductName>tekst3</ProductName>
+	</Product>
+	<Product>
+		<ProductCode>4</ProductCode>
+		<ProductName>tekst4</ProductName>
+	</Product>
+</Products>
