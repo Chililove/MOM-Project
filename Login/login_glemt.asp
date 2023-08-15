@@ -1,5 +1,5 @@
 
-<!--#include file="sendpw.inc"-->
+<!--#include file="Sendpw.inc"-->
 <%
 'luk session
 Session.Abandon 

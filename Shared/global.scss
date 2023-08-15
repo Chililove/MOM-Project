@@ -7,6 +7,7 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1;
+
     .popup-content {
         position: absolute;
         top: 50%;
@@ -18,6 +19,50 @@
         text-align: center;
     }
 }
+
+#fpimg {
+    height: 250px;
+//    position: relative;
+    img {
+        position: absolute;
+        height: 350px;
+        width: 350px;
+        top:0;
+        @media (max-width:800px) {
+            left: 50%;
+            top: 25%;
+            transform: translate(-50%, -50%);
+            height: 250px;
+        width: 250px;
+        }
+    }
+}
+#loginform {
+    margin-top: -125px;
+    @media (max-width:800px) {
+        padding-top: 200px;
+    }
+}
+// #knap1 {
+// background-color: blue;
+// }
+// #knap2{
+//     background-color: green;
+// }
+// #knap3{
+//     background-color: red;
+// }
+
+// .knap {
+// text-shadow: none !important;
+// }
+// .nodecor {
+//     text-decoration: none !important;
+// }
+// .hidden {
+//     display: none !important;
+// }
+
 
 // #hej {
 
@@ -40,5 +85,5 @@
 
 //         }
 //     }
-    
+
 // }

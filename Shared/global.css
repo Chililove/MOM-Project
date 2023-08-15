@@ -17,4 +17,32 @@
   background-color: beige;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: center;
+}
+
+#fpimg {
+  height: 250px;
+}
+#fpimg img {
+  position: absolute;
+  height: 350px;
+  width: 350px;
+  top: 0;
+}
+@media (max-width: 800px) {
+  #fpimg img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
+}
+
+#loginform {
+  margin-top: -125px;
+}
+@media (max-width: 800px) {
+  #loginform {
+    padding-top: 200px;
+  }
 }/*# sourceMappingURL=global.css.map */

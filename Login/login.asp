@@ -45,9 +45,9 @@ function closePopup() {
 <% else %>
 <body>         
 <% end if %>
-<div style='float:left'>
-        <img src="Game-On.png" style="margin-top: -18%; margin-left: -8%; height: 100%; width: 100%;"/>
-    </div>
+<div id='fpimg'>
+        <img src="Game-On.png"/>
+</div>
 
     <div id="popup" class="popup">
         <div class="popup-content">
@@ -55,7 +55,7 @@ function closePopup() {
             <button onclick="closePopup()">OK</button>
         </div>
     </div>
-<form method="POST" action="login.asp" target="_top">
+<form id="loginform" method="POST" action="login.asp" target="_top">
 <div data-role="footer" data-id="footer" data-position="fixed">
 <h1>MoM Login</h1>  
 </div>
@@ -108,16 +108,20 @@ function closePopup() {
 			<tr>
 				<td >
 		<form method="POST" action="login_glemt.asp" target="_top">
+<script>
 
+</script>
 
-<input type="submit" value="Lost password" data-theme="a" data-icon="phone" name="Action">
-				
+<input type="submit" value="Lost Password" data-theme="a" data-icon="phone" name="Action" >
+<!--<button id="knap1" class="knap">Cancel</button>
+<button id="knap2"  class="knap">Cancel</button>
+<button id="knap3"  class="knap">Cancel</button>
+<a href="hej" class="nodecor">HEj</a>-->
 </td>
 				</tr>
 </table>
 </form>
 </form>
-
 <!-- wrap inside DOMcontentloaded to ensure script runs after page has been fully loaded safe manipulation of DOM elements -->
 <script> document.addEventListener('DOMContentLoaded', function() {
   var inputs = document.querySelectorAll('input[type="text"], input[type="password"]');

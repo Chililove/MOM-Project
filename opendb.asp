@@ -27,7 +27,7 @@ CalcHrsMins = (varHours & ":"& varMinutes)
 End Function 
 
 
-Const NUMBER_PADDING = "000000000000" ' a few zeroes more just to make sure
+Const NUMBER_PADDING = "000000000000" 'a few zeroes more just to make sure'
 
 Function ZeroPadInteger(i, numberOfDigits)
   ZeroPadInteger = Right(NUMBER_PADDING & i, numberOfDigits)
