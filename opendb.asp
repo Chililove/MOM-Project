@@ -33,8 +33,5 @@ Function ZeroPadInteger(i, numberOfDigits)
   ZeroPadInteger = Right(NUMBER_PADDING & i, numberOfDigits)
 End Function
 
-
-
-
 %>
 

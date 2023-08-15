@@ -50,7 +50,7 @@ em {
 
 	<div id="page1" data-role="page">
 	<div data-role="header" data-id="header" data-position="fixed">
-	<h1>Start</h1>
+	<h1>Start setting up a meeting</h1>
 	<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">
 	Home</a> </div>
 		<form data-ajax="false" method="post" action='save.asp?action=<%=request("action")%>'>
@@ -75,7 +75,20 @@ em {
 			
 			
 			
-			Customer name
+			Name of meeting
+
+
+			
+			
+			
+			</th>
+		</tr>
+		<tr>
+			<th style="text-align: center">
+			
+			
+			
+			Type of meeting
 
 
 			
@@ -105,7 +118,7 @@ em {
 				</tr>
 		<tr>
 			<th style="text-align: center">
-			Job type</th>
+			Agenda</th>
 		</tr>
 		<tr>
 			<th style="text-align: center">
@@ -130,15 +143,19 @@ em {
 		</tr>
 		<tr>
 		<th style="text-align: center">
-		Job comments</th>
+		Additional information</th>
 		</tr>
 		<tr>
 		<td style="text-align: center">
 		<input name="jobbeskrivelse" type="text" style="width: 269px"></td>
 		</tr>
 		<tr>
+		<th style="text-align: center">
+		Assign employees</th>
+		</tr>
+		<tr>
 		<td style="text-align: center">
-		<input name="Submit1" type="submit" value="Start" data-theme="a" data-icon="check"></td>
+		<input name="Submit1" type="submit" value="Start meeting" data-theme="a" data-icon="check"></td>
 		</tr>
 		</table>
 		<input name="existing_id_registrering" type="hidden" value="<%=existing_id_registrering%>">
