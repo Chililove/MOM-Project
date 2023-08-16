@@ -36,7 +36,7 @@ label.error {
 label.error {
 				display: inline-block;
 				margin-left: 22%;
-}
+q
 }
 em {
 				color: red;
@@ -74,41 +74,38 @@ em {
 			<th style="text-align: center">
 			
 			
-			
 			Name of meeting
-
-
-			
-			
 			
 			</th>
 		</tr>
 		<tr>
+		<td style="text-align: center">
+		<input name="nameOfMeeting" type="text" style="width: 269px"></td>
+		</tr>
+		
+		<tr>
 			<th style="text-align: center">
 			
 			
-			
 			Type of meeting
-
-
-			
 			
 			
 			</th>
 		</tr>
+		<!-- comment here on changing from ttbllogin need new table for types of meetings for dropdown -->
 				<tr>
 					<td style="text-align: center">
-						<select name="id_kunde" required >
+						<select name="id" required >
 							<option selected="" value="">
 							Select
 							</option>
 							
-							<% SQL3="Select * from tbllogin order by login asc "
+							<% SQL3="Select * from tblmeeting_name order by id"
 							set objRS3 = conn.Execute(SQL3)
 							while not objRS3.EOF %>
 
-							<option value='<%=objRS3("id_login")%>' style="text-align: center">
-							<%=objRS3("login")%>
+							<option value='<%=objRS3("id")%>' style="text-align: center">
+							<%=objRS3("meeting_name")%>
 							</option>
 
 							<% objRS3.MoveNext
@@ -120,6 +117,12 @@ em {
 			<th style="text-align: center">
 			Agenda</th>
 		</tr>
+		<tr>
+		<td style="text-align: center">
+		<input name="agenda" type="text" style="width: 269px"></td>
+		</tr>
+
+		<!--
 		<tr>
 			<th style="text-align: center">
 			<select name="id_job" required >
@@ -142,6 +145,8 @@ em {
 		%></select></th>
 		</tr>
 		<tr>
+		-->
+
 		<th style="text-align: center">
 		Additional information</th>
 		</tr>
@@ -149,14 +154,22 @@ em {
 		<td style="text-align: center">
 		<input name="jobbeskrivelse" type="text" style="width: 269px"></td>
 		</tr>
+		<!--
 		<tr>
 		<th style="text-align: center">
 		Assign employees</th>
 		</tr>
+		-->
+		<tr>
+		<td style="text-align: center">
+		<input name="Submit2" type="submit" value="Save meeting" data-theme="a" data-icon="check"></td>
+		</tr>
+
 		<tr>
 		<td style="text-align: center">
 		<input name="Submit1" type="submit" value="Start meeting" data-theme="a" data-icon="check"></td>
 		</tr>
+
 		</table>
 		<input name="existing_id_registrering" type="hidden" value="<%=existing_id_registrering%>">
 		<input type="hidden" name="oprettetaf" value='<%=session("login")%>'>
@@ -169,7 +182,7 @@ em {
 $( "#page1" ).on( "pageinit", function() {
 	$( "form" ).validate({
 		rules: {
-			//jobbeskrivelse: {
+			//meeting_name: {
 			//	required: true
 			//},
 			//id_job: {
