@@ -38,6 +38,15 @@
   }
 }
 
+@media (max-width: 800px) {
+  #meeting_form {
+    left: 10%;
+    top: 20%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+  }
+}
+
 #loginform {
   margin-top: -125px;
 }

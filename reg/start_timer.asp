@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="../jquery/jquery.mobile-1.4.5.css">
 <script src="../jquery/jquery-1.8.2.min.js"></script>
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
+<link rel="stylesheet" href="../shared/global.css" />
 <link type="text/css" rel="stylesheet" href="../jquery/jquery-te-1.4.0.css">
 <script type="text/javascript" src="../jquery/jquery-te-1.4.0.min.js" charset="utf-8"></script>
 <script src="../jquery/jquery.validate.min.js"></script>
@@ -65,7 +66,10 @@ em {
 	<h1>Start setting up a meeting</h1>
 	<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">
 	Home</a> </div>
-		<form data-ajax="false" method="post" action='save.asp?action=<%=request("action")%>'>
+	<!--<div id='fpimg'>
+        <img src="..\Login\Game-On.png"/>
+</div>-->
+		<form data-ajax="false" method="post" action='save.asp?action=<%=request("action")%>' id="meeting_form">
 		<table align="center" style="width: 50%">
 		<tr>
 			<th>Start date</th>
@@ -170,12 +174,14 @@ em {
 
 		<!--<input name="additionalInfo" type="text" style="width: 269px"></td>-->
 		</tr>
+
 		<!--
 		<tr>
 		<th style="text-align: center">
 		Assign employees</th>
 		</tr>
 		-->
+
 		<tr>
 		<td style="text-align: center">
 		<input name="Submit2" type="submit" value="Save meeting" data-theme="a" data-icon="check"></td>
