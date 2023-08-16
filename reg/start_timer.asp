@@ -92,20 +92,20 @@ em {
 			
 			</th>
 		</tr>
-		<!-- comment here on changing from ttbllogin need new table for types of meetings for dropdown -->
+		<!-- comment here on changing from ttbllogin need new tablesd for types of meetings for dropdown -->
 				<tr>
 					<td style="text-align: center">
-						<select name="id" required >
+						<select name="id_meetingtype" required >
 							<option selected="" value="">
 							Select
 							</option>
 							
-							<% SQL3="Select * from tblmeeting_name order by id"
+							<% SQL3="Select * from tblmeeting_type order by id_meetingtype"
 							set objRS3 = conn.Execute(SQL3)
 							while not objRS3.EOF %>
 
-							<option value='<%=objRS3("id")%>' style="text-align: center">
-							<%=objRS3("meeting_name")%>
+							<option value='<%=objRS3("id_meetingtype")%>' style="text-align: center">
+							<%=objRS3("meeting_type")%>
 							</option>
 
 							<% objRS3.MoveNext
@@ -152,7 +152,7 @@ em {
 		</tr>
 		<tr>
 		<td style="text-align: center">
-		<input name="jobbeskrivelse" type="text" style="width: 269px"></td>
+		<input name="additionalInfo" type="text" style="width: 269px"></td>
 		</tr>
 		<!--
 		<tr>
