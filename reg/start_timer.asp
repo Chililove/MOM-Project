@@ -43,6 +43,18 @@ em {
 				font-weight: bold;
 				padding-right: .25em;
 }
+
+#expanding-textarea {
+  width: 720px;  /* Initial width */
+  height: 50px; /* Initial height */
+  transition: all 0.5s; /* Optional: smooth transition */
+}
+
+#expanding-textarea:focus {
+  width: 720px;  /* Width when focused */
+  height: 200px; /* Height when focused */
+}
+
 </style>
 </head>
 
@@ -92,7 +104,6 @@ em {
 			
 			</th>
 		</tr>
-		<!-- comment here on changing from ttbllogin need new tablesd for types of meetings for dropdown -->
 				<tr>
 					<td style="text-align: center">
 						<select name="id_meetingtype" required >
@@ -118,9 +129,12 @@ em {
 			Agenda</th>
 		</tr>
 		<tr>
-		<td style="text-align: center">
-		<input name="agenda" type="text" style="width: 269px"></td>
+		<td>
+		<textarea id="expanding-textarea" name="agenda" rows="4" cols="50"></textarea>
+
+		<!--<input name="agenda" type="text" id="expanding-textarea"></td>-->
 		</tr>
+		
 
 		<!--
 		<tr>
@@ -152,7 +166,9 @@ em {
 		</tr>
 		<tr>
 		<td style="text-align: center">
-		<input name="additionalInfo" type="text" style="width: 269px"></td>
+		<textarea name="additionalInfo" id="expanding-textarea" rows="4" cols="50"></textarea>
+
+		<!--<input name="additionalInfo" type="text" style="width: 269px"></td>-->
 		</tr>
 		<!--
 		<tr>
