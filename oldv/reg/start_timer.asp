@@ -20,45 +20,45 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
 <style>
-	label.error {
-					color: red;
-					font-size: 16px;
-					font-weight: normal;
-					line-height: 1.4;
-					margin-top: 0.5em;
-					width: 100%;
-					float: none;
-	}
-	@media 
-	{
-	label.error {
-					margin-left: 0;
-					display: block;
-	}
-	}
-	@media 
-	{
-	label.error {
-					display: inline-block;
-					margin-left: 22%;
-
-	}
-	em {
-					color: red;
-					font-weight: bold;
-					padding-right: .25em;
-	}
+label.error {
+				color: red;
+				font-size: 16px;
+				font-weight: normal;
+				line-height: 1.4;
+				margin-top: 0.5em;
+				width: 100%;
+				float: none;
 }
-	#expanding-textarea {
-					width: 720px;  /* Initial width */
-					height: 50px; /* Initial height */
-					transition: all 0.5s; /* Optional: smooth transition */
-	}
+@media 
+{
+label.error {
+				margin-left: 0;
+				display: block;
+}
+}
+@media 
+{
+label.error {
+				display: inline-block;
+				margin-left: 22%;
 
-	#expanding-textarea:focus {
-					width: 720px;  /* Width when focused */
-					height: 200px; /* Height when focused */
-	}
+}
+em {
+				color: red;
+				font-weight: bold;
+				padding-right: .25em;
+}
+
+#expanding-textarea {
+				width: 720px;  /* Initial width */
+				height: 50px; /* Initial height */
+  				transition: all 0.5s; /* Optional: smooth transition */
+}
+
+#expanding-textarea:focus {
+  				width: 720px;  /* Width when focused */
+  				height: 200px; /* Height when focused */
+}
 
 </style>
 </head>
@@ -67,12 +67,7 @@
 
 	<div id="page1" data-role="page">
 	<div data-role="header" data-id="header" data-position="fixed">
-		<%if request("action")="newday" then%>
-		<h1>Start setting up a meeting</h1>
-		<%else%>
-		<h1>Start setting up a meeting (End Previous)</h1>
-		<%end if%>
-
+	<h1>Start setting up a meeting</h1>
 	<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">
 	Home</a>
 	</div>
@@ -139,82 +134,39 @@
 						</select>
 					</td>
 				</tr>
-
-
-<tr>
+		<tr>
 			<th style="text-align: center">
-		
-			Afdeling/department
-			
-			</th>
+			Agenda</th>
 		</tr>
-				<tr>
+
+		<tr>
+			<td>
+		<textarea id="expanding-textarea" name="agenda" rows="4" cols="50"></textarea>
+		
+		<!--
+		<tr>
 			<th style="text-align: center">
-			<select name="afdeling" required >
+			<select name="id_job" required >
 			<option selected="" value="">
 			Select
 			</option>
 			<%												
-		SQL3="Select * from tbl_afdeling_2nd order by afdeling asc "
+		SQL3="Select * from tbljob order by job_dk asc "
 		set objRS3 = conn.Execute(SQL3)
 
 
 		while not objRS3.EOF
 		%>
-			<option value='<%=objRS3("afdeling")%>' style="text-align: center">
-			<%=objRS3("afdeling")%>
+			<option value='<%=objRS3("id_job")%>' style="text-align: center">
+			<%=objRS3("job_dk")%>
 			</option>
 			<%
 		objRS3.MoveNext
 		Wend
 		%></select></th>
 		</tr>
-		<!-- agenda -->
-		<tr>
-			<th style="text-align: center">
-			Agenda</th>
-		</tr>
-		<tr>
-			<td>
-				<textarea id="expanding-textarea" name="agenda" rows="4" cols="50">
-				</textarea>
-			</td>
-		</tr>
-		<!-- agenda2 -- if session is admin-->
-		<!--
-		<% 'if session("administrator")=true then %>
-			<tr>
-				<th style="text-align: center">
-				Admin Agenda</th>
-			</tr>
-			<tr>
-				<td>
-					<textarea id="expanding-textarea" name="agenda2" rows="4" cols="50">
-					</textarea>
-				</td>
-			</tr>
-		<% 'end if %>
+		
 		-->
-
-		<tr>
-			<th style="text-align: center">
-				<select name="id_agenda" required >
-						<option selected="" value="">
-						Select
-						</option>
-					<% SQL3="Select * from tbljob order by job_dk asc "
-					set objRS3 = conn.Execute(SQL3)
-					while not objRS3.EOF %>
-						<option value='<%=objRS3("id_agenda")%>' style="text-align: center">
-						<%=objRS3("job_dk")%>
-						</option>
-					<% objRS3.MoveNext
-					Wend %>
-				</select>
-			</th>
-		</tr>
-		
-		
 			<tr>
 		<th style="text-align: center">
 		Additional information</th>
@@ -228,12 +180,12 @@
 		<th style="text-align: center">
 		Assign employees</th>
 		</tr>
-	
+		-->
 
 		<tr>
 		<td style="text-align: center">
 		<input name="Submit2" type="submit" value="Save meeting" data-theme="a" data-icon="check"></td>
-		</tr>	-->
+		</tr>
 
 		<tr>
 		<td style="text-align: center">

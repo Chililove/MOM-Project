@@ -3,8 +3,8 @@
 <%
 
 SQL = "SELECT * FROM qrylogin WHERE (id_login = " & request("id_login") & ")"
-response.write sql
 set rs=conn.execute(sql)
+'response.write sql
 do while not rs.eof
 	id_login=rs("id_login")
 	login=rs("login")

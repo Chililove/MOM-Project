@@ -25,7 +25,7 @@ set rs=conn.execute(sql)
 				<%
 do while not rs.eof
 %>
-				<li data-role="list-divider">
+				<li data-role="list-divider"><%=rs("Kundenavn")%>
 				<p class="ui-li-aside"><strong><%=FormatDateTime(rs("starttid"),2)%></strong></p>
 				</li>
 				<li>

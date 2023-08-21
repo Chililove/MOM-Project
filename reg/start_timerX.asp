@@ -102,138 +102,59 @@
 		</tr>
 		<tr>
 			<th style="text-align: center">
-			
 			Name of meeting
-			
 			</th>
 		</tr>
 		<tr>
 		<td style="text-align: center">
-		<input name="nameOfMeeting" type="text" style="width: 720px"></td>
+		<input name="møde_navn" type="text" style="width: 720px"></td>
 		</tr>
-		
 		<tr>
 			<th style="text-align: center">
-		
-			Type of meeting
-			
+			Subject
 			</th>
 		</tr>
-				<tr>
-					<td style="text-align: center">
-						<select name="id_meetingtype" required >
-							<option selected="" value="">
-							Select
-							</option>
-							
-							<% SQL3="Select * from tblmeeting_type order by id_meetingtype"
-							set objRS3 = conn.Execute(SQL3)
-							while not objRS3.EOF %>
-
-							<option value='<%=objRS3("id_meetingtype")%>' style="text-align: center">
-							<%=objRS3("meeting_type")%>
-							</option>
-
-							<% objRS3.MoveNext
-							Wend %>
-						</select>
-					</td>
-				</tr>
-
-
-<tr>
-			<th style="text-align: center">
+		<tr>
+		<td style="text-align: center">
+		<input name="emne" type="text" style="width: 720px"></td>
+		</tr>
 		
-			Afdeling/department
-			
+		
+
+
+		<tr>
+			<th style="text-align: center">
+				Description
 			</th>
 		</tr>
-				<tr>
-			<th style="text-align: center">
-			<select name="afdeling" required >
-			<option selected="" value="">
-			Select
-			</option>
-			<%												
-		SQL3="Select * from tbl_afdeling_2nd order by afdeling asc "
-		set objRS3 = conn.Execute(SQL3)
-
-
-		while not objRS3.EOF
-		%>
-			<option value='<%=objRS3("afdeling")%>' style="text-align: center">
-			<%=objRS3("afdeling")%>
-			</option>
-			<%
-		objRS3.MoveNext
-		Wend
-		%></select></th>
-		</tr>
-		<!-- agenda -->
 		<tr>
-			<th style="text-align: center">
-			Agenda</th>
-		</tr>
-		<tr>
-			<td>
-				<textarea id="expanding-textarea" name="agenda" rows="4" cols="50">
+			<td style="text-align: center">
+				<textarea name="beskrivelse" id="expanding-textarea" rows="4" cols="50">
 				</textarea>
 			</td>
 		</tr>
-		<!-- agenda2 -- if session is admin-->
-		<!--
-		<% 'if session("administrator")=true then %>
-			<tr>
-				<th style="text-align: center">
-				Admin Agenda</th>
-			</tr>
-			<tr>
-				<td>
-					<textarea id="expanding-textarea" name="agenda2" rows="4" cols="50">
-					</textarea>
-				</td>
-			</tr>
-		<% 'end if %>
-		-->
-
 		<tr>
 			<th style="text-align: center">
-				<select name="id_agenda" required >
-						<option selected="" value="">
-						Select
-						</option>
-					<% SQL3="Select * from tbljob order by job_dk asc "
-					set objRS3 = conn.Execute(SQL3)
-					while not objRS3.EOF %>
-						<option value='<%=objRS3("id_agenda")%>' style="text-align: center">
-						<%=objRS3("job_dk")%>
-						</option>
-					<% objRS3.MoveNext
-					Wend %>
-				</select>
+				Notes
 			</th>
 		</tr>
-		
-		
-			<tr>
-		<th style="text-align: center">
-		Additional information</th>
+		<tr>
+			<td style="text-align: center">
+				<textarea name="noter" id="expanding-textarea" rows="4" cols="50">
+				</textarea>
+			</td>
 		</tr>
 		<tr>
-		<td style="text-align: center">
-		<textarea name="additionalInfo" id="expanding-textarea" rows="4" cols="50"></textarea>
-
-		<!--
-		<tr>
-		<th style="text-align: center">
-		Assign employees</th>
+			<th style="text-align: center">
+				Additional information
+			</th>
 		</tr>
-	
-
 		<tr>
-		<td style="text-align: center">
-		<input name="Submit2" type="submit" value="Save meeting" data-theme="a" data-icon="check"></td>
-		</tr>	-->
+			<td style="text-align: center">
+				<textarea name="additionalInfo" id="expanding-textarea" rows="4" cols="50">
+				</textarea>
+			</td>
+		</tr>
 
 		<tr>
 		<td style="text-align: center">
@@ -251,23 +172,23 @@
 </body>
 
 <script>
-$( "#page1" ).on( "pageinit", function() {
-	$( "form" ).validate({
-		rules: {
-			meeting_name: {
-				required: true
-		/},
-			id_meetingtype: {
-				required: true
-			}
-		},
-		errorPlacement: function( error, element ) {
-		error.insertAfter( element.parent() );
-		// error.appendTo('#errordiv');
+// $( "#page1" ).on( "pageinit", function() {
+// 	$( "form" ).validate({
+// 		rules: {
+// 			meeting_name: {
+// 				required: true
+// 		/},
+// 			id_meetingtype: {
+// 				required: true
+// 			}
+// 		},
+// 		errorPlacement: function( error, element ) {
+// 		error.insertAfter( element.parent() );
+// 		// error.appendTo('#errordiv');
 		
-		}
-	});
-});
+// 		}
+// 	});
+// });
 </script>
 </html>
 <!--#include file="../closedb.asp"-->

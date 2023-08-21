@@ -2,20 +2,22 @@
 <%
 'check om der er logget ud
 SQL2 = "SELECT * FROM qryregistrering_sluttid WHERE (oprettetaf = '" & session("login") & "' and sluttid is Null)"
+'response.write SQL2
+Set rs = conn.Execute(SQL2)
+If Not (rs.BOF Or rs.EOF) Then
 
-			Set rs = conn.Execute(SQL2)
-			If Not (rs.BOF Or rs.EOF) Then
-		
-				'ikke afsluttet
-				done=0
-				existing_id_registrering=rs("id_registrering")
-				Starttid=rs("starttid")
-				job_dk=rs("job_dk")
-				kundenavn=rs("kundenavn")
+	'ikke afsluttet
+	done=0
+	existing_id_registrering=rs("id_registrering")
+	Starttid=rs("starttid")
+	job_dk=rs("job_dk")
+	' kundenavn=rs("kundenavn")
 
-			Else
-				'afsluttet"
-				done=1		
-			End If
-
+Else
+	'afsluttet"
+	done=1		
+End If
+' response.write existing_id_registrering
+' response.write Starttid
+' response.write job_dk
 %>

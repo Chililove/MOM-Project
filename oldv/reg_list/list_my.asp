@@ -1,3 +1,4 @@
+<!--#include file="../opendb.asp"-->
 <!DOCTYPE>
 <html>
 
@@ -11,28 +12,27 @@
 
 <body>
 
-<!--#include file="../opendb.asp"-->
 <div data-role="header" data-id="header" data-position="fixed">
-				<h1>Last 20 registrations</h1>
+				<h1><%=response.Write(WeekdayName(weekday(request("oprettetdato"))))%> 
+				- <%=FormatDateTime(request("oprettetdato"),1)%> </h1>
 				<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">
 				Home</a> </div>
 <%
 
-sql="select top 20 * from qryregistrering_sluttid_minutes where oprettetaf='" &session("login") &"' order by id_registrering desc "
+sql="select * from qryregistrering_sluttid_minutes where oprettetdato='" &request("oprettetdato") &"' and oprettetaf='" &session("login") &"' order by id_registrering desc "
 set rs=conn.execute(sql)
 %>
 <ul data-role="listview" data-inset="false" data-filter="false">
 				<%
 do while not rs.eof
 %>
-				<li data-role="list-divider">
+				<li data-role="list-divider"><%=rs("Kundenavn")%>
 				<p class="ui-li-aside"><strong><%=FormatDateTime(rs("starttid"),2)%></strong></p>
 				</li>
 				<li>
-				
 				<p><%=rs("job_dk")%></p>
-								
-				<p><%=rs("starttid")%> --> <%=rs("sluttid")%>=<%=rs("difftime")%></p>
+				
+				<p><%=FormatDateTime(rs("starttid"),4)%>-<%=FormatDateTime(rs("sluttid"),4)%></p>
 				<p><%=rs("jobbeskrivelse")%></p>
 				</li>
 				<%
@@ -43,6 +43,6 @@ loop
 <!--#include file="../shared/footer.asp"-->
 
 </body>
-<!--#include file="../closedb.asp"-->
 
 </html>
+<!--#include file="../closedb.asp"-->

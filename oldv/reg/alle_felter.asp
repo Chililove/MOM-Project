@@ -8,7 +8,7 @@ set rs=conn.execute(sql)
 do while not rs.eof
 id_registrering=rs("id_registrering")
 jobbeskrivelse=rs("jobbeskrivelse")
-' kundenavn=rs("kundenavn")
+kundenavn=rs("kundenavn")
 job_dk=rs("job_dk")
 starttid=rs("starttid")
 id_registrering=rs("id_registrering")
