@@ -129,8 +129,7 @@
 		</tr>
 		<tr>
 			<td style="text-align: center">
-				<textarea name="beskrivelse" id="expanding-textarea" rows="4" cols="50">
-				</textarea>
+				<textarea name="beskrivelse" id="expanding-textarea" rows="4" cols="50"></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -140,8 +139,7 @@
 		</tr>
 		<tr>
 			<td style="text-align: center">
-				<textarea name="noter" id="expanding-textarea" rows="4" cols="50">
-				</textarea>
+				<textarea name="noter" id="expanding-textarea" rows="4" cols="50"></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -151,8 +149,7 @@
 		</tr>
 		<tr>
 			<td style="text-align: center">
-				<textarea name="additionalInfo" id="expanding-textarea" rows="4" cols="50">
-				</textarea>
+				<textarea name="additionalInfo" id="expanding-textarea" rows="4" cols="50"></textarea>
 			</td>
 		</tr>
 
