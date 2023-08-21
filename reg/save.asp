@@ -16,9 +16,14 @@ id_agenda=request("id_agenda")
 ' id_kunde=request("id_kunde")
 existing_id_registrering=request("existing_id_registrering")
 ' jobbeskrivelse=request("jobbeskrivelse")
-oprettetaf=session("login")
+' oprettetaf=session("login_id")
+oprettetaf=request("oprettetaf")
 oprettetdato=dateadd("d",1,date())
-
+moede_navn=request("moede_navn")
+emne=request("emne")
+beskrivelse=request("beskrivelse")
+noter=request("noter")
+additionalinfo=request("additionalInfo")
 
 aar=datepart("yyyy",oprettetdato)
 maaned=datepart("m",oprettetdato)
@@ -40,8 +45,8 @@ sluttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 
 if request("action")="newday" then
 
-	sql1= "INSERT INTO tbl_agenda (oprettetaf,oprettetdato,starttid) "
-	sql2= "VALUES ('" & oprettetaf &"','" & oprettetdato &"','" & starttid &"')"
+	sql1= "INSERT INTO tbl_agenda (moede_navn,emne,beskrivelse, noter, additionalinfo, oprettetaf,oprettetdato,starttid) "
+	sql2= "VALUES ('" & moede_navn &"','" & emne &"','" & beskrivelse &"','" & noter &"','" & additionalinfo &"','" & oprettetaf &"','" & oprettetdato &"','" & starttid &"')"
 
 	sql= sql1 & sql2
 	response.write sql
