@@ -87,17 +87,21 @@
 
 		<form data-ajax="false" method="post" action='save.asp?action=<%=request("action")%>' id="meeting_form">
 		<table align="center" style="width: 50%">
+			
+
 			<tr>
-				<th >Start date</th><th>Start time</th>
-				</tr>
-				<tr>
-			<td style="text-align: center;">
-				<input type="date" name="start_date" required>
-			</td>
-			<td style="text-align: center">
-				<input type="time" name="start_time" required>
-			</td>
-		</tr>
+				<td style="text-align: center">
+					<div style="display:flex;">
+						<div style="width:50%">Start date
+							<input type="date" name="start_date" required>
+						</div>
+						<div style="width:50%">Start time
+							<input type="time" name="start_time" required>
+						</div>
+					</div>
+				</td>
+			</tr>
+			
 
 		<tr>
 			<th style="text-align: center">
