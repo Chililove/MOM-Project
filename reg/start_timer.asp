@@ -49,6 +49,9 @@
 					padding-right: .25em;
 	}
 }
+
+ .date-time-inputs {
+		}
 	/*#expanding-textarea {
 					width: 720px;  // Initial width 
 					height: 50px; // Initial height 
@@ -85,21 +88,18 @@
 
 		<form data-ajax="false" method="post" action='save.asp?action=<%=request("action")%>' id="meeting_form">
 		<table align="center" style="width: 50%">
-		<tr>
-			<th>Start date</th>
-		</tr>
-		<tr>
+			<tr>
+				<th >Start date</th><th >Start time</th>
+				</tr>
+				<tr>
 			<td style="text-align: center">
-			<%=FormatDateTime(now(),2)%></td>
-		</tr>
-		<tr>
-			<th>Start time</th>
-		</tr>
-		<tr>
+				<input type="date" name="start_date" required class="date-time-inputs">
+			</td>
 			<td style="text-align: center">
-			<%=FormatDateTime(now(),4)%><br>
+				<input type="time" name="start_time" required class="date-time-inputs">
 			</td>
 		</tr>
+
 		<tr>
 			<th style="text-align: center">
 			Name of meeting
@@ -107,7 +107,7 @@
 		</tr>
 		<tr>
 		<td style="text-align: center">
-		<input name="moede_navn" type="text" style="width: 720px"></td>
+			<input name="moede_navn" type="text" style="width: 720px"></td>
 		</tr>
 		<tr>
 			<th style="text-align: center">
