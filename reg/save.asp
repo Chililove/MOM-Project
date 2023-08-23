@@ -24,6 +24,8 @@ emne=request("emne")
 beskrivelse=request("beskrivelse")
 noter=request("noter")
 additionalinfo=request("additionalInfo")
+id_meetingtype=request("id_meetingtype")
+id_afdeling=request("id_afdeling")
 
 aar=datepart("yyyy",oprettetdato)
 maaned=datepart("m",oprettetdato)
@@ -45,8 +47,8 @@ sluttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 
 if request("action")="newday" then
 
-	sql1= "INSERT INTO tbl_agenda (moede_navn,emne,beskrivelse, noter, additionalinfo, oprettetaf,oprettetdato,starttid) "
-	sql2= "VALUES ('" & moede_navn &"','" & emne &"','" & beskrivelse &"','" & noter &"','" & additionalinfo &"','" & oprettetaf &"','" & oprettetdato &"','" & starttid &"')"
+	sql1= "INSERT INTO tbl_agenda (moede_navn,emne,beskrivelse, noter, additionalinfo, oprettetaf,oprettetdato,starttid, id_meetingtype, id_afdeling) "
+	sql2= "VALUES ('" & moede_navn &"','" & emne &"','" & beskrivelse &"','" & noter &"','" & additionalinfo &"','" & oprettetaf &"','" & oprettetdato &"','" & starttid &"', " & id_meetingtype &", " & id_afdeling &" )"
 
 	sql= sql1 & sql2
 	response.write sql

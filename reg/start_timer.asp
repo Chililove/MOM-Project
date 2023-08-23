@@ -50,8 +50,7 @@
 	}
 }
 
- .date-time-inputs {
-		}
+ 
 	/*#expanding-textarea {
 					width: 720px;  // Initial width 
 					height: 50px; // Initial height 
@@ -89,14 +88,14 @@
 		<form data-ajax="false" method="post" action='save.asp?action=<%=request("action")%>' id="meeting_form">
 		<table align="center" style="width: 50%">
 			<tr>
-				<th >Start date</th><th >Start time</th>
+				<th >Start date</th><th>Start time</th>
 				</tr>
 				<tr>
-			<td style="text-align: center">
-				<input type="date" name="start_date" required class="date-time-inputs">
+			<td style="text-align: center;">
+				<input type="date" name="start_date" required>
 			</td>
 			<td style="text-align: center">
-				<input type="time" name="start_time" required class="date-time-inputs">
+				<input type="time" name="start_time" required>
 			</td>
 		</tr>
 
@@ -109,6 +108,27 @@
 		<td style="text-align: center">
 			<input name="moede_navn" type="text" style="width: 720px"></td>
 		</tr>
+
+	<tr>
+					<td style="text-align: center">
+						<select name="id_meetingtype" required >
+								<option selected="" value="">
+									Select subject
+								</option>
+							
+							<% SQL3="Select * from tblmeeting_type order by id_meetingtype"
+							set objRS3 = conn.Execute(SQL3)
+							while not objRS3.EOF %>
+
+								<option value='<%=objRS3("id_meetingtype")%>' style="text-align: center">
+									<%=objRS3("meeting_type")%>
+								</option>
+
+							<% objRS3.MoveNext
+							Wend %>
+						</select>
+					</td>
+				</tr>
 		<tr>
 			<th style="text-align: center">
 			Subject
@@ -119,9 +139,7 @@
 		<input name="emne" type="text" style="width: 720px"></td>
 		</tr>
 		
-		
-
-
+	
 		<tr>
 			<th style="text-align: center">
 				Description
@@ -142,11 +160,34 @@
 				<textarea name="noter" id="expanding-textarea" rows="4" cols="50"></textarea>
 			</td>
 		</tr>
+<tr>
+					<td style="text-align: center">
+						<select name="id_afdeling" required >
+								<option selected="" value="">
+									Select department
+								</option>
+							
+							<% SQL3="Select * from tbl_afdeling_2nd order by id_afdeling"
+							set objRS3 = conn.Execute(SQL3)
+							while not objRS3.EOF %>
+
+								<option value='<%=objRS3("id_afdeling")%>' style="text-align: center">
+									<%=objRS3("afdeling")%>
+								</option>
+
+							<% objRS3.MoveNext
+							Wend %>
+						</select>
+					</td>
+				</tr>
+
+
 		<tr>
 			<th style="text-align: center">
 				Additional information
 			</th>
 		</tr>
+
 		<tr>
 			<td style="text-align: center">
 				<textarea name="additionalInfo" id="expanding-textarea" rows="4" cols="50"></textarea>
