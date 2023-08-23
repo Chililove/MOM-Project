@@ -30,6 +30,7 @@ do while not rs.eof
 				</li>
 				<li>
 				
+				<p></p>
 				<p><%=rs("job_dk")%></p>
 								
 				<p><%=rs("starttid")%> --> <%=rs("sluttid")%>=<%=rs("difftime")%></p>
