@@ -93,10 +93,10 @@
 				<td style="text-align: center">
 					<div style="display:flex;">
 						<div style="width:50%">Start date
-							<input type="date" name="start_date" required>
+							<input type="date" name="moede_dato" required>
 						</div>
 						<div style="width:50%">Start time
-							<input type="time" name="start_time" required>
+							<input type="time" name="moede_tidspunkt" required>
 						</div>
 					</div>
 				</td>
@@ -104,11 +104,11 @@
 			
 
 		<tr>
-			<th style="text-align: center">
+										<th style="text-align: center">
 			Name of meeting
 			</th>
 		</tr>
-		<tr>
+		<tr>			
 		<td style="text-align: center">
 			<input name="moede_navn" type="text" style="width: 720px"></td>
 		</tr>
