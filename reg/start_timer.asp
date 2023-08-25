@@ -187,14 +187,15 @@
 
 <tr>
 					<td style="text-align: center">
-						<select name="id_login" required>
+						<select multiple name="id_login" required> <!--multiple="multiple" size="5"-->
 								<option selected="" value="">
 									Assign employees
 								</option>
-							
 							<% SQL3="Select * from tbllogin order by id_login"
 							set objRS3 = conn.Execute(SQL3)
 							while not objRS3.EOF %>
+
+							
 
 								<option value='<%=objRS3("id_login")%>' style="text-align: center">
 									<%=objRS3("login")%>

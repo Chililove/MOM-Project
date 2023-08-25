@@ -30,6 +30,7 @@ id_login=request("id_login")
 moede_dato=request("moede_dato")
 moede_tidspunkt=request("moede_tidspunkt")
 
+
 aar=datepart("yyyy",oprettetdato)
 maaned=datepart("m",oprettetdato)
 dag=datepart("d",oprettetdato)
@@ -49,20 +50,29 @@ if request("action")="newday" then
 
 	sql1= "INSERT INTO tbl_agenda (moede_navn,emne,beskrivelse, noter, additionalinfo, oprettetaf,oprettetdato,starttid, id_meetingtype, id_afdeling, id_login, moede_dato, moede_tidspunkt) "
 	sql2= "VALUES ('" & moede_navn &"','" & emne &"','" & beskrivelse &"','" & noter &"','" & additionalinfo &"','" & oprettetaf &"','" & oprettetdato &"','" & starttid &"', " & id_meetingtype &", " & id_afdeling &", " & id_login & ", '" & moede_dato & "', '" & moede_tidspunkt & "' )"
-
+	
 	sql= sql1 & sql2
 	response.write sql
 	Conn.Execute(sql)
-end if
-' if request("action")="newday" then
 
-' 	sql1= "INSERT INTO tblregistrering (id_agenda,oprettetaf,oprettetdato,starttid) "
-' 	sql2= "VALUES (" & id_agenda & ",'" & oprettetaf &"','" & oprettetdato &"','" & starttid &"')"
+ ' Getting inserted id_agenda
+    Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agenda")
+    new_id_agenda = rs("new_id_agenda").Value
 
-' 	sql= sql1 & sql2
-' 	response.write sql
-' 	Conn.Execute(sql)
-' end if
+    ' Splitting logins using a comma (selected)
+    selectedLogins = Split(Request.Form("id_login"), ",")
+    For Each id_login In selectedLogins
+        sql = "INSERT INTO tblassign_users_to_agenda (id_agenda, id_login) VALUES (" & new_id_agenda & ", " & id_login & ")"
+        Conn.Execute(sql)
+    Next
+
+	'sql1= "INSERT INTO tblregistrering (id_agenda,oprettetaf,oprettetdato,starttid) "
+	'sql2= "VALUES (" & id_agenda & ",'" & oprettetaf &"','" & oprettetdato &"','" &starttid &"')"
+	'sql= sql1 & sql2
+	'response.write sql
+	'Conn.Execute(sql)
+
+ end if
 
 '****Start new job existing day
 if request("action")="newjob" then
