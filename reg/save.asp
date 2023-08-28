@@ -15,7 +15,6 @@
 id_agenda=request("id_agenda")
 ' id_kunde=request("id_kunde")
 existing_id_registrering=request("existing_id_registrering")
-' jobbeskrivelse=request("jobbeskrivelse")
 ' oprettetaf=session("login_id")
 oprettetaf=request("oprettetaf")
 oprettetdato=date()
@@ -29,7 +28,6 @@ id_afdeling=request("id_afdeling")
 id_login=request("id_login")
 moede_dato=request("moede_dato")
 moede_tidspunkt=request("moede_tidspunkt")
-
 
 aar=datepart("yyyy",oprettetdato)
 maaned=datepart("m",oprettetdato)
@@ -55,22 +53,21 @@ if request("action")="newday" then
 	response.write sql
 	Conn.Execute(sql)
 
- ' Getting inserted id_agenda
+ ' Getting id_agenda - still cannot save multiple users to a agenda, but now I can save one selected user.
     Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agenda")
-    new_id_agenda = rs("new_id_agenda").Value
+    new_id_agenda = rs(0).Value
 
-    ' Splitting logins using a comma (selected)
     selectedLogins = Split(Request.Form("id_login"), ",")
     For Each id_login In selectedLogins
-        sql = "INSERT INTO tblassign_users_to_agenda (id_agenda, id_login) VALUES (" & new_id_agenda & ", " & id_login & ")"
+        sql = "INSERT INTO tblassign_users_to_agenda (id_agenda, id_login) VALUES (" & new_id_agenda & ", " & id_login & "); SELECT SCOPE_IDENTITY();"
         Conn.Execute(sql)
     Next
 
 	'sql1= "INSERT INTO tblregistrering (id_agenda,oprettetaf,oprettetdato,starttid) "
-	'sql2= "VALUES (" & id_agenda & ",'" & oprettetaf &"','" & oprettetdato &"','" &starttid &"')"
-	'sql= sql1 & sql2
-	'response.write sql
-	'Conn.Execute(sql)
+	'sql1=sql1 + "VALUES (" & id_agenda & ",'" & oprettetaf &"','" & oprettetdato &"','" &starttid &"')"
+	
+	'response.write sql1
+	'Conn.Execute(sql1)
 
  end if
 

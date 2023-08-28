@@ -50,6 +50,29 @@
 	}
 }
 
+ .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .dropdown-content label {
+      color: black;
+      padding: 12px 16px;
+      display: block;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
  
 	/*#expanding-textarea {
 					width: 720px;  // Initial width 
@@ -185,27 +208,56 @@
 					</td>
 				</tr>
 
-<tr>
-					<td style="text-align: center">
-						<select multiple name="id_login" required> <!--multiple="multiple" size="5"-->
-								<option selected="" value="">
-									Assign employees
-								</option>
-							<% SQL3="Select * from tbllogin order by id_login"
-							set objRS3 = conn.Execute(SQL3)
-							while not objRS3.EOF %>
+				<tr><td>
+				
+<!-- try code -->
+				
+  <tr>
+  <td style="text-align: center">
+    <div class="dropdown">
+      Assign employees
+      <div class="dropdown-content">
 
-							
+        <% 
+          SQL3="Select * from tbllogin order by id_login"
+          set objRS3 = conn.Execute(SQL3)
+          while not objRS3.EOF 
+        %>
 
-								<option value='<%=objRS3("id_login")%>' style="text-align: center">
-									<%=objRS3("login")%>
-								</option>
+          <label>
+            <input type="checkbox" name="id_login" value="<%=objRS3("id_login")%>"> <%=objRS3("login")%>
+          </label>
 
-							<% objRS3.MoveNext
-							Wend %>
-						</select>
-					</td>
-				</tr>
+        <% 
+          objRS3.MoveNext
+          Wend 
+        %>
+
+      </div>
+    </div>
+  </td>
+</tr>
+
+  <script>
+    // Optional: JavaScript to capture selected values
+    document.addEventListener('DOMContentLoaded', function() {
+      const checkboxes = document.querySelectorAll('.dropdown-content input[type="checkbox"]');
+      checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+          let selected = [];
+          checkboxes.forEach(function(c) {
+            if(c.checked) {
+              selected.push(c.value);
+            }
+          });
+          console.log('Selected:', selected);
+        });
+      });
+    });
+  </script>
+				</td></tr>
+
+
 
 		<tr>
 			<th style="text-align: center">
