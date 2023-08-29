@@ -50,40 +50,64 @@
 	}
 }
 
- .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #f9f9f9;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      z-index: 1;
-    }
-
-    .dropdown-content label {
-      color: black;
-      padding: 12px 16px;
-      display: block;
-    }
-
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
+  .dropdown {
+    display: inline-block;
+    cursor: pointer;
+    border: 1px solid #ccc;
+	right:0;
+    padding: 8px;
+    border-radius: 4px;
+	margin-right: 80px;
+  }
+  .dropdown-content {
+	visibility: hidden;
+    display: flex;
+    position: absolute;
+    left: 0;
+    width: 280px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    background-color: #f9f9f9;
+    overflow-y: auto;
+	z-index: 1;
+    max-height: 200px;
+	margin-left: 300px;
+	margin-top: -120px;
+	flex-wrap: wrap;
+	flex-direction: row;
+	
+  }
  
-	/*#expanding-textarea {
-					width: 720px;  // Initial width 
-					height: 50px; // Initial height 
-					transition: all 0.5s; // Optional: smooth transition 
-	}
+  label {
+    display: block;
+    margin: 10px 0;
+  }
 
-	 #expanding-textarea:focus {
-					width: 720px;  // Width when focused 
-					height: 200px; // Height when focused 
-	} */
+  .label-container {
+	width: 50%;
+	box-sizing: border-box;
+	text-align: center;
+  }
+
+  .dropdown-wrapper {
+  display: inline-block;
+  vertical-align: top;
+  width: 200px; 
+  }
+.user-list {
+  display: flex;
+  flex-wrap: wrap;
+margin-left: 8px;
+}
+
+.user-item{
+	width: 50%;
+}
+
+
+.checkuser{
+	width: 50%;
+}
+
 
 </style>
 </head>
@@ -108,7 +132,7 @@
 
 <!--<div style="display: flex;">-->
 
-		<form data-ajax="false" method="post" action='save.asp?action=<%=request("action")%>' id="meeting_form">
+		<form data-ajax="false" method="post" action='save.asp?action=<%=request("action")%>' style="position: relative;">
 		<table align="center" style="width: 50%">
 			
 
@@ -213,21 +237,23 @@
 <!-- try code -->
 				
   <tr>
-  <td style="text-align: center">
+  <td style="text-align: center;">
+  <div class="dropdown-wrapper">
     <div class="dropdown">
-      Assign employees
+      <button type="button" class="toggle-button">Assign employees</button>
       <div class="dropdown-content">
-
         <% 
           SQL3="Select * from tbllogin order by id_login"
           set objRS3 = conn.Execute(SQL3)
           while not objRS3.EOF 
         %>
-
-          <label>
-            <input type="checkbox" name="id_login" value="<%=objRS3("id_login")%>"> <%=objRS3("login")%>
+<div class="label-container">
+<div class="user-list">
+          <label class="user-item">
+            <input type="checkbox" name="id_login" class="checkuser" value="<%=objRS3("id_login")%>"> <%=objRS3("login")%>
           </label>
-
+</div>
+</div>
         <% 
           objRS3.MoveNext
           Wend 
@@ -235,25 +261,35 @@
 
       </div>
     </div>
+	</div>
   </td>
 </tr>
 
   <script>
-    // Optional: JavaScript to capture selected values
-    document.addEventListener('DOMContentLoaded', function() {
-      const checkboxes = document.querySelectorAll('.dropdown-content input[type="checkbox"]');
-      checkboxes.forEach(function(checkbox) {
-        checkbox.addEventListener('change', function() {
-          let selected = [];
-          checkboxes.forEach(function(c) {
-            if(c.checked) {
-              selected.push(c.value);
-            }
-          });
-          console.log('Selected:', selected);
-        });
-      });
-    });
+document.addEventListener("DOMContentLoaded", function() {
+  const toggleButton = document.querySelector(".toggle-button");
+  const dropdownContent = document.querySelector(".dropdown-content");
+  console.log(toggleButton, dropdownContent); // Debug line
+
+  toggleButton.addEventListener("click", function() {
+    console.log("Button clicked!"); // Debug line
+
+    // Toggle visibility
+    const isVisible = dropdownContent.style.visibility === 'visible';
+    console.log("Is visible:", isVisible); // Debug line
+
+    dropdownContent.style.visibility = isVisible ? 'hidden' : 'visible';
+    if (!isVisible) {
+      const rect = toggleButton.getBoundingClientRect();
+      dropdownContent.classList.add("positioned-dropdown");
+	  dropdownContent.style.right = 0;
+      dropdownContent.style.left = `${rect.left + window.scrollX + rect.width}px`;
+      dropdownContent.style.top = `${rect.top + window.scrollY}px`;
+    } else {
+      dropdownContent.classList.remove("positioned-dropdown");
+    }
+  });
+});
   </script>
 				</td></tr>
 
@@ -280,7 +316,7 @@
 		<input name="existing_id_registrering" type="hidden" value="<%=existing_id_registrering%>">
 		<input type="hidden" name="oprettetaf" value='<%=session("login_id")%>'>
 		</form>
-		  <div id="pdfPreview"></div>
+		 <!-- <div id="pdfPreview"></div> -->
 
 <!--#include file="../shared/footer.asp"--></div>
 

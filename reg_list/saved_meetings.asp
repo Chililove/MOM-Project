@@ -9,12 +9,14 @@
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
 </head>
 
-<body>
-
-<!--#include file="../opendb.asp"-->
 <div data-role="header" data-id="header" data-position="fixed">
-				<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">
-				Home</a> </div>
+<h1 >List of meetings</h1>
+    <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
+        <a class="ui-btn-right" href="http://mom.main-solution.dk/login/login.asp" data-ajax="false" data-icon="power">logoff</a>
+
+</div>
+<body>
+<!--#include file="../opendb.asp"-->
 <%
 
 sql="select * from qrysaved_meetings"
@@ -22,16 +24,8 @@ sql="select * from qrysaved_meetings"
 set rs=conn.execute(sql)
 %>
 <ul data-role="listview" data-inset="false" data-filter="false">
-				<li data-role="list-divider">
-				<table style="width: 100%">
-				<tr>
-								<td style="width: 50%">Created</td>
-				</tr>
-				</table>
-
 				
-				</li>
-				<%
+<%
 do while not rs.eof
 %>
 				<li>
@@ -39,11 +33,15 @@ do while not rs.eof
 
 <a data-ajax="false" href='../reg_list/list_my.asp?moede_dato=<%=rs("moede_dato")%>'>
 
-    Dato: <%=rs("moede_dato")%> Title: <%=rs("moede_navn")%>
-</a>
-				<table style="width: 100%">			
+				<table style="width: 100%;">		
+
 								<tr>
-								<td style="width: 50%"><%=rs("emne")%></td>
+                            
+                                    <td style="width: 20%; padding-left: 10px;">  <%=rs("moede_dato")%> <br> <%= FormatDateTime(rs("moede_tidspunkt"), 4)%> <br> </td>
+
+
+                                    <td style="width: 40%; font-weight: bold;"> <%=rs("moede_navn")%> </td>
+
 								</tr>
 				</table>
 </a>
@@ -56,6 +54,46 @@ loop
 %> 
 
 </ul>
+<style>
+  /* Styles for the list view */
+        ul[data-role="listview"] {
+            list-style-type: none;
+            border: 1px solid #ccc;
+        }
+
+        /* Styles for each list item */
+        li {
+            border-bottom: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        /* Styles for the list divider */
+        li[data-role="list-divider"] {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        /* Styles for tables */
+        table {
+            width: 100%;
+        }
+
+        td {
+            padding: 3px;
+            text-align: left;
+            font-size: 18px;
+        }
+
+        /* Styles for anchor tags */
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+</style>
 <!--#include file="../shared/footer.asp"-->
 
 </body>
