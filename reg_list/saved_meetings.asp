@@ -20,7 +20,7 @@
 <%
 
 sql="select * from qrysaved_meetings"
-'where oprettetaf='" &session("login")
+'where oprettetaf=" &session("id_login")"
 set rs=conn.execute(sql)
 %>
 <ul data-role="listview" data-inset="false" data-filter="false">
@@ -31,7 +31,7 @@ do while not rs.eof
 				<li>
 			<!--	<a data-ajax="false" href='../reg_list/list_my.asp?oprettetdato=<%'=rs(("oprettetdato_string"))%>'> -->
 
-<a data-ajax="false" href='../reg_list/list_my.asp?moede_dato=<%=rs("moede_dato")%>'>
+<a data-ajax="false" href='../reg_list/list_my.asp?action=show&amp;id_agenda=<%=rs("id_agenda")%>'>
 
 				<table style="width: 100%;">		
 

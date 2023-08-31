@@ -2,10 +2,7 @@
 <!--#include file="../opendb.asp"-->
 <HTML>
 <HEAD>
-
-
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-
 </HEAD>
 <BODY>
 <%
@@ -53,7 +50,6 @@ if request("action")="newday" then
 	response.write sql
 	Conn.Execute(sql)
 
- ' Getting id_agenda - still cannot save multiple users to a agenda, but now I can save one selected user.
     Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agenda")
     new_id_agenda = rs(0).Value
 
@@ -70,6 +66,67 @@ if request("action")="newday" then
 	'Conn.Execute(sql1)
 
  end if
+	'This is how far i got. I have no clue how to use this in the form and I would like to know
+	'if it is possible to put the form in seperate file when it is reused for both submit and update
+
+if request("action")="edit" then
+
+sql = "UPDATE tbl_agenda SET " & _
+  "moede_navn = '" & Replace(moede_navn, "'", "''") & "', " & _
+  "emne = '" & Replace(emne, "'", "''") & "', " & _
+  "beskrivelse = '" & Replace(beskrivelse, "'", "''") & "', " & _
+  "noter = '" & Replace(noter, "'", "''") & "', " & _
+  "additionalinfo = '" & Replace(additionalinfo, "'", "''") & "', " & _
+  "id_meetingtype = " & id_meetingtype & ", " & _
+  "id_afdeling = " & id_afdeling & ", " & _
+  "id_login = " & id_login & ", " & _
+  "moede_dato = '" & moede_dato & "', " & _
+  "moede_tidspunkt = '" & moede_tidspunkt & "' " & _
+  "WHERE id = " & id_agenda
+
+	'sql= "UPDATE tbl_agenda SET " & _
+    '  "moede_navn = '" & moede_navn & "', " & _
+    '  "emne = '" & emne & "', " & _
+     ' "beskrivelse = '" & beskrivelse & "', " & _
+     ' "noter = '" & noter & "', " & _
+    '  "additionalinfo = '" & additionalinfo & "', " & _
+    '  "id_meetingtype = " & id_meetingtype & ", " & _
+    '  "id_afdeling = " & id_afdeling & ", " & _
+   '   "id_login = " & id_login & ", " & _
+    '  "moede_dato = '" & moede_dato & "', " & _
+     ' "moede_tidspunkt = '" & moede_tidspunkt & "' " & _
+     ' "WHERE id = " & id_agenda
+	
+	response.write sql
+	Conn.Execute(sql)
+end if 
+
+if request("action")="show" then
+	Dim rs
+	sql="SELECT * FROM tbl_agenda WHERE id=" & id_agenda
+	Set rs = Conn.Execute(sql)
+	If Not rs.EOF Then
+		moede_navn = rs("moede_navn")
+		emne = rs("emne")
+		beskrivelse = rs("beskrivelse")
+		noter = rs("noter")
+		additionalinfo = rs("additionalinfo")
+		id_meetingtype = rs("id_meetingtype")
+		id_afdeling = rs("id_afdeling")
+		id_login = rs("id_login")
+		moede_dato = rs("moede_dato")
+		moede_tidspunkt = rs("moede_tidspunkt")
+	
+		response.write sql
+	else
+			response.write "no data"
+
+
+	end if
+
+
+end if
+'sql="UPDATE tbl_agenda SET moede_navn='" & moede_navn & "', emne='" & emne & "', beskrivelse='" & beskrivelse & "',noter='" & noter & "', additionalinfo='" & additionalinfo & "', id_meetingtype='" & id_meetingtype & "', id_afdeling='" & id_afdeling & "',id_login='" & id_login & "', moede_dato='" & moede_dato & "', moede_tidspunkt='" & moede_tidspunkt & "', WHERE id=" & id_agenda"
 
 '****Start new job existing day
 if request("action")="newjob" then
