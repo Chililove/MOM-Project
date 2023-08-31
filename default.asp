@@ -29,7 +29,7 @@
 <%end if%>
 
 
-<<!--li><a data-ajax="false" href="reg_list/list_my_last20.asp">Last 20 registrations</a></li>
+<!--li><a data-ajax="false" href="reg_list/list_my_last20.asp">Last 20 registrations</a></li>
 <li><a data-ajax="false" href="reg_list/list_my_last20X.asp">Last 20 reggistrations</a></li>-->
 
 <li><a data-ajax="false" href="reg_list/list_my_sum.asp">Last 10 days</a></li>
