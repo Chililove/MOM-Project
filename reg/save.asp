@@ -19,12 +19,13 @@ moede_navn=request("moede_navn")
 emne=request("emne")
 beskrivelse=request("beskrivelse")
 noter=request("noter")
-additionalinfo=request("additionalInfo")
+additionalinfo=request("additionalinfo")
 id_meetingtype=request("id_meetingtype")
 id_afdeling=request("id_afdeling")
 id_login=request("id_login")
 moede_dato=request("moede_dato")
 moede_tidspunkt=request("moede_tidspunkt")
+
 
 aar=datepart("yyyy",oprettetdato)
 maaned=datepart("m",oprettetdato)
@@ -66,8 +67,6 @@ if request("action")="newday" then
 	'Conn.Execute(sql1)
 
  end if
-	'This is how far i got. I have no clue how to use this in the form and I would like to know
-	'if it is possible to put the form in seperate file when it is reused for both submit and update
 
 if request("action")="edit" then
 
@@ -82,28 +81,23 @@ sql = "UPDATE tbl_agenda SET " & _
   "id_login = " & id_login & ", " & _
   "moede_dato = '" & moede_dato & "', " & _
   "moede_tidspunkt = '" & moede_tidspunkt & "' " & _
-  "WHERE id = " & id_agenda
-
-	'sql= "UPDATE tbl_agenda SET " & _
-    '  "moede_navn = '" & moede_navn & "', " & _
-    '  "emne = '" & emne & "', " & _
-     ' "beskrivelse = '" & beskrivelse & "', " & _
-     ' "noter = '" & noter & "', " & _
-    '  "additionalinfo = '" & additionalinfo & "', " & _
-    '  "id_meetingtype = " & id_meetingtype & ", " & _
-    '  "id_afdeling = " & id_afdeling & ", " & _
-   '   "id_login = " & id_login & ", " & _
-    '  "moede_dato = '" & moede_dato & "', " & _
-     ' "moede_tidspunkt = '" & moede_tidspunkt & "' " & _
-     ' "WHERE id = " & id_agenda
+  "WHERE id_agenda = " & id_agenda
 	
 	response.write sql
 	Conn.Execute(sql)
 end if 
 
 if request("action")="show" then
-	Dim rs
-	sql="SELECT * FROM tbl_agenda WHERE id=" & id_agenda
+
+	Dim rs, assignedEmployees, id_agenda, checkboxState
+	Set assignedEmployees = CreateObject("Scripting.Dictionary")
+    If assignedEmployees.Exists(CStr(objRS3("id_login"))) Then
+        checkboxState = "checked"
+    Else
+        checkboxState = ""
+    End If
+
+	sql="SELECT * FROM tbl_agenda WHERE id_agenda=" & id_agenda
 	Set rs = Conn.Execute(sql)
 	If Not rs.EOF Then
 		moede_navn = rs("moede_navn")
@@ -116,12 +110,17 @@ if request("action")="show" then
 		id_login = rs("id_login")
 		moede_dato = rs("moede_dato")
 		moede_tidspunkt = rs("moede_tidspunkt")
+		
 	
 		response.write sql
+		 sql = "SELECT id_login FROM tbl_assign_users_to_agenda WHERE id_agenda=" & id_agenda
+        Set rs = Conn.Execute(sql)
+        While Not rs.EOF
+            assignedEmployees.Add CStr(rs("id_login")), True
+            rs.MoveNext
+        Wend
 	else
 			response.write "no data"
-
-
 	end if
 
 
