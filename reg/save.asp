@@ -100,6 +100,7 @@ if request("action")="show" then
 	sql="SELECT * FROM tbl_agenda WHERE id_agenda=" & id_agenda
 	Set rs = Conn.Execute(sql)
 	If Not rs.EOF Then
+		moede_dato =rs("moede_dato")
 		moede_navn = rs("moede_navn")
 		emne = rs("emne")
 		beskrivelse = rs("beskrivelse")

@@ -114,10 +114,23 @@
 				<tr>
 					<th style="text-align: center">Name of meeting</th>
 					
+					
+<% Function ConvertDateFormat(inputDate)
+    Dim dateParts
+    dateParts = Split(inputDate, "-")
+    If UBound(dateParts) = 2 Then
+        ConvertDateFormat = dateParts(2) & "-" & dateParts(1) & "-" & dateParts(0)
+    Else
+        ConvertDateFormat = inputDate ' return original if format is unexpected
+    End If
+End Function %>
+
+
 					<% if request("action")="show" then %>
 						<% sql="Select * from qry_agenda where id_agenda = '"& request.QueryString("id_agenda") &"'"
 							'response.write sql
 							set rs = Conn.execute(sql)
+							moede_dato =ConvertDateFormat(rs("moede_dato"))
 							moede_navn = rs("moede_navn")
 							id_agenda=rs("id_agenda")
 							oprettetaf=rs("oprettetaf")
@@ -131,9 +144,8 @@
 							'response.write(id_meetingtype)
 							id_afdeling=rs("id_afdeling")
 							id_login=rs("id_login")
-							moede_dato=rs("moede_dato")
 							moede_tidspunkt=rs("moede_tidspunkt")
-						%>
+						%> 	<%= "Date retrieved: " & moede_dato %>
 					<% end if %>
 				</tr>
 				<tr>			
