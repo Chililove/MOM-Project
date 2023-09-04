@@ -1,5 +1,5 @@
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>MoM</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--<link rel="stylesheet" href="jquery/jquery.mobile-1.4.5.css">
@@ -97,15 +97,25 @@
 
 <form data-ajax="false" method="post" action='save.asp?action=<%=request("action")%>' style="position: relative;">
 			<table align="center" style="width: 50%">
-			<!-- Møde dato -->
+			<!-- Møde dato og tid-->
 				<tr>
 					<td style="text-align: center">
 						<div style="display:flex;">
 							<div style="width:50%">Start date
-								<input type="date" name="moede_dato" value=<%=moede_dato%> required >
+								<input type="date" name="moede_dato"
+								<% if  request("action")="show" AND NOT IsNull("moede_dato") then %>
+								value="<%="moede_dato"%>"
+						<% else %>
+								value=""
+						<% end if %> value="<%="moede_dato"%>"  >
 							</div>
 							<div style="width:50%">Start time
-								<input type="time" name="moede_tidspunkt" value="<%=FormatDateTime(moede_tidspunkt, 4)%>" required>
+								<input type="time" name="moede_tidspunkt" 
+								<% if  request("action")="show" AND NOT IsNull("moede_tidspunkt") then %>
+								value="<%="moede_tidspunkt"%>"
+						<% else %>
+								value=""
+						<% end if %> value="<%="moede_tidspunkt"%>">
 							</div>
 						</div>
 					</td>
@@ -113,8 +123,8 @@
 			<!-- Møde navn -->
 				<tr>
 					<th style="text-align: center">Name of meeting</th>
-					
-					
+
+
 <% Function ConvertDateFormat(inputDate)
     Dim dateParts
     dateParts = Split(inputDate, "-")
@@ -125,12 +135,27 @@
     End If
 End Function %>
 
+<%
+Function ExtractHoursMinutes(timeStamp)
+Dim timeParts, timeString
+timeParts = Split(timeStamp, " ") ' Split date from time
+
+	If UBound(timeParts) >= 1 Then
+timeString = timeParts(1) ' This should be HH:mm:ss
+ExtractHoursMinutes = Left(timeString, 5) ' This will return HH:mm
+	Else
+ExtractHoursMinutes = ""
+	End If
+End Function
+%>
 
 					<% if request("action")="show" then %>
 						<% sql="Select * from qry_agenda where id_agenda = '"& request.QueryString("id_agenda") &"'"
 							'response.write sql
 							set rs = Conn.execute(sql)
+							'moede_dato =rs("moede_dato")
 							moede_dato =ConvertDateFormat(rs("moede_dato"))
+							moede_tidspunkt = ExtractHoursMinutes(rs("moede_tidspunkt"))
 							moede_navn = rs("moede_navn")
 							id_agenda=rs("id_agenda")
 							oprettetaf=rs("oprettetaf")
@@ -144,8 +169,11 @@ End Function %>
 							'response.write(id_meetingtype)
 							id_afdeling=rs("id_afdeling")
 							id_login=rs("id_login")
-							moede_tidspunkt=rs("moede_tidspunkt")
-						%> 	<%= "Date retrieved: " & moede_dato %>
+						'moede_tidspunkt=rs("moede_tidspunkt")
+response.write("Converted date: " & moede_dato & "<br>")
+response.write("Converted time: " & moede_tidspunkt & "<br>")
+						
+						%> 	
 					<% end if %>
 				</tr>
 				<tr>			
@@ -159,32 +187,28 @@ End Function %>
 						style="width: 720px">
 					</td>
 				</tr>
-			<!-- Møde subject -->
+			<!-- Møde subject meetingtype dropdown -->
 				<tr>
 					<td style="text-align: center">
 						<select name="id_meetingtype" required >
 										<% SQL3="Select * from tblmeeting_type order by id_meetingtype"
 										set objRS3 = conn.Execute(SQL3)
-										if NOT IsNull(id_meetingtype) then %>
+									if NOT IsNull(id_meetingtype) then %>
 										<option selected="" value=""><%=objRS3("meeting_type")%></option>
-										<% else %>
-										<option selected="" value="">Select subject</option>
-										<% end if 
+									<% else %>
+										<option selected="" value="">Select type of meeting</option>
+									<% end if 
 										while not objRS3.EOF %>
-
-
 											<option value='<%=objRS3("id_meetingtype")%>'>
 													<% if objRS3("id_meetingtype") = id_meetingtype then %> selected <% end if %>
 												<%=objRS3("meeting_type")%>
 											</option>
-
-
 										<% objRS3.MoveNext
 										Wend %>
-							</select>
+						</select>
 					</td>
 				</tr>
-			<!-- Møde subject2 -->
+			<!-- Møde emne -->
 				<tr>
 					<th style="text-align: center">
 						Subject
@@ -273,11 +297,9 @@ End Function %>
 							console.log(toggleButton, dropdownContent); // Debug line
 
 							toggleButton.addEventListener("click", function() {
-								console.log("Button clicked!"); // Debug line
 
 								// Toggle visibility
 								const isVisible = dropdownContent.style.visibility === 'visible';
-								console.log("Is visible:", isVisible); // Debug line
 
 								dropdownContent.style.visibility = isVisible ? 'hidden' : 'visible';
 								if (!isVisible) {
@@ -310,6 +332,21 @@ End Function %>
 						<input name="existing_id_registrering" type="hidden" value="<%=existing_id_registrering%>">
 						<input type="hidden" name="oprettetaf" value='<%=session("login_id")%>'>
 						<input name="Submit1" type="submit" value="Start meeting" data-theme="a" data-icon="check">
+						<!--This is how I can save multiple users to an agenda - There is for sure a better way to do this.. I just don't-->
+						<%If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
+							Dim selectedUsers
+							selectedUsers = Request.Form("id_login")
+							If IsArray(selectedUsers) Then
+								' Multiple checkboxes were selected
+								For Each user In selectedUsers
+									Response.Write("Selected User ID: " & user & "<br />")
+								Next
+							Else
+								' Just one checkbox was selected
+								Response.Write("Selected User ID: " & selectedUsers & "<br />")
+							End If
+End If
+%>
 					</td>
 				</tr>
 			</table>

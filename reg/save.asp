@@ -2,7 +2,7 @@
 <!--#include file="../opendb.asp"-->
 <HTML>
 <HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </HEAD>
 <BODY>
 <%
@@ -42,10 +42,12 @@ starttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 sluttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 
 
+
+
 if request("action")="newday" then
 
-	sql1= "INSERT INTO tbl_agenda (moede_navn,emne,beskrivelse, noter, additionalinfo, oprettetaf,oprettetdato,starttid, id_meetingtype, id_afdeling, id_login, moede_dato, moede_tidspunkt) "
-	sql2= "VALUES ('" & moede_navn &"','" & emne &"','" & beskrivelse &"','" & noter &"','" & additionalinfo &"','" & oprettetaf &"','" & oprettetdato &"','" & starttid &"', " & id_meetingtype &", " & id_afdeling &", " & id_login & ", '" & moede_dato & "', '" & moede_tidspunkt & "' )"
+	sql1= "INSERT INTO tbl_agenda (moede_navn,emne,beskrivelse, noter, additionalinfo, oprettetaf,oprettetdato,starttid, id_meetingtype, id_afdeling, moede_dato, moede_tidspunkt) "
+	sql2= "VALUES ('" & moede_navn &"','" & emne &"','" & beskrivelse &"','" & noter &"','" & additionalinfo &"','" & oprettetaf &"','" & oprettetdato &"','" & starttid &"', " & id_meetingtype &", " & id_afdeling &", '" & moede_dato & "', '" & moede_tidspunkt & "' )"
 	
 	sql= sql1 & sql2
 	response.write sql
