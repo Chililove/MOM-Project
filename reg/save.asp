@@ -45,6 +45,8 @@ sluttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 Set rs = Server.CreateObject("ADODB.Command")
 rs.ActiveConnection = Conn
 
+Const adDBTimeStamp = 135
+
 
 If request("action") = "newday" Then
     sql1 = "INSERT INTO tbl_agenda (moede_navn, emne, beskrivelse, noter, additionalinfo, oprettetaf, oprettetdato, starttid, id_meetingtype, id_afdeling, moede_dato, moede_tidspunkt) "

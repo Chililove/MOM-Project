@@ -2,6 +2,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>MoM</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 <!--<link rel="stylesheet" href="jquery/jquery.mobile-1.4.5.css">
 <link rel="stylesheet" href="../shared/global.css">
 <script src="../jquery/jquery-1.8.2.min.js"></script>
@@ -94,14 +96,14 @@
 	}
 </style>
 </head>
-
-<form data-ajax="false" method="post" action='save.asp?action=<%=request("action")%>' style="position: relative;">
+<!--onSubmit="return validateForm();" if the function can be used it needs to live here in the form post -->
+<form data-ajax="false" method="post" action='save.asp?action=<%=request("action")%>'  style="position: relative;">
 			<table align="center" style="width: 50%">
 			<!-- Møde dato og tid-->
 				<tr>
 					<td style="text-align: center">
 						<div style="display:flex;">
-							<div style="width:50%">Start date
+							<div style="width:50%">Start dato
 						<!--	<input type="date" value="2023-09-01"> the datepicker works with this static data -->
 
 								<input type="date" name="moede_dato"
@@ -109,15 +111,15 @@
 								value="<%="moede_dato"%>"
 						<% else %>
 								value=""
-						<% end if %> value="<%="moede_dato"%>"  >
+						<% end if %> >
 							</div>
-							<div style="width:50%">Start time
+							<div style="width:50%">Start tid
 								<input type="time" name="moede_tidspunkt" 
 						<% if  request("action")="show" AND NOT IsNull("moede_tidspunkt") then %>
 								value="<%="moede_tidspunkt"%>"
 						<% else %>
 								value=""
-						<% end if %> value="<%="moede_tidspunkt"%>">
+						<% end if %> >
 							</div>
 						</div>
 					</td>
@@ -254,7 +256,7 @@
 								if NOT IsNull(id_afdeling) then %>
 									<option selected="" value=""><%=objRS3("afdeling")%></option>
 									<% else %>
-									<option selected="" value="">Select Department</option>
+									<option value="">Select Department</option>
 									<% end if 
 
 								while not objRS3.EOF %>
@@ -351,5 +353,112 @@ End If
 %>
 					</td>
 				</tr>
+				            <div id="errorMessages" style="color:red; text-align:center;"></div>
 			</table>
+
+			<script>
+
+$(document).ready(function() {
+    $('form').validate({
+        rules: {
+            moede_dato: {
+                required: true,
+                dateISO: true
+				// Validating the date is in ISO format (YYYY-MM-DD)
+            },
+            moede_tidspunkt: {
+                required: true
+                // It is possible to validate the time format if needed
+            },
+            moede_navn: {
+                required: true,
+                minlength: 2
+            },
+            id_meetingtype: {
+                required: true
+            },
+            emne: {
+                required: true,
+                minlength: 2
+            },
+            beskrivelse: {
+                required: true,
+                minlength: 5
+            },
+            noter: {
+                required: false
+            },
+            id_afdeling: {
+                required: true
+            },
+            additionalinfo: {
+                required: false
+            }
+        },
+        messages: {
+
+        }
+    });
+});
+/*
+function validateForm() {
+    var errorMsg = "";
+    var moede_dato = document.querySelector("[name='moede_dato']").value;
+    var moede_tidspunkt = document.querySelector("[name='moede_tidspunkt']").value;
+    var moede_navn = document.querySelector("[name='moede_navn']").value;
+	var moede_tidspunkt = document.querySelector("[name='moede_navn']").value;
+    var meetingType = document.querySelector("[name='id_meetingtype']").value;
+    var emne = document.querySelector("[name='emne']").value;
+	var beskrivelse = document.querySelector("[name='beskrivelse']").value;
+	var afdeling = document.querySelector("[name='id_afdeling']").value;
+
+
+ 	if (!startDate) {
+       errorMsg += "Start date is required.<br>";
+    }
+
+    if (!startTime) {
+       errorMsg += "Start time is required.<br>";
+   }
+
+	 if (!moede_dato) {
+        errorMsg += "Dato for møde er påkrævet.<br>";
+    }
+	
+	if (!moede_tidspunkt) {
+        errorMsg += "Møde tidspunkt er påkrævet.<br>";
+    }
+
+    if (!moede_navn) {
+        errorMsg += "Møde navn er påkrævet.<br>";
+    }
+
+    if (!meetingType) {
+        errorMsg += "Type af møde er påkrævet.<br>";
+    }
+
+    if (!emne) {
+        errorMsg += "Emne er påkrævet-<br>";
+    }
+
+ if (!beskrivelse) {
+        errorMsg += "Beskrivelse er påkrævet.<br>";
+    }
+
+	if (!afdeling) {
+        errorMsg += "Valg af afdeling er påkrævet.<br>";
+    }
+
+    if (errorMsg) {
+        document.getElementById("errorMessages").innerHTML = errorMsg;
+        return false; // preventing submit
+    }
+    return true; // allowing submit
+}
+*/
+</script>
+
 		</form>
+		
+
+
