@@ -102,6 +102,8 @@
 					<td style="text-align: center">
 						<div style="display:flex;">
 							<div style="width:50%">Start date
+						<!--	<input type="date" value="2023-09-01"> the datepicker works with this static data -->
+
 								<input type="date" name="moede_dato"
 								<% if  request("action")="show" AND NOT IsNull("moede_dato") then %>
 								value="<%="moede_dato"%>"
@@ -111,7 +113,7 @@
 							</div>
 							<div style="width:50%">Start time
 								<input type="time" name="moede_tidspunkt" 
-								<% if  request("action")="show" AND NOT IsNull("moede_tidspunkt") then %>
+						<% if  request("action")="show" AND NOT IsNull("moede_tidspunkt") then %>
 								value="<%="moede_tidspunkt"%>"
 						<% else %>
 								value=""
@@ -124,67 +126,67 @@
 				<tr>
 					<th style="text-align: center">Name of meeting</th>
 
+				<% Function ConvertDateFormat(inputDate)
+					Dim dateParts
+					dateParts = Split(inputDate, "-")
+						If UBound(dateParts) = 2 Then
+							ConvertDateFormat = dateParts(2) & "-" & dateParts(1) & "-" & dateParts(0)
+						Else
+							ConvertDateFormat = inputDate ' return original if format is unexpected
+						End If
+				End Function %>
 
-<% Function ConvertDateFormat(inputDate)
-    Dim dateParts
-    dateParts = Split(inputDate, "-")
-    If UBound(dateParts) = 2 Then
-        ConvertDateFormat = dateParts(2) & "-" & dateParts(1) & "-" & dateParts(0)
-    Else
-        ConvertDateFormat = inputDate ' return original if format is unexpected
-    End If
-End Function %>
+				<%
+				Function ExtractHoursMinutes(timeStamp)
+				Dim timeParts, timeString
+				timeParts = Split(timeStamp, " ") ' Split date from time
 
-<%
-Function ExtractHoursMinutes(timeStamp)
-Dim timeParts, timeString
-timeParts = Split(timeStamp, " ") ' Split date from time
+					If UBound(timeParts) >= 1 Then
+						timeString = timeParts(1) ' This should be HH:mm:ss
+						ExtractHoursMinutes = Left(timeString, 5) ' This will return HH:mm
+					Else
+						ExtractHoursMinutes = ""
+					End If
+				End Function
+				%>
 
-	If UBound(timeParts) >= 1 Then
-timeString = timeParts(1) ' This should be HH:mm:ss
-ExtractHoursMinutes = Left(timeString, 5) ' This will return HH:mm
-	Else
-ExtractHoursMinutes = ""
-	End If
-End Function
-%>
-
-					<% if request("action")="show" then %>
-						<% sql="Select * from qry_agenda where id_agenda = '"& request.QueryString("id_agenda") &"'"
-							'response.write sql
-							set rs = Conn.execute(sql)
-							'moede_dato =rs("moede_dato")
-							moede_dato =ConvertDateFormat(rs("moede_dato"))
-							moede_tidspunkt = ExtractHoursMinutes(rs("moede_tidspunkt"))
-							moede_navn = rs("moede_navn")
-							id_agenda=rs("id_agenda")
-							oprettetaf=rs("oprettetaf")
-							oprettetdato=date()
-							moede_navn=rs("moede_navn")
-							emne=rs("emne")
-							beskrivelse=rs("beskrivelse")
-							noter=rs("noter")
-							additionalinfo=rs("additionalinfo")
-							id_meetingtype=rs("id_meetingtype")
-							'response.write(id_meetingtype)
-							id_afdeling=rs("id_afdeling")
-							id_login=rs("id_login")
+				<% if request("action")="show" then %>
+					<% sql="Select * from qry_agenda where id_agenda = '"& request.QueryString("id_agenda") &"'"
+						'response.write sql
+						set rs = Conn.execute(sql)
+						'moede_dato =rs("moede_dato")
+						moede_dato =ConvertDateFormat(rs("moede_dato"))
+						moede_tidspunkt = ExtractHoursMinutes(rs("moede_tidspunkt"))
+						moede_navn = rs("moede_navn")
+						id_agenda=rs("id_agenda")
+						oprettetaf=rs("oprettetaf")
+						oprettetdato=date()
+						moede_navn=rs("moede_navn")
+						emne=rs("emne")
+						beskrivelse=rs("beskrivelse")
+						noter=rs("noter")
+						additionalinfo=rs("additionalinfo")
+						id_meetingtype=rs("id_meetingtype")
+						'response.write(id_meetingtype)
+						id_afdeling=rs("id_afdeling")
+						id_login=rs("id_login")
 						'moede_tidspunkt=rs("moede_tidspunkt")
-response.write("Converted date: " & moede_dato & "<br>")
-response.write("Converted time: " & moede_tidspunkt & "<br>")
-						
-						%> 	
+						'For showing that I get the right converted data back from db
+		response.write("Converted date: " & moede_dato & "<br>")
+		response.write("Converted time: " & moede_tidspunkt & "<br>")
+		%>
 					<% end if %>
 				</tr>
+
 				<tr>			
 					<td style="text-align: center">
-					<input name="moede_navn" type="text"
-						<% if  request("action")="show" AND NOT IsNull(moede_navn) then %>
+						<input name="moede_navn" type="text"
+					<% if  request("action")="show" AND NOT IsNull(moede_navn) then %>
 							value="<%=moede_navn%>"
-						<% else %>
+					<% else %>
 							value=""
-						<% end if %>
-						style="width: 720px">
+					<% end if %>
+							style="width: 720px">
 					</td>
 				</tr>
 			<!-- Møde subject meetingtype dropdown -->

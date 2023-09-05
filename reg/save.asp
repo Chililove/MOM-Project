@@ -42,25 +42,70 @@ starttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 sluttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 
 
+Set rs = Server.CreateObject("ADODB.Command")
+rs.ActiveConnection = Conn
 
 
-if request("action")="newday" then
-
-	sql1= "INSERT INTO tbl_agenda (moede_navn,emne,beskrivelse, noter, additionalinfo, oprettetaf,oprettetdato,starttid, id_meetingtype, id_afdeling, moede_dato, moede_tidspunkt) "
-	sql2= "VALUES ('" & moede_navn &"','" & emne &"','" & beskrivelse &"','" & noter &"','" & additionalinfo &"','" & oprettetaf &"','" & oprettetdato &"','" & starttid &"', " & id_meetingtype &", " & id_afdeling &", '" & moede_dato & "', '" & moede_tidspunkt & "' )"
-	
-	sql= sql1 & sql2
+If request("action") = "newday" Then
+    sql1 = "INSERT INTO tbl_agenda (moede_navn, emne, beskrivelse, noter, additionalinfo, oprettetaf, oprettetdato, starttid, id_meetingtype, id_afdeling, moede_dato, moede_tidspunkt) "
+    sql2 = "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    
+    rs.CommandText = sql1 & sql2
+    rs.Parameters.Append rs.CreateParameter("@moede_navn", 202, 1, 255, moede_navn)
+    rs.Parameters.Append rs.CreateParameter("@emne", 202, 1, 255, emne)
+	rs.Parameters.Append rs.CreateParameter("@beskrivelse", 202, 1, -1, beskrivelse)
+    rs.Parameters.Append rs.CreateParameter("@noter", 202, 1, -1, noter)
+    rs.Parameters.Append rs.CreateParameter("@additionalinfo", 202, 1, -1, additionalinfo)
+    rs.Parameters.Append rs.CreateParameter("@oprettetaf", 202, 1, 50, oprettetaf)
+    rs.Parameters.Append rs.CreateParameter("@oprettetdato", 135, 1, , oprettetdato)
+    rs.Parameters.Append rs.CreateParameter("@starttid", 135, 1, , starttid)
+	rs.Parameters.Append rs.CreateParameter("@id_meetingtype", 3, 1, , id_meetingtype)
+	rs.Parameters.Append rs.CreateParameter("@id_afdeling", 3, 1, , id_afdeling)
+    rs.Parameters.Append rs.CreateParameter("@moede_dato", 7, 1, , moede_dato)
+    rs.Parameters.Append rs.CreateParameter("@moede_tidspunkt", 135, 1, , moede_tidspunkt)
+    
+	sql = sql1 + sql2
 	response.write sql
-	Conn.Execute(sql)
+    rs.Execute(sql)
 
-    Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agenda")
+	 Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agenda")
     new_id_agenda = rs(0).Value
 
     selectedLogins = Split(Request.Form("id_login"), ",")
     For Each id_login In selectedLogins
-        sql = "INSERT INTO tblassign_users_to_agenda (id_agenda, id_login) VALUES (" & new_id_agenda & ", " & id_login & "); SELECT SCOPE_IDENTITY();"
-        Conn.Execute(sql)
+        sql = "INSERT INTO tblassign_users_to_agenda (id_agenda, id_login) VALUES (?, ?); SELECT SCOPE_IDENTITY();"
+     '   Conn.Execute(sql)
+
+	 Set rs = Server.CreateObject("ADODB.Command")
+	rs.ActiveConnection = Conn
+
+		rs.CommandText = sql
+
+		rs.Parameters.Append rs.CreateParameter("@id_agenda", 3, 1, , new_id_agenda)
+    	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , CInt(id_login))
+
+		rs.Execute
     Next
+end if
+
+
+'if request("action")="newday" then
+
+	'sql1= "INSERT INTO tbl_agenda (moede_navn,emne,beskrivelse, noter, additionalinfo, oprettetaf,oprettetdato,starttid, id_meetingtype, id_afdeling, moede_dato, moede_tidspunkt) "
+	'sql2= "VALUES ('" & moede_navn &"','" & emne &"','" & beskrivelse &"','" & noter &"','" & additionalinfo &"','" & oprettetaf &"','" & oprettetdato &"','" & starttid &"', " & id_meetingtype &", " & id_afdeling &", '" & moede_dato & "', '" & moede_tidspunkt & "' )"
+	
+	'sql= sql1 & sql2
+	'response.write sql
+	'Conn.Execute(sql)
+
+   ' Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agenda")
+   ' new_id_agenda = rs(0).Value
+
+   ' selectedLogins = Split(Request.Form("id_login"), ",")
+   ' For Each id_login In selectedLogins
+    '    sql = "INSERT INTO tblassign_users_to_agenda (id_agenda, id_login) VALUES (" & new_id_agenda & ", " & id_login & "); SELECT SCOPE_IDENTITY();"
+    '    Conn.Execute(sql)
+   ' Next
 
 	'sql1= "INSERT INTO tblregistrering (id_agenda,oprettetaf,oprettetdato,starttid) "
 	'sql1=sql1 + "VALUES (" & id_agenda & ",'" & oprettetaf &"','" & oprettetdato &"','" &starttid &"')"
@@ -68,7 +113,7 @@ if request("action")="newday" then
 	'response.write sql1
 	'Conn.Execute(sql1)
 
- end if
+ 'end if
 
 if request("action")="edit" then
 
