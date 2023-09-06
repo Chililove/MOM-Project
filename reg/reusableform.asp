@@ -107,16 +107,16 @@
 						<!--	<input type="date" value="2023-09-01"> the datepicker works with this static data -->
 
 								<input type="date" name="moede_dato"
-								<% if  request("action")="show" AND NOT IsNull("moede_dato") then %>
-								value="<%="moede_dato"%>"
+								<% if  request("action")="show" AND NOT IsNull(rs("moede_dato")) then %>
+								value="<%=rs("moede_dato")%>"
 						<% else %>
 								value=""
 						<% end if %> >
 							</div>
 							<div style="width:50%">Start tid
 								<input type="time" name="moede_tidspunkt" 
-						<% if  request("action")="show" AND NOT IsNull("moede_tidspunkt") then %>
-								value="<%="moede_tidspunkt"%>"
+						<% if  request("action")="show" AND NOT IsNull(moede_tidspunkt) then  %>
+								value="<%=rs("moede_tidspunkt")%>"
 						<% else %>
 								value=""
 						<% end if %> >
@@ -128,7 +128,8 @@
 				<tr>
 					<th style="text-align: center">Name of meeting</th>
 
-				<% Function ConvertDateFormat(inputDate)
+				<%
+				Function ConvertDateFormat(inputDate)
 					Dim dateParts
 					dateParts = Split(inputDate, "-")
 						If UBound(dateParts) = 2 Then
@@ -152,27 +153,24 @@
 				End Function
 				%>
 
+
 				<% if request("action")="show" then %>
 					<% sql="Select * from qry_agenda where id_agenda = '"& request.QueryString("id_agenda") &"'"
 						'response.write sql
 						set rs = Conn.execute(sql)
-						'moede_dato =rs("moede_dato")
-						moede_dato =ConvertDateFormat(rs("moede_dato"))
-						moede_tidspunkt = ExtractHoursMinutes(rs("moede_tidspunkt"))
-						moede_navn = rs("moede_navn")
+						moede_dato=ConvertDateFormat(rs("moede_dato"))
+						moede_tidspunkt=LEFT(rs("moede_tidspunkt"),5)
+						moede_navn=rs("moede_navn")
 						id_agenda=rs("id_agenda")
 						oprettetaf=rs("oprettetaf")
 						oprettetdato=date()
-						moede_navn=rs("moede_navn")
 						emne=rs("emne")
 						beskrivelse=rs("beskrivelse")
 						noter=rs("noter")
 						additionalinfo=rs("additionalinfo")
 						id_meetingtype=rs("id_meetingtype")
-						'response.write(id_meetingtype)
 						id_afdeling=rs("id_afdeling")
 						id_login=rs("id_login")
-						'moede_tidspunkt=rs("moede_tidspunkt")
 						'For showing that I get the right converted data back from db
 		response.write("Converted date: " & moede_dato & "<br>")
 		response.write("Converted time: " & moede_tidspunkt & "<br>")
@@ -278,7 +276,8 @@
 									<div class="dropdown-content">
 										<%  SQL3="Select * from tbllogin order by id_login"
 										set objRS3 = conn.Execute(SQL3)
-										while not objRS3.EOF  %>
+										while not objRS3.EOF 
+										%>
 											<div class="label-container">
 												<div class="user-list">
 													<label class="user-item">
@@ -348,12 +347,13 @@
 							Else
 								' Just one checkbox was selected
 								Response.Write("Selected User ID: " & selectedUsers & "<br />")
+								
 							End If
 End If
 %>
 					</td>
 				</tr>
-				            <div id="errorMessages" style="color:red; text-align:center;"></div>
+
 			</table>
 
 			<script>
@@ -375,7 +375,7 @@ $(document).ready(function() {
                 minlength: 2
             },
             id_meetingtype: {
-                required: true
+                required: false
             },
             emne: {
                 required: true,
@@ -389,7 +389,7 @@ $(document).ready(function() {
                 required: false
             },
             id_afdeling: {
-                required: true
+                required: false
             },
             additionalinfo: {
                 required: false

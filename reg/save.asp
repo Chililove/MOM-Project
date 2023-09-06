@@ -24,7 +24,10 @@ id_meetingtype=request("id_meetingtype")
 id_afdeling=request("id_afdeling")
 id_login=request("id_login")
 moede_dato=request("moede_dato")
-moede_tidspunkt=request("moede_tidspunkt")
+moede_tidspunkt= request("moede_tidspunkt")
+' response.write request("moede_tidspunkt")
+' moede_tidspunkt=LEFT(RIGHT(request("moede_tidspunkt"),12),5)
+' response.write "<br>" & moede_tidspunkt & "<br>"
 
 
 aar=datepart("yyyy",oprettetdato)
@@ -45,12 +48,10 @@ sluttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 Set rs = Server.CreateObject("ADODB.Command")
 rs.ActiveConnection = Conn
 
-Const adDBTimeStamp = 135
-
 
 If request("action") = "newday" Then
     sql1 = "INSERT INTO tbl_agenda (moede_navn, emne, beskrivelse, noter, additionalinfo, oprettetaf, oprettetdato, starttid, id_meetingtype, id_afdeling, moede_dato, moede_tidspunkt) "
-    sql2 = "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    sql2 = "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '" & moede_tidspunkt & "')"
     
     rs.CommandText = sql1 & sql2
     rs.Parameters.Append rs.CreateParameter("@moede_navn", 202, 1, 255, moede_navn)
@@ -64,8 +65,8 @@ If request("action") = "newday" Then
 	rs.Parameters.Append rs.CreateParameter("@id_meetingtype", 3, 1, , id_meetingtype)
 	rs.Parameters.Append rs.CreateParameter("@id_afdeling", 3, 1, , id_afdeling)
     rs.Parameters.Append rs.CreateParameter("@moede_dato", 7, 1, , moede_dato)
-    rs.Parameters.Append rs.CreateParameter("@moede_tidspunkt", 135, 1, , moede_tidspunkt)
-    
+    'rs.Parameters.Append rs.CreateParameter("@moede_tidspunkt", 135, 1, , moede_tidspunkt)
+
 	sql = sql1 + sql2
 	response.write sql
     rs.Execute(sql)
@@ -76,6 +77,7 @@ If request("action") = "newday" Then
     selectedLogins = Split(Request.Form("id_login"), ",")
     For Each id_login In selectedLogins
         sql = "INSERT INTO tblassign_users_to_agenda (id_agenda, id_login) VALUES (?, ?); SELECT SCOPE_IDENTITY();"
+
      '   Conn.Execute(sql)
 
 	 Set rs = Server.CreateObject("ADODB.Command")
@@ -119,7 +121,7 @@ end if
 
 if request("action")="edit" then
 
-sql = "UPDATE tbl_agenda SET " & _
+  sql = "UPDATE tbl_agenda SET " & _
   "moede_navn = '" & Replace(moede_navn, "'", "''") & "', " & _
   "emne = '" & Replace(emne, "'", "''") & "', " & _
   "beskrivelse = '" & Replace(beskrivelse, "'", "''") & "', " & _
@@ -131,6 +133,7 @@ sql = "UPDATE tbl_agenda SET " & _
   "moede_dato = '" & moede_dato & "', " & _
   "moede_tidspunkt = '" & moede_tidspunkt & "' " & _
   "WHERE id_agenda = " & id_agenda
+
 	
 	response.write sql
 	Conn.Execute(sql)
@@ -140,11 +143,7 @@ if request("action")="show" then
 
 	Dim rs, assignedEmployees, id_agenda, checkboxState
 	Set assignedEmployees = CreateObject("Scripting.Dictionary")
-    If assignedEmployees.Exists(CStr(objRS3("id_login"))) Then
-        checkboxState = "checked"
-    Else
-        checkboxState = ""
-    End If
+  
 
 	sql="SELECT * FROM tbl_agenda WHERE id_agenda=" & id_agenda
 	Set rs = Conn.Execute(sql)
@@ -160,7 +159,6 @@ if request("action")="show" then
 		id_login = rs("id_login")
 		moede_dato = rs("moede_dato")
 		moede_tidspunkt = rs("moede_tidspunkt")
-		
 	
 		response.write sql
 		 sql = "SELECT id_login FROM tbl_assign_users_to_agenda WHERE id_agenda=" & id_agenda
@@ -171,27 +169,29 @@ if request("action")="show" then
         Wend
 	else
 			response.write "no data"
+			
 	end if
+	
 
 
 end if
 'sql="UPDATE tbl_agenda SET moede_navn='" & moede_navn & "', emne='" & emne & "', beskrivelse='" & beskrivelse & "',noter='" & noter & "', additionalinfo='" & additionalinfo & "', id_meetingtype='" & id_meetingtype & "', id_afdeling='" & id_afdeling & "',id_login='" & id_login & "', moede_dato='" & moede_dato & "', moede_tidspunkt='" & moede_tidspunkt & "', WHERE id=" & id_agenda"
 
 '****Start new job existing day
-if request("action")="newjob" then
+' if request("action")="newjob" then
 
-	'Close last job
-	sql1= "UPDATE tblregistrering SET sluttid = '"& sluttid &"' where id_registrering = " & existing_id_registrering &" "
-	' response.write sql1
-	Conn.Execute(sql1)
+' 	'Close last job
+' 	sql1= "UPDATE tblregistrering SET sluttid = '"& sluttid &"' where id_registrering = " & existing_id_registrering &" "
+' 	' response.write sql1
+' 	Conn.Execute(sql1)
 	
-	'Open new job
-	sql1= "INSERT INTO tblregistrering (id_agenda,oprettetaf,oprettetdato,starttid) "
-	sql1=sql1 + "VALUES (" & id_agenda & ",'" & oprettetaf &"','" & oprettetdato &"','" &starttid &"')"
+' 	'Open new job
+' 	sql1= "INSERT INTO tblregistrering (id_agenda,oprettetaf,oprettetdato,starttid) "
+' 	sql1=sql1 + "VALUES (" & id_agenda & ",'" & oprettetaf &"','" & oprettetdato &"','" &starttid &"')"
 
-	response.write sql1
-	Conn.Execute(sql1)
-end if
+' 	response.write sql1
+' 	Conn.Execute(sql1)
+' end if
 
 
 '****Close existing day

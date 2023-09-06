@@ -37,7 +37,7 @@ do while not rs.eof
 
 								<tr>
                             
-                                    <td style="width: 20%; padding-left: 10px;">  <%=rs("moede_dato")%> <br> <%= FormatDateTime(rs("moede_tidspunkt"), 4)%> <br> </td>
+                                    <td style="width: 20%; padding-left: 10px;">  <%=rs("moede_dato")%> <br> <%= rs("moede_tidspunkt")%> <br> </td>
 
 
                                     <td style="width: 40%; font-weight: bold;"> <%=rs("moede_navn")%> </td>
