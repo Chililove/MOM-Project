@@ -143,9 +143,9 @@ if request("action")="show" then
 
 	Dim rs, assignedEmployees, id_agenda, checkboxState
 	Set assignedEmployees = CreateObject("Scripting.Dictionary")
-  
 
-	sql="SELECT * FROM tbl_agenda WHERE id_agenda=" & id_agenda
+	sql="SELECT * FROM tbl_agenda WHERE id_agenda=" & id_agenda 
+	'response.write sql
 	Set rs = Conn.Execute(sql)
 	If Not rs.EOF Then
 		moede_dato =rs("moede_dato")
@@ -160,10 +160,10 @@ if request("action")="show" then
 		moede_dato = rs("moede_dato")
 		moede_tidspunkt = rs("moede_tidspunkt")
 	
-		response.write sql
 		 sql = "SELECT id_login FROM tbl_assign_users_to_agenda WHERE id_agenda=" & id_agenda
+		'response.write sql
         Set rs = Conn.Execute(sql)
-        While Not rs.EOF
+ 		While Not rs.EOF
             assignedEmployees.Add CStr(rs("id_login")), True
             rs.MoveNext
         Wend

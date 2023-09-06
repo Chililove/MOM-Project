@@ -31,7 +31,7 @@ do while not rs.eof
 				<li>
 			<!--	<a data-ajax="false" href='../reg_list/list_my.asp?oprettetdato=<%'=rs(("oprettetdato_string"))%>'> -->
 
-<a data-ajax="false" href='../reg_list/list_my.asp?action=show&amp;id_agenda=<%=rs("id_agenda")%>'>
+<a data-ajax="false" href='../reg/list_my.asp?action=show&amp;id_agenda=<%=rs("id_agenda")%>'>
 
 				<table style="width: 100%;">		
 

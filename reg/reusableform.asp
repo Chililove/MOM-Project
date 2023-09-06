@@ -104,11 +104,13 @@
 					<td style="text-align: center">
 						<div style="display:flex;">
 							<div style="width:50%">Start dato
-						<!--	<input type="date" value="2023-09-01"> the datepicker works with this static data -->
-
 								<input type="date" name="moede_dato"
-								<% if  request("action")="show" AND NOT IsNull(rs("moede_dato")) then %>
-								value="<%=rs("moede_dato")%>"
+						<% if  request("action")="show" then %>
+							<% if  NOT IsNull(rs("moede_dato")) then %>
+									value="<%=rs("moede_dato")%>"
+							<% else %>
+								value=""
+							<% end if %>
 						<% else %>
 								value=""
 						<% end if %> >
@@ -175,6 +177,7 @@
 		response.write("Converted date: " & moede_dato & "<br>")
 		response.write("Converted time: " & moede_tidspunkt & "<br>")
 		%>
+				<td><input type="hidden" name="id_agenda" value="<%=id_agenda1%>"></td>
 					<% end if %>
 				</tr>
 
@@ -194,9 +197,16 @@
 					<td style="text-align: center">
 						<select name="id_meetingtype" required >
 										<% SQL3="Select * from tblmeeting_type order by id_meetingtype"
-										set objRS3 = conn.Execute(SQL3)
-									if NOT IsNull(id_meetingtype) then %>
-										<option selected="" value=""><%=objRS3("meeting_type")%></option>
+										set objRS3 = conn.Execute(SQL3) %>
+									<% if  request("action")="show" then %>
+										<%if NOT IsNull(id_meetingtype) then %>
+											<% SQL4="Select * from tblmeeting_type WHERE id_meetingtype= "& id_meetingtype &""
+											'response.write objRS4
+											set objRS4 = conn.Execute(SQL4) 
+											meetingtype=objRS4("meeting_type")
+											%>
+											<option selected="" value=""><%=meetingtype%></option>
+										<% end if %>
 									<% else %>
 										<option selected="" value="">Select type of meeting</option>
 									<% end if 
