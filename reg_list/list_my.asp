@@ -48,7 +48,7 @@
 					font-weight: bold;
 					padding-right: .25em;
 	}
-}
+	}
 
   .dropdown {
     display: inline-block;
@@ -125,7 +125,11 @@
 	<!--<div id='fpimg'>
         <img src="..\Login\Game-On.png"/>
 </div>-->
-
+<% sql="SELECT * FROM qry_agenda WHERE id_agenda = "& request.QueryString("id_agenda") &" "
+	response.write sql
+	set rs = Conn.Execute(sql)
+	moede_tidspunkt=rs("moede_tidspunkt")
+%>
 <!--#include file="../reg/reusableform.asp"-->		
 		
 <!--#include file="../shared/footer.asp"--></div>
