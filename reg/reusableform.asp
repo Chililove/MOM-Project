@@ -256,25 +256,38 @@
 			<!-- Møde afdeling -->
 				<tr>
 					<td style="text-align: center">
-						<select name="id_afdeling" required >
-							
-								<% SQL3="Select * from tbl_afdeling_2nd order by id_afdeling"
-								set objRS3 = conn.Execute(SQL3)
+						 <select name="id_afdeling" required >
+            <% 
+            SQL3 = "Select * from tbl_afdeling_2nd order by id_afdeling"
+            set objRS3 = conn.Execute(SQL3)
 
-								if NOT IsNull(id_afdeling) then %>
-									<option selected="" value=""><%=objRS3("afdeling")%></option>
-									<% else %>
-									<option value="">Select Department</option>
-									<% end if 
-
-								while not objRS3.EOF %>
-									<option value='<%=objRS3("id_afdeling")%>' style="text-align: center">
-
-										<%=objRS3("afdeling")%>
-									</option>
-								<% objRS3.MoveNext
-								Wend %>
-						</select>
+            if request("action")="show" then
+                if NOT IsNull(id_afdeling) then 
+                    SQL4 = "Select * from tbl_afdeling_2nd WHERE id_afdeling= " & id_afdeling
+                    set objRS4 = conn.Execute(SQL4) 
+                    afdeling = objRS4("afdeling") %>
+                <option selected="" value=""><%=afdeling%></option>
+            <% else %>
+                <option selected="" value="">Select Department</option>
+            <% end if %>
+              <%  while not objRS3.EOF %>
+                <option value='<%=objRS3("id_afdeling")%>' 
+                    <% if objRS3("id_afdeling") = id_afdeling then %>selected
+					<% end if %>>
+                    <%=objRS3("afdeling")%>
+                </option>
+            <% objRS3.MoveNext
+                Wend 
+            else %>
+                <option selected="" value="">Select Department</option>
+                <% while not objRS3.EOF %>
+                    <option value='<%=objRS3("id_afdeling")%>'>
+                        <%=objRS3("afdeling")%>
+                    </option>
+                <% objRS3.MoveNext %>
+              <%  Wend %>
+           <% end if %>
+        </select>
 					</td>
 				</tr>
 			<!-- Møde deltagere -->
