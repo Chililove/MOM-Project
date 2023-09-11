@@ -73,7 +73,7 @@ If request("action") = "newday" Then
 
 	 Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agenda")
     new_id_agenda = rs(0).Value
-
+' could be this i was missing for the display and update of the assigned users ---------------------------------
     selectedLogins = Split(Request.Form("id_login"), ",")
     For Each id_login In selectedLogins
         sql = "INSERT INTO tblassign_users_to_agenda (id_agenda, id_login) VALUES (?, ?); SELECT SCOPE_IDENTITY();"
@@ -135,6 +135,7 @@ if request("action")="edit" then
   "WHERE id_agenda = " & id_agenda
 
 	
+	
 	response.write sql
 	Conn.Execute(sql)
 end if 
@@ -160,21 +161,20 @@ if request("action")="show" then
 		moede_dato = rs("moede_dato")
 		moede_tidspunkt = rs("moede_tidspunkt")
 	
-		 sql = "SELECT id_login FROM tbl_assign_users_to_agenda WHERE id_agenda=" & id_agenda
+		 sql = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=" & id_agenda
 		'response.write sql
         Set rs = Conn.Execute(sql)
- 		While Not rs.EOF
+ 	While Not rs.EOF
             assignedEmployees.Add CStr(rs("id_login")), True
             rs.MoveNext
         Wend
+
+	   end if
 	else
 			response.write "no data"
 			
 	end if
-	
 
-
-end if
 'sql="UPDATE tbl_agenda SET moede_navn='" & moede_navn & "', emne='" & emne & "', beskrivelse='" & beskrivelse & "',noter='" & noter & "', additionalinfo='" & additionalinfo & "', id_meetingtype='" & id_meetingtype & "', id_afdeling='" & id_afdeling & "',id_login='" & id_login & "', moede_dato='" & moede_dato & "', moede_tidspunkt='" & moede_tidspunkt & "', WHERE id=" & id_agenda"
 
 '****Start new job existing day

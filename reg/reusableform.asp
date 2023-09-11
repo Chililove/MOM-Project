@@ -176,9 +176,23 @@
 						'For showing that I get the right converted data back from db
 		response.write("Converted date: " & moede_dato & "<br>")
 		response.write("Converted time: " & moede_tidspunkt & "<br>")
-		%>
+		
+			sql = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=" & id_agenda
+		'response.write sql						
+		Dim assignedEmployees
+		Set assignedEmployees = CreateObject("Scripting.Dictionary")
+        Set rs = Conn.Execute(sql)
+ 	While Not rs.EOF
+            assignedEmployees.Add CStr(rs("id_login")), True
+            rs.MoveNext
+        Wend
+	else
+			response.write "no data"
+
+end if
+%>
 				<td><input type="hidden" name="id_agenda" value="<%=id_agenda1%>"></td>
-					<% end if %>
+					
 				</tr>
 
 				<tr>			
@@ -305,7 +319,9 @@
 												<div class="user-list">
 													<label class="user-item">
 														<input type="checkbox" name="id_login" class="checkuser" value="<%=objRS3("id_login")%>"
-														<%=checkboxState%>>
+														<%If assignedEmployees.Exists(CStr(objRS3("id_login"))) Then%>
+														checked="checked"
+														<%End If%>>
 														<%=objRS3("login")%>
 													</label>
 												</div>
