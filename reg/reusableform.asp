@@ -100,7 +100,7 @@
 <form data-ajax="false" method="post" 
 	
 	<% if request("action")="show" then %>
-	action='save.asp?action=edit?id_agenda=<%=request.QueryString("id_agenda")%>'  
+	action='save.asp?action=edit&id_agenda=<%=request.QueryString("id_agenda")%>'  
 	<% else %>
 	action='save.asp?action=<%=request("action")%>'  
 	<% end if %>

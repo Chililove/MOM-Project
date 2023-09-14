@@ -1,5 +1,6 @@
 <!--#include file="../login/protect.inc"-->
 <!--#include file="../opendb.asp"-->
+
 <HTML>
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -8,6 +9,8 @@
 <%
 'save to registration
 '*******************skriv til databasen     
+response.write "Action: " & request("action") & "<br/>"
+response.write "ID Agenda: " & request("id_agenda") & "<br/>"
 
 id_agenda=request("id_agenda")
 ' id_kunde=request("id_kunde")
@@ -160,8 +163,6 @@ if request("action")="show" then
 
 If request("action")="edit" Then
 
-id_agenda=request.QueryString("id_agenda")
-
     ' Update the main tbl_agenda based on provided details
     sql = "UPDATE tbl_agenda SET " & _
     "moede_navn = '" & Replace(moede_navn, "'", "''") & "', " & _
@@ -171,7 +172,7 @@ id_agenda=request.QueryString("id_agenda")
     "additionalinfo = '" & Replace(additionalinfo, "'", "''") & "', " & _
     "id_meetingtype = " & id_meetingtype & ", " & _
     "id_afdeling = " & id_afdeling & ", " & _
-    "id_login = " & id_login & ", " & _
+    
     "moede_dato = '" & moede_dato & "', " & _
     "moede_tidspunkt = '" & moede_tidspunkt & "' " & _
     "WHERE id_agenda = " & id_agenda
@@ -212,6 +213,8 @@ id_agenda=request.QueryString("id_agenda")
     Next
 
     'response.redirect "../default.asp"
+	response.write "Edit action executed successfully."
+
 End If
 
 
