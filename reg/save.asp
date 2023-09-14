@@ -90,6 +90,8 @@ If request("action") = "newday" Then
 
 		rs.Execute
     Next
+	'response.redirect "../default.asp"
+
 end if
 
 
@@ -118,48 +120,6 @@ end if
 	'Conn.Execute(sql1)
 
  'end if
-
-if request("action")="edit" then
-
-  sql = "UPDATE tbl_agenda SET " & _
-  "moede_navn = '" & Replace(moede_navn, "'", "''") & "', " & _
-  "emne = '" & Replace(emne, "'", "''") & "', " & _
-  "beskrivelse = '" & Replace(beskrivelse, "'", "''") & "', " & _
-  "noter = '" & Replace(noter, "'", "''") & "', " & _
-  "additionalinfo = '" & Replace(additionalinfo, "'", "''") & "', " & _
-  "id_meetingtype = " & id_meetingtype & ", " & _
-  "id_afdeling = " & id_afdeling & ", " & _
-  "id_login = " & id_login & ", " & _
-  "moede_dato = '" & moede_dato & "', " & _
-  "moede_tidspunkt = '" & moede_tidspunkt & "' " & _
-  "WHERE id_agenda = " & id_agenda
-
-	
-	
-	response.write sql
-	Conn.Execute(sql)
-
-	 Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agenda")
-    new_id_agenda = rs(0).Value
-' could be this i was missing for the display and update of the assigned users ---------------------------------
-    selectedLogins = Split(Request.Form("id_login"), ",")
-    For Each id_login In selectedLogins
-        sql = "INSERT INTO tblassign_users_to_agenda (id_agenda, id_login) VALUES (?, ?); SELECT SCOPE_IDENTITY();"
-
-     '   Conn.Execute(sql)
-
-	 Set rs = Server.CreateObject("ADODB.Command")
-	rs.ActiveConnection = Conn
-
-		rs.CommandText = sql
-
-		rs.Parameters.Append rs.CreateParameter("@id_agenda", 3, 1, , new_id_agenda)
-    	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , CInt(id_login))
-
-		rs.Execute
-    Next
-end if 
-
 
 if request("action")="show" then
 
@@ -193,8 +153,68 @@ if request("action")="show" then
 	   end if
 	else
 			response.write "no data"
-			
+			'response.redirect "../default.asp"
+
 	end if
+
+
+If request("action")="edit" Then
+
+id_agenda=request.QueryString("id_agenda")
+
+    ' Update the main tbl_agenda based on provided details
+    sql = "UPDATE tbl_agenda SET " & _
+    "moede_navn = '" & Replace(moede_navn, "'", "''") & "', " & _
+    "emne = '" & Replace(emne, "'", "''") & "', " & _
+    "beskrivelse = '" & Replace(beskrivelse, "'", "''") & "', " & _
+    "noter = '" & Replace(noter, "'", "''") & "', " & _
+    "additionalinfo = '" & Replace(additionalinfo, "'", "''") & "', " & _
+    "id_meetingtype = " & id_meetingtype & ", " & _
+    "id_afdeling = " & id_afdeling & ", " & _
+    "id_login = " & id_login & ", " & _
+    "moede_dato = '" & moede_dato & "', " & _
+    "moede_tidspunkt = '" & moede_tidspunkt & "' " & _
+    "WHERE id_agenda = " & id_agenda
+
+    response.write sql
+    Conn.Execute(sql)
+
+    ' Dictionary for currently assigned users
+    Set assignedEmployees = CreateObject("Scripting.Dictionary")
+    sql = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=" & id_agenda
+    Set rs = Conn.Execute(sql)
+    While Not rs.EOF
+        assignedEmployees.Add CStr(rs("id_login")), True
+        rs.MoveNext
+    Wend
+
+    ' Dictionary for submitted user assignments from the form
+    Set submittedEmployees = CreateObject("Scripting.Dictionary")
+    selectedLogins = Split(Request.Form("id_login"), ",")
+    For Each id_login In selectedLogins
+        submittedEmployees.Add CStr(id_login), True
+    Next
+
+    ' Determine which users to remove
+    For Each id_login In assignedEmployees.Keys
+        If Not submittedEmployees.Exists(id_login) Then
+            sql = "DELETE FROM tblassign_users_to_agenda WHERE id_agenda = " & id_agenda & " AND id_login = " & id_login
+            Conn.Execute(sql)
+        End If
+    Next
+
+    ' Determine which users to add
+    For Each id_login In submittedEmployees.Keys
+        If Not assignedEmployees.Exists(id_login) Then
+            sql = "INSERT INTO tblassign_users_to_agenda (id_agenda, id_login) VALUES (" & id_agenda & ", " & id_login & ")"
+            Conn.Execute(sql)
+        End If
+    Next
+
+    'response.redirect "../default.asp"
+End If
+
+
 
 'sql="UPDATE tbl_agenda SET moede_navn='" & moede_navn & "', emne='" & emne & "', beskrivelse='" & beskrivelse & "',noter='" & noter & "', additionalinfo='" & additionalinfo & "', id_meetingtype='" & id_meetingtype & "', id_afdeling='" & id_afdeling & "',id_login='" & id_login & "', moede_dato='" & moede_dato & "', moede_tidspunkt='" & moede_tidspunkt & "', WHERE id=" & id_agenda"
 
@@ -221,7 +241,7 @@ if request("action")="slut" then
 	Conn.Execute(sql)
 end if
 
-response.redirect "../default.asp"
+'response.redirect "../default.asp"
 
 
 %>

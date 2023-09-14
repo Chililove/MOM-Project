@@ -260,7 +260,7 @@ end if
 				</tr>
 				<tr>
 					<td style="text-align: center">
-						<textarea name="beskrivelse" id="expanding-textarea" rows="4" cols="50"><%=beskrivelse%></textarea>
+						<textarea name="beskrivelse" rows="4" cols="50"><%=beskrivelse%></textarea>
 					</td>
 				</tr>
 			<!-- Møde note -->
@@ -271,7 +271,7 @@ end if
 				</tr>
 				<tr>
 					<td style="text-align: center">
-						<textarea name="noter" id="expanding-textarea" rows="4" cols="50"><%=noter%></textarea>
+						<textarea name="noter" rows="4" cols="50"><%=noter%></textarea>
 					</td>
 				</tr>
 			<!-- Møde afdeling -->
@@ -332,7 +332,6 @@ end if
 														<%else%>
 														<%end if%>
 														<%End If%>>
-
 														<%=objRS3("login")%>
 													</label>
 												</div>
@@ -376,7 +375,7 @@ end if
 				</tr>
 				<tr>
 					<td style="text-align: center">
-						<textarea name="additionalinfo" id="expanding-textarea" rows="4" cols="50"><%=additionalinfo%></textarea>
+						<textarea name="additionalinfo" rows="4" cols="50"><%=additionalinfo%></textarea>
 					</td>
 				</tr>
 			<!-- Møde submit btn -->
@@ -386,6 +385,7 @@ end if
 						<input type="hidden" name="oprettetaf" value='<%=session("login_id")%>'>
 						<input name="Submit1" type="submit" value="Start meeting" data-theme="a" data-icon="check">
 						<!--This is how I can save multiple users to an agenda - There is for sure a better way to do this.. I just don't-->
+						
 						<%If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
 							Dim selectedUsers
 							selectedUsers = Request.Form("id_login")
