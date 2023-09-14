@@ -62,7 +62,6 @@
 	flex-wrap: wrap;
 	flex-direction: row;
 	padding: 6px;
-
 	}
 
 	label {
@@ -89,7 +88,6 @@
 	.user-item{
 	width: 80px;
 	}
-
 
 	.checkuser{
 	width: 50%;
@@ -152,7 +150,6 @@
 				Function ExtractHoursMinutes(timeStamp)
 				Dim timeParts, timeString
 				timeParts = Split(timeStamp, " ") ' Split date from time
-
 					If UBound(timeParts) >= 1 Then
 						timeString = timeParts(1) ' This should be HH:mm:ss
 						ExtractHoursMinutes = Left(timeString, 5) ' This will return HH:mm
@@ -161,8 +158,6 @@
 					End If
 				End Function
 				%>
-
-
 				<% if request("action")="show" then %>
 					<% sql="Select * from qry_agenda where id_agenda = '"& request.QueryString("id_agenda") &"'"
 						'response.write sql
@@ -181,25 +176,22 @@
 						id_afdeling=rs("id_afdeling")
 						id_login=rs("id_login")
 						'For showing that I get the right converted data back from db
-		response.write("Converted date: " & moede_dato & "<br>")
-		response.write("Converted time: " & moede_tidspunkt & "<br>")
+response.write("Converted date: " & moede_dato & "<br>")
+response.write("Converted time: " & moede_tidspunkt & "<br>")
 		
-			sql = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=" & id_agenda
-		'response.write sql						
-		Dim assignedEmployees
-		Set assignedEmployees = CreateObject("Scripting.Dictionary")
-        Set rs = Conn.Execute(sql)
- 	While Not rs.EOF
-            assignedEmployees.Add CStr(rs("id_login")), True
-            rs.MoveNext
-        Wend
-	else
-			response.write "no data"
-
-end if
-%>
-				<td><input type="hidden" name="id_agenda" value="<%=id_agenda1%>"></td>
-					
+						sql = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=" & id_agenda
+					Dim assignedEmployees
+					Set assignedEmployees = CreateObject("Scripting.Dictionary")
+					Set rs = Conn.Execute(sql)
+					While Not rs.EOF
+							assignedEmployees.Add CStr(rs("id_login")), True
+							rs.MoveNext
+						Wend
+					else
+						response.write "no data"
+				end if%>
+				<td>
+					<input type="hidden" name="id_agenda" value="<%=id_agenda1%>"></td>	
 				</tr>
 
 				<tr>			
@@ -231,13 +223,13 @@ end if
 									<% else %>
 										<option selected="" value="">Select type of meeting</option>
 									<% end if 
-										while not objRS3.EOF %>
-											<option value='<%=objRS3("id_meetingtype")%>'>
-													<% if objRS3("id_meetingtype") = id_meetingtype then %> selected <% end if %>
-												<%=objRS3("meeting_type")%>
-											</option>
-										<% objRS3.MoveNext
-										Wend %>
+											while not objRS3.EOF %>
+												<option value='<%=objRS3("id_meetingtype")%>'>
+														<% if objRS3("id_meetingtype") = id_meetingtype then %> selected <% end if %>
+													<%=objRS3("meeting_type")%>
+												</option>
+											<% objRS3.MoveNext
+											Wend %>
 						</select>
 					</td>
 				</tr>
@@ -277,9 +269,9 @@ end if
 			<!-- Møde afdeling -->
 				<tr>
 					<td style="text-align: center">
-						 <select name="id_afdeling" required >
-            <% 
-            SQL3 = "Select * from tbl_afdeling_2nd order by id_afdeling"
+			<select name="id_afdeling" required >
+
+            <% SQL3 = "Select * from tbl_afdeling_2nd order by id_afdeling"
             set objRS3 = conn.Execute(SQL3)
 
             if request("action")="show" then
@@ -292,15 +284,15 @@ end if
                 <option selected="" value="">Select Department</option>
             <% end if %>
               <%  while not objRS3.EOF %>
-                <option value='<%=objRS3("id_afdeling")%>' 
-                    <% if objRS3("id_afdeling") = id_afdeling then %>selected
-					<% end if %>>
-                    <%=objRS3("afdeling")%>
-                </option>
-            <% objRS3.MoveNext
-                Wend 
+                	<option value='<%=objRS3("id_afdeling")%>' 
+						<% if objRS3("id_afdeling") = id_afdeling then %>selected
+						<% end if %>>
+						<%=objRS3("afdeling")%>
+                	</option>
+           	 <% objRS3.MoveNext
+                	Wend 
             else %>
-                <option selected="" value="">Select Department</option>
+                	<option selected="" value="">Select Department</option>
                 <% while not objRS3.EOF %>
                     <option value='<%=objRS3("id_afdeling")%>'>
                         <%=objRS3("afdeling")%>
@@ -346,23 +338,24 @@ end if
 						document.addEventListener("DOMContentLoaded", function() {
 							const toggleButton = document.querySelector(".toggle-button");
 							const dropdownContent = document.querySelector(".dropdown-content");
-							console.log(toggleButton, dropdownContent); // Debug line
 
 							toggleButton.addEventListener("click", function() {
 
-								// Toggle visibility
+								// visibility on/off
 								const isVisible = dropdownContent.style.visibility === 'visible';
 
 								dropdownContent.style.visibility = isVisible ? 'hidden' : 'visible';
-								if (!isVisible) {
+								if (!isVisible)
+								{
 									const rect = toggleButton.getBoundingClientRect();
 								dropdownContent.classList.add("positioned-dropdown");
 								dropdownContent.style.right = 0;
 								dropdownContent.style.left = `${rect.left + window.scrollX + rect.width}px`;
 								dropdownContent.style.top = `${rect.top + window.scrollY}px`;
-								} else {
-									dropdownContent.classList.remove("positioned-dropdown");
 								}
+								else {
+									dropdownContent.classList.remove("positioned-dropdown");
+									 }
 							});
 						});
 					</script>
@@ -399,15 +392,11 @@ end if
 								Response.Write("Selected User ID: " & selectedUsers & "<br />")
 								
 							End If
-End If
-%>
+End If %>
 					</td>
 				</tr>
-
 			</table>
-
-			<script>
-
+<script>
 $(document).ready(function() {
     $('form').validate({
         rules: {

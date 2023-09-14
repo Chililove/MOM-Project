@@ -1,6 +1,5 @@
 <!--#include file="../login/protect.inc"-->
 <!--#include file="../opendb.asp"-->
-
 <HTML>
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -13,9 +12,7 @@ response.write "Action: " & request("action") & "<br/>"
 response.write "ID Agenda: " & request("id_agenda") & "<br/>"
 
 id_agenda=request("id_agenda")
-' id_kunde=request("id_kunde")
 existing_id_registrering=request("existing_id_registrering")
-' oprettetaf=session("login_id")
 oprettetaf=request("oprettetaf")
 oprettetdato=date()
 moede_navn=request("moede_navn")
@@ -28,10 +25,7 @@ id_afdeling=request("id_afdeling")
 id_login=request("id_login")
 moede_dato=request("moede_dato")
 moede_tidspunkt= request("moede_tidspunkt")
-' response.write request("moede_tidspunkt")
 ' moede_tidspunkt=LEFT(RIGHT(request("moede_tidspunkt"),12),5)
-' response.write "<br>" & moede_tidspunkt & "<br>"
-
 
 aar=datepart("yyyy",oprettetdato)
 maaned=datepart("m",oprettetdato)
@@ -47,10 +41,8 @@ minutter=datepart("n",now())
 starttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 sluttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 
-
 Set rs = Server.CreateObject("ADODB.Command")
 rs.ActiveConnection = Conn
-
 
 If request("action") = "newday" Then
     sql1 = "INSERT INTO tbl_agenda (moede_navn, emne, beskrivelse, noter, additionalinfo, oprettetaf, oprettetdato, starttid, id_meetingtype, id_afdeling, moede_dato, moede_tidspunkt) "
@@ -80,24 +72,17 @@ If request("action") = "newday" Then
     selectedLogins = Split(Request.Form("id_login"), ",")
     For Each id_login In selectedLogins
         sql = "INSERT INTO tblassign_users_to_agenda (id_agenda, id_login) VALUES (?, ?); SELECT SCOPE_IDENTITY();"
-
      '   Conn.Execute(sql)
 
 	 Set rs = Server.CreateObject("ADODB.Command")
 	rs.ActiveConnection = Conn
-
 		rs.CommandText = sql
-
 		rs.Parameters.Append rs.CreateParameter("@id_agenda", 3, 1, , new_id_agenda)
     	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , CInt(id_login))
-
 		rs.Execute
     Next
 	'response.redirect "../default.asp"
-
 end if
-
-
 'if request("action")="newday" then
 
 	'sql1= "INSERT INTO tbl_agenda (moede_navn,emne,beskrivelse, noter, additionalinfo, oprettetaf,oprettetdato,starttid, id_meetingtype, id_afdeling, moede_dato, moede_tidspunkt) "
@@ -148,19 +133,16 @@ if request("action")="show" then
 		 sql = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=" & id_agenda
 		'response.write sql
         Set rs = Conn.Execute(sql)
- 	While Not rs.EOF
+ 		While Not rs.EOF
             assignedEmployees.Add CStr(rs("id_login")), True
             rs.MoveNext
         Wend
-
 	   end if
 	else
 			response.write "no data"
 			'response.redirect "../default.asp"
-
 	end if
-
-
+	
 If request("action")="edit" Then
 
     ' Update the main tbl_agenda based on provided details
@@ -172,7 +154,6 @@ If request("action")="edit" Then
     "additionalinfo = '" & Replace(additionalinfo, "'", "''") & "', " & _
     "id_meetingtype = " & id_meetingtype & ", " & _
     "id_afdeling = " & id_afdeling & ", " & _
-    
     "moede_dato = '" & moede_dato & "', " & _
     "moede_tidspunkt = '" & moede_tidspunkt & "' " & _
     "WHERE id_agenda = " & id_agenda
@@ -211,42 +192,33 @@ If request("action")="edit" Then
             Conn.Execute(sql)
         End If
     Next
-
+	'this redirect to the default page -v-
     'response.redirect "../default.asp"
 	response.write "Edit action executed successfully."
 
 End If
 
-
-
-'sql="UPDATE tbl_agenda SET moede_navn='" & moede_navn & "', emne='" & emne & "', beskrivelse='" & beskrivelse & "',noter='" & noter & "', additionalinfo='" & additionalinfo & "', id_meetingtype='" & id_meetingtype & "', id_afdeling='" & id_afdeling & "',id_login='" & id_login & "', moede_dato='" & moede_dato & "', moede_tidspunkt='" & moede_tidspunkt & "', WHERE id=" & id_agenda"
-
 '****Start new job existing day
+'sql="UPDATE tbl_agenda SET moede_navn='" & moede_navn & "', emne='" & emne & "', beskrivelse='" & beskrivelse & "',noter='" & noter & "', additionalinfo='" & additionalinfo & "', id_meetingtype='" & id_meetingtype & "', id_afdeling='" & id_afdeling & "',id_login='" & id_login & "', moede_dato='" & moede_dato & "',
+'moede_tidspunkt='" & moede_tidspunkt & "', WHERE id=" & id_agenda"
 ' if request("action")="newjob" then
-
 ' 	'Close last job
 ' 	sql1= "UPDATE tblregistrering SET sluttid = '"& sluttid &"' where id_registrering = " & existing_id_registrering &" "
 ' 	' response.write sql1
 ' 	Conn.Execute(sql1)
-	
 ' 	'Open new job
 ' 	sql1= "INSERT INTO tblregistrering (id_agenda,oprettetaf,oprettetdato,starttid) "
 ' 	sql1=sql1 + "VALUES (" & id_agenda & ",'" & oprettetaf &"','" & oprettetdato &"','" &starttid &"')"
-
 ' 	response.write sql1
 ' 	Conn.Execute(sql1)
 ' end if
-
-
 '****Close existing day
+
 if request("action")="slut" then
 	sql="UPDATE tblregistrering SET sluttid = '"& sluttid &"' where id_registrering="& request("id_registrering")&"  "
 	Conn.Execute(sql)
 end if
-
 'response.redirect "../default.asp"
-
-
 %>
 </BODY>
 </HTML>
