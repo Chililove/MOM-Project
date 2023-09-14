@@ -97,7 +97,14 @@
 </style>
 </head>
 <!--onSubmit="return validateForm();" if the function can be used it needs to live here in the form post -->
-<form data-ajax="false" method="post" action='save.asp?action=<%=request("action")%>'  style="position: relative;">
+<form data-ajax="false" method="post" 
+	
+	<% if request("action")="show" then %>
+	action='save.asp?action=edit?id_agenda=<%=request.QueryString("id_agenda")%>'  
+	<% else %>
+	action='save.asp?action=<%=request("action")%>'  
+	<% end if %>
+	style="position: relative;">
 			<table align="center" style="width: 50%">
 			<!-- Møde dato og tid-->
 				<tr>
@@ -219,7 +226,7 @@ end if
 											set objRS4 = conn.Execute(SQL4) 
 											meetingtype=objRS4("meeting_type")
 											%>
-											<option selected="" value=""><%=meetingtype%></option>
+											<option selected="" value="<%=objRS4("id_meetingtype")%>"><%=meetingtype%></option>
 										<% end if %>
 									<% else %>
 										<option selected="" value="">Select type of meeting</option>
@@ -319,9 +326,13 @@ end if
 												<div class="user-list">
 													<label class="user-item">
 														<input type="checkbox" name="id_login" class="checkuser" value="<%=objRS3("id_login")%>"
+														<%If request("action")="show" Then%>
 														<%If assignedEmployees.Exists(CStr(objRS3("id_login"))) Then%>
 														checked="checked"
+														<%else%>
+														<%end if%>
 														<%End If%>>
+
 														<%=objRS3("login")%>
 													</label>
 												</div>

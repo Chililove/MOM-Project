@@ -138,7 +138,28 @@ if request("action")="edit" then
 	
 	response.write sql
 	Conn.Execute(sql)
+
+	 Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agenda")
+    new_id_agenda = rs(0).Value
+' could be this i was missing for the display and update of the assigned users ---------------------------------
+    selectedLogins = Split(Request.Form("id_login"), ",")
+    For Each id_login In selectedLogins
+        sql = "INSERT INTO tblassign_users_to_agenda (id_agenda, id_login) VALUES (?, ?); SELECT SCOPE_IDENTITY();"
+
+     '   Conn.Execute(sql)
+
+	 Set rs = Server.CreateObject("ADODB.Command")
+	rs.ActiveConnection = Conn
+
+		rs.CommandText = sql
+
+		rs.Parameters.Append rs.CreateParameter("@id_agenda", 3, 1, , new_id_agenda)
+    	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , CInt(id_login))
+
+		rs.Execute
+    Next
 end if 
+
 
 if request("action")="show" then
 
