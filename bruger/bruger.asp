@@ -10,7 +10,9 @@
 		<script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
 		<link type="text/css" rel="stylesheet" href="../jquery/jquery-te-1.4.0.css">
 		<script type="text/javascript" src="../jquery/jquery-te-1.4.0.min.js" charset="utf-8"></script>
-		<script src="../jquery/jquery.validate.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
+
 	</head>
 	<body>
 		<div id="page1" data-role="page">
@@ -102,10 +104,61 @@
 									</tr>
 								</table>
 								<input type="hidden" name="id_login" value="<%=id_login%>">
+
+								<script>
+$(document).ready(function() {
+    $('form').validate({
+        rules: {
+            login: {
+                required: true,
+                minlength: 2
+            },
+            fornavn: {
+                required: true,
+                minlength: 2
+            },
+            efternavn: {
+                required: true,
+                minlength: 2
+            },
+            password1: {
+                required: true,
+                minlength: 2
+            },
+            id_logintype: {
+                required: true
+            }
+        },
+        messages: {
+            login: {
+                required: "Login navn er påkrævet.",
+                minlength: "Login skal være mindst 2 tegn."
+            },
+            fornavn: {
+                required: "Fornavn er påkrævet.",
+                minlength: "Fornavn skal være mindst 2 tegn."
+            },
+            efternavn: {
+                required: "Efternavn er påkrævet.",
+                minlength: "Efternavn skal være mindst 2 tegn."
+            },
+            password1: {
+                required: "Password er påkrævet.",
+                minlength: "Password skal være mindst 2 tegn."
+            },
+            id_logintype: {
+                required: "Type af login er påkrævet."
+            }
+        }
+    });
+});
+
+</script>
 							</form>
 						
 						<!--#include file="../shared/footer.asp"-->
 		</div>
 	</body>
+
 </html>
 <!--#include file="../closedb.asp"-->
