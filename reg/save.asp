@@ -143,23 +143,42 @@ if request("action")="show" then
 			'response.redirect "../default.asp"
 	end if
 	
-If request("action")="edit" Then
-
-    ' Update the main tbl_agenda based on provided details
+If request("action") = "edit" Then
+    ' Define the update statement with parameters
     sql = "UPDATE tbl_agenda SET " & _
-    "moede_navn = '" & Replace(moede_navn, "'", "''") & "', " & _
-    "emne = '" & Replace(emne, "'", "''") & "', " & _
-    "beskrivelse = '" & Replace(beskrivelse, "'", "''") & "', " & _
-    "noter = '" & Replace(noter, "'", "''") & "', " & _
-    "additionalinfo = '" & Replace(additionalinfo, "'", "''") & "', " & _
-    "id_meetingtype = " & id_meetingtype & ", " & _
-    "id_afdeling = " & id_afdeling & ", " & _
-    "moede_dato = '" & moede_dato & "', " & _
-    "moede_tidspunkt = '" & moede_tidspunkt & "' " & _
-    "WHERE id_agenda = " & id_agenda
+        "moede_navn = ?, " & _
+        "emne = ?, " & _
+        "beskrivelse = ?, " & _
+        "noter = ?, " & _
+        "additionalinfo = ?, " & _
+        "id_meetingtype = ?, " & _
+        "id_afdeling = ?, " & _
+        "moede_dato = ?, " & _
+        "moede_tidspunkt = ? " & _
+        "WHERE id_agenda = ?"
+    
+    ' Create a command object and set its properties
+    Set cmd = Server.CreateObject("ADODB.Command")
+    Set cmd.ActiveConnection = Conn
+    cmd.CommandText = sql
+    cmd.CommandType = 1 ' adCmdText
+    ' Add parameters to the command object
+    cmd.Parameters.Append cmd.CreateParameter("@moede_navn", 202, 1, 255, moede_navn)
+    cmd.Parameters.Append cmd.CreateParameter("@emne", 202, 1, 255, emne)
+    cmd.Parameters.Append cmd.CreateParameter("@beskrivelse", 203, 1, -1, beskrivelse)
+    cmd.Parameters.Append cmd.CreateParameter("@noter", 203, 1, -1, noter)
+    cmd.Parameters.Append cmd.CreateParameter("@additionalinfo", 203, 1, -1, additionalinfo)
+    cmd.Parameters.Append cmd.CreateParameter("@id_meetingtype", 3, 1, , id_meetingtype)
+    cmd.Parameters.Append cmd.CreateParameter("@id_afdeling", 3, 1, , id_afdeling)
+    cmd.Parameters.Append cmd.CreateParameter("@moede_dato", 7, 1, 255, moede_dato)
+    cmd.Parameters.Append cmd.CreateParameter("@moede_tidspunkt", 202, 1, 255, moede_tidspunkt)
+    cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda)
+    
+    ' Execute the command
+    cmd.Execute
 
-    response.write sql
-    Conn.Execute(sql)
+    ' Release the command object
+    Set cmd = Nothing
 
     ' Dictionary for currently assigned users
     Set assignedEmployees = CreateObject("Scripting.Dictionary")
