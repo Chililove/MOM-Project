@@ -62,7 +62,6 @@
 	flex-wrap: wrap;
 	flex-direction: row;
 	padding: 6px;
-
 	}
 
 	label {
@@ -90,14 +89,20 @@
 	width: 80px;
 	}
 
-
 	.checkuser{
 	width: 50%;
 	}
 </style>
 </head>
 <!--onSubmit="return validateForm();" if the function can be used it needs to live here in the form post -->
-<form data-ajax="false" method="post" action='save.asp?action=<%=request("action")%>'  style="position: relative;">
+<form data-ajax="false" method="post" 
+	
+	<% if request("action")="show" then %>
+	action='save.asp?action=edit&id_agenda=<%=request.QueryString("id_agenda")%>'  
+	<% else %>
+	action='save.asp?action=<%=request("action")%>'  
+	<% end if %>
+	style="position: relative;">
 			<table align="center" style="width: 50%">
 			<!-- Møde dato og tid-->
 				<tr>
@@ -145,7 +150,6 @@
 				Function ExtractHoursMinutes(timeStamp)
 				Dim timeParts, timeString
 				timeParts = Split(timeStamp, " ") ' Split date from time
-
 					If UBound(timeParts) >= 1 Then
 						timeString = timeParts(1) ' This should be HH:mm:ss
 						ExtractHoursMinutes = Left(timeString, 5) ' This will return HH:mm
@@ -154,8 +158,6 @@
 					End If
 				End Function
 				%>
-
-
 				<% if request("action")="show" then %>
 					<% sql="Select * from qry_agenda where id_agenda = '"& request.QueryString("id_agenda") &"'"
 						'response.write sql
@@ -174,25 +176,22 @@
 						id_afdeling=rs("id_afdeling")
 						id_login=rs("id_login")
 						'For showing that I get the right converted data back from db
-		response.write("Converted date: " & moede_dato & "<br>")
-		response.write("Converted time: " & moede_tidspunkt & "<br>")
+response.write("Converted date: " & moede_dato & "<br>")
+response.write("Converted time: " & moede_tidspunkt & "<br>")
 		
-			sql = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=" & id_agenda
-		'response.write sql						
-		Dim assignedEmployees
-		Set assignedEmployees = CreateObject("Scripting.Dictionary")
-        Set rs = Conn.Execute(sql)
- 	While Not rs.EOF
-            assignedEmployees.Add CStr(rs("id_login")), True
-            rs.MoveNext
-        Wend
-	else
-			response.write "no data"
-
-end if
-%>
-				<td><input type="hidden" name="id_agenda" value="<%=id_agenda1%>"></td>
-					
+						sql = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=" & id_agenda
+					Dim assignedEmployees
+					Set assignedEmployees = CreateObject("Scripting.Dictionary")
+					Set rs = Conn.Execute(sql)
+					While Not rs.EOF
+							assignedEmployees.Add CStr(rs("id_login")), True
+							rs.MoveNext
+						Wend
+					else
+						response.write "no data"
+				end if%>
+				<td>
+					<input type="hidden" name="id_agenda" value="<%=id_agenda1%>"></td>	
 				</tr>
 
 				<tr>			
@@ -219,18 +218,18 @@ end if
 											set objRS4 = conn.Execute(SQL4) 
 											meetingtype=objRS4("meeting_type")
 											%>
-											<option selected="" value=""><%=meetingtype%></option>
+											<option selected="" value="<%=objRS4("id_meetingtype")%>"><%=meetingtype%></option>
 										<% end if %>
 									<% else %>
 										<option selected="" value="">Select type of meeting</option>
 									<% end if 
-										while not objRS3.EOF %>
-											<option value='<%=objRS3("id_meetingtype")%>'>
-													<% if objRS3("id_meetingtype") = id_meetingtype then %> selected <% end if %>
-												<%=objRS3("meeting_type")%>
-											</option>
-										<% objRS3.MoveNext
-										Wend %>
+											while not objRS3.EOF %>
+												<option value='<%=objRS3("id_meetingtype")%>'>
+														<% if objRS3("id_meetingtype") = id_meetingtype then %> selected <% end if %>
+													<%=objRS3("meeting_type")%>
+												</option>
+											<% objRS3.MoveNext
+											Wend %>
 						</select>
 					</td>
 				</tr>
@@ -253,7 +252,7 @@ end if
 				</tr>
 				<tr>
 					<td style="text-align: center">
-						<textarea name="beskrivelse" id="expanding-textarea" rows="4" cols="50"><%=beskrivelse%></textarea>
+						<textarea name="beskrivelse" rows="4" cols="50"><%=beskrivelse%></textarea>
 					</td>
 				</tr>
 			<!-- Møde note -->
@@ -264,15 +263,15 @@ end if
 				</tr>
 				<tr>
 					<td style="text-align: center">
-						<textarea name="noter" id="expanding-textarea" rows="4" cols="50"><%=noter%></textarea>
+						<textarea name="noter" rows="4" cols="50"><%=noter%></textarea>
 					</td>
 				</tr>
 			<!-- Møde afdeling -->
 				<tr>
 					<td style="text-align: center">
-						 <select name="id_afdeling" required >
-            <% 
-            SQL3 = "Select * from tbl_afdeling_2nd order by id_afdeling"
+			<select name="id_afdeling" required >
+
+            <% SQL3 = "Select * from tbl_afdeling_2nd order by id_afdeling"
             set objRS3 = conn.Execute(SQL3)
 
             if request("action")="show" then
@@ -285,15 +284,15 @@ end if
                 <option selected="" value="">Select Department</option>
             <% end if %>
               <%  while not objRS3.EOF %>
-                <option value='<%=objRS3("id_afdeling")%>' 
-                    <% if objRS3("id_afdeling") = id_afdeling then %>selected
-					<% end if %>>
-                    <%=objRS3("afdeling")%>
-                </option>
-            <% objRS3.MoveNext
-                Wend 
+                	<option value='<%=objRS3("id_afdeling")%>' 
+						<% if objRS3("id_afdeling") = id_afdeling then %>selected
+						<% end if %>>
+						<%=objRS3("afdeling")%>
+                	</option>
+           	 <% objRS3.MoveNext
+                	Wend 
             else %>
-                <option selected="" value="">Select Department</option>
+                	<option selected="" value="">Select Department</option>
                 <% while not objRS3.EOF %>
                     <option value='<%=objRS3("id_afdeling")%>'>
                         <%=objRS3("afdeling")%>
@@ -319,8 +318,11 @@ end if
 												<div class="user-list">
 													<label class="user-item">
 														<input type="checkbox" name="id_login" class="checkuser" value="<%=objRS3("id_login")%>"
+														<%If request("action")="show" Then%>
 														<%If assignedEmployees.Exists(CStr(objRS3("id_login"))) Then%>
 														checked="checked"
+														<%else%>
+														<%end if%>
 														<%End If%>>
 														<%=objRS3("login")%>
 													</label>
@@ -336,23 +338,24 @@ end if
 						document.addEventListener("DOMContentLoaded", function() {
 							const toggleButton = document.querySelector(".toggle-button");
 							const dropdownContent = document.querySelector(".dropdown-content");
-							console.log(toggleButton, dropdownContent); // Debug line
 
 							toggleButton.addEventListener("click", function() {
 
-								// Toggle visibility
+								// visibility on/off
 								const isVisible = dropdownContent.style.visibility === 'visible';
 
 								dropdownContent.style.visibility = isVisible ? 'hidden' : 'visible';
-								if (!isVisible) {
+								if (!isVisible)
+								{
 									const rect = toggleButton.getBoundingClientRect();
 								dropdownContent.classList.add("positioned-dropdown");
 								dropdownContent.style.right = 0;
 								dropdownContent.style.left = `${rect.left + window.scrollX + rect.width}px`;
 								dropdownContent.style.top = `${rect.top + window.scrollY}px`;
-								} else {
-									dropdownContent.classList.remove("positioned-dropdown");
 								}
+								else {
+									dropdownContent.classList.remove("positioned-dropdown");
+									 }
 							});
 						});
 					</script>
@@ -365,7 +368,7 @@ end if
 				</tr>
 				<tr>
 					<td style="text-align: center">
-						<textarea name="additionalinfo" id="expanding-textarea" rows="4" cols="50"><%=additionalinfo%></textarea>
+						<textarea name="additionalinfo" rows="4" cols="50"><%=additionalinfo%></textarea>
 					</td>
 				</tr>
 			<!-- Møde submit btn -->
@@ -375,6 +378,7 @@ end if
 						<input type="hidden" name="oprettetaf" value='<%=session("login_id")%>'>
 						<input name="Submit1" type="submit" value="Start meeting" data-theme="a" data-icon="check">
 						<!--This is how I can save multiple users to an agenda - There is for sure a better way to do this.. I just don't-->
+						
 						<%If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
 							Dim selectedUsers
 							selectedUsers = Request.Form("id_login")
@@ -388,15 +392,11 @@ end if
 								Response.Write("Selected User ID: " & selectedUsers & "<br />")
 								
 							End If
-End If
-%>
+End If %>
 					</td>
 				</tr>
-
 			</table>
-
-			<script>
-
+<script>
 $(document).ready(function() {
     $('form').validate({
         rules: {

@@ -1,6 +1,5 @@
 <!DOCTYPE>
 <html>
-
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,10 +9,9 @@
 </head>
 
 <div data-role="header" data-id="header" data-position="fixed">
-<h1 >List of meetings</h1>
-    <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
+    <h1 >List of meetings</h1>
+        <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
         <a class="ui-btn-right" href="http://mom.main-solution.dk/login/login.asp" data-ajax="false" data-icon="power">logoff</a>
-
 </div>
 <body>
 <!--#include file="../opendb.asp"-->
@@ -28,26 +26,17 @@ set rs=conn.execute(sql)
 <%
 do while not rs.eof
 %>
-				<li>
+<li>
 			<!--	<a data-ajax="false" href='../reg_list/list_my.asp?oprettetdato=<%'=rs(("oprettetdato_string"))%>'> -->
-
-<a data-ajax="false" href='../reg/list_my.asp?action=show&amp;id_agenda=<%=rs("id_agenda")%>'>
-
-				<table style="width: 100%;">		
-
-								<tr>
-                            
-                                    <td style="width: 20%; padding-left: 10px;">  <%=rs("moede_dato")%> <br> <%= rs("moede_tidspunkt")%> <br> </td>
-
-
-                                    <td style="width: 40%; font-weight: bold;"> <%=rs("moede_navn")%> </td>
-
-								</tr>
-				</table>
-</a>
-				
-				
-				</li>
+    <a data-ajax="false" href='../reg/list_my.asp?action=show&amp;id_agenda=<%=rs("id_agenda")%>'>	
+        <table style="width: 100%;">
+	        <tr>             
+                <td style="width: 20%; padding-left: 10px;">  <%=rs("moede_dato")%> <br> <%= rs("moede_tidspunkt")%> <br> </td>
+                <td style="width: 40%; font-weight: bold;"> <%=rs("moede_navn")%> </td>
+		    </tr>
+        </table>
+    </a>				
+</li>
 <%
  rs.movenext
 loop
