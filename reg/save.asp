@@ -111,37 +111,49 @@ end if
 
 if request("action")="show" then
 
-	Dim rs, assignedEmployees, id_agenda, checkboxState
-	Set assignedEmployees = CreateObject("Scripting.Dictionary")
+    Dim rs, cmd, assignedEmployees, id_agenda, checkboxState
+    Set assignedEmployees = CreateObject("Scripting.Dictionary")
 
-	sql="SELECT * FROM tbl_agenda WHERE id_agenda=" & id_agenda 
-	'response.write sql
-	Set rs = Conn.Execute(sql)
-	If Not rs.EOF Then
-		moede_dato =rs("moede_dato")
-		moede_navn = rs("moede_navn")
-		emne = rs("emne")
-		beskrivelse = rs("beskrivelse")
-		noter = rs("noter")
-		additionalinfo = rs("additionalinfo")
-		id_meetingtype = rs("id_meetingtype")
-		id_afdeling = rs("id_afdeling")
-		id_login = rs("id_login")
-		moede_dato = rs("moede_dato")
-		moede_tidspunkt = rs("moede_tidspunkt")
-	
-		 sql = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=" & id_agenda
-		'response.write sql
-        Set rs = Conn.Execute(sql)
- 		While Not rs.EOF
+    ' Preparing the SQL command
+    Set cmd = CreateObject("ADODB.Command")
+    cmd.ActiveConnection = Conn
+    cmd.CommandText = "SELECT * FROM tbl_agenda WHERE id_agenda=?"
+    cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda) ' 3 is adInteger
+
+    ' Execute the command
+    Set rs = cmd.Execute
+
+    If Not rs.EOF Then
+        moede_dato = rs("moede_dato")
+        moede_navn = rs("moede_navn")
+        emne = rs("emne")
+        beskrivelse = rs("beskrivelse")
+        noter = rs("noter")
+        additionalinfo = rs("additionalinfo")
+        id_meetingtype = rs("id_meetingtype")
+        id_afdeling = rs("id_afdeling")
+        id_login = rs("id_login")
+        moede_dato = rs("moede_dato")
+        moede_tidspunkt = rs("moede_tidspunkt")
+
+        ' Preparing the SQL command for the next query
+        Set cmd = CreateObject("ADODB.Command")
+        cmd.ActiveConnection = Conn
+        cmd.CommandText = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=?"
+        cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda) ' 3 is adInteger
+
+        ' Execute the command
+        Set rs = cmd.Execute
+
+        While Not rs.EOF
             assignedEmployees.Add CStr(rs("id_login")), True
             rs.MoveNext
         Wend
-	   end if
-	else
-			response.write "no data"
-			'response.redirect "../default.asp"
-	end if
+    else
+        response.write "no data"
+        'response.redirect "../default.asp"
+    end if
+end if
 	
 If request("action") = "edit" Then
     ' Define the update statement with parameters
