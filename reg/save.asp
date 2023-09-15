@@ -111,55 +111,86 @@ end if
 
 if request("action")="show" then
 
-	Dim rs, assignedEmployees, id_agenda, checkboxState
-	Set assignedEmployees = CreateObject("Scripting.Dictionary")
+    Dim rs, cmd, assignedEmployees, id_agenda, checkboxState
+    Set assignedEmployees = CreateObject("Scripting.Dictionary")
 
-	sql="SELECT * FROM tbl_agenda WHERE id_agenda=" & id_agenda 
-	'response.write sql
-	Set rs = Conn.Execute(sql)
-	If Not rs.EOF Then
-		moede_dato =rs("moede_dato")
-		moede_navn = rs("moede_navn")
-		emne = rs("emne")
-		beskrivelse = rs("beskrivelse")
-		noter = rs("noter")
-		additionalinfo = rs("additionalinfo")
-		id_meetingtype = rs("id_meetingtype")
-		id_afdeling = rs("id_afdeling")
-		id_login = rs("id_login")
-		moede_dato = rs("moede_dato")
-		moede_tidspunkt = rs("moede_tidspunkt")
-	
-		 sql = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=" & id_agenda
-		'response.write sql
-        Set rs = Conn.Execute(sql)
- 		While Not rs.EOF
+    ' Preparing the SQL command
+    Set cmd = CreateObject("ADODB.Command")
+    cmd.ActiveConnection = Conn
+    cmd.CommandText = "SELECT * FROM tbl_agenda WHERE id_agenda=?"
+    cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda) ' 3 is adInteger
+
+    ' Execute the command
+    Set rs = cmd.Execute
+
+    If Not rs.EOF Then
+        moede_dato = rs("moede_dato")
+        moede_navn = rs("moede_navn")
+        emne = rs("emne")
+        beskrivelse = rs("beskrivelse")
+        noter = rs("noter")
+        additionalinfo = rs("additionalinfo")
+        id_meetingtype = rs("id_meetingtype")
+        id_afdeling = rs("id_afdeling")
+        id_login = rs("id_login")
+        moede_dato = rs("moede_dato")
+        moede_tidspunkt = rs("moede_tidspunkt")
+
+        ' Preparing the SQL command for the next query
+        Set cmd = CreateObject("ADODB.Command")
+        cmd.ActiveConnection = Conn
+        cmd.CommandText = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=?"
+        cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda) ' 3 is adInteger
+
+        ' Execute the command
+        Set rs = cmd.Execute
+
+        While Not rs.EOF
             assignedEmployees.Add CStr(rs("id_login")), True
             rs.MoveNext
         Wend
-	   end if
-	else
-			response.write "no data"
-			'response.redirect "../default.asp"
-	end if
+    else
+        response.write "no data"
+        'response.redirect "../default.asp"
+    end if
+end if
 	
-If request("action")="edit" Then
-
-    ' Update the main tbl_agenda based on provided details
+If request("action") = "edit" Then
+    ' Define the update statement with parameters
     sql = "UPDATE tbl_agenda SET " & _
-    "moede_navn = '" & Replace(moede_navn, "'", "''") & "', " & _
-    "emne = '" & Replace(emne, "'", "''") & "', " & _
-    "beskrivelse = '" & Replace(beskrivelse, "'", "''") & "', " & _
-    "noter = '" & Replace(noter, "'", "''") & "', " & _
-    "additionalinfo = '" & Replace(additionalinfo, "'", "''") & "', " & _
-    "id_meetingtype = " & id_meetingtype & ", " & _
-    "id_afdeling = " & id_afdeling & ", " & _
-    "moede_dato = '" & moede_dato & "', " & _
-    "moede_tidspunkt = '" & moede_tidspunkt & "' " & _
-    "WHERE id_agenda = " & id_agenda
+        "moede_navn = ?, " & _
+        "emne = ?, " & _
+        "beskrivelse = ?, " & _
+        "noter = ?, " & _
+        "additionalinfo = ?, " & _
+        "id_meetingtype = ?, " & _
+        "id_afdeling = ?, " & _
+        "moede_dato = ?, " & _
+        "moede_tidspunkt = ? " & _
+        "WHERE id_agenda = ?"
+    
+    ' Create a command object and set its properties
+    Set cmd = Server.CreateObject("ADODB.Command")
+    Set cmd.ActiveConnection = Conn
+    cmd.CommandText = sql
+    cmd.CommandType = 1 ' adCmdText
+    ' Add parameters to the command object
+    cmd.Parameters.Append cmd.CreateParameter("@moede_navn", 202, 1, 255, moede_navn)
+    cmd.Parameters.Append cmd.CreateParameter("@emne", 202, 1, 255, emne)
+    cmd.Parameters.Append cmd.CreateParameter("@beskrivelse", 203, 1, -1, beskrivelse)
+    cmd.Parameters.Append cmd.CreateParameter("@noter", 203, 1, -1, noter)
+    cmd.Parameters.Append cmd.CreateParameter("@additionalinfo", 203, 1, -1, additionalinfo)
+    cmd.Parameters.Append cmd.CreateParameter("@id_meetingtype", 3, 1, , id_meetingtype)
+    cmd.Parameters.Append cmd.CreateParameter("@id_afdeling", 3, 1, , id_afdeling)
+    cmd.Parameters.Append cmd.CreateParameter("@moede_dato", 7, 1, 255, moede_dato)
+    cmd.Parameters.Append cmd.CreateParameter("@moede_tidspunkt", 202, 1, 255, moede_tidspunkt)
+    cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda)
+    
+    ' Execute the command
+    cmd.Execute
 
-    response.write sql
-    Conn.Execute(sql)
+    ' Release the command object
+    Set cmd = Nothing
 
     ' Dictionary for currently assigned users
     Set assignedEmployees = CreateObject("Scripting.Dictionary")

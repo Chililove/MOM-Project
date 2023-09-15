@@ -7,37 +7,58 @@
 	<BODY>
 		<% 
 		'Data modtaget fra form
-			id_login=request("id_login")
-			fornavn=request("fornavn")
-			efternavn=request("efternavn")
-			login=request("login")
-			password1=request("password1")
-			logintype=request("logintype")
-			id_logintype=request("id_logintype")
+			id_login = request("id_login")
+fornavn = request("fornavn")
+efternavn = request("efternavn")
+login = request("login")
+password1 = request("password1")
+logintype = request("logintype")
+id_logintype = request("id_logintype")
 
-		'Hvis man er ved at oprette ny bruger
-			if request("action")="opret" then
-				sql= "INSERT INTO tbllogin (fornavn,efternavn,password1,login, id_logintype) "
-				sql=sql + "VALUES ('" & fornavn & "','" & efternavn & "','" & password1 & "','" & login & "'," & id_logintype & ")"
-				'response.write sql
-				Conn.Execute(sql)
+' If creating a new user
+If request("action")="opret" Then
+    Dim cmdInsert
+    Set cmdInsert = Server.CreateObject("ADODB.Command")
+	cmdInsert.ActiveConnection = Conn
+    cmdInsert.CommandType = 1  'adCmdText
+    cmdInsert.CommandText = "INSERT INTO tbllogin (fornavn, efternavn, password1, login, id_logintype) VALUES (?, ?, ?, ?, ?)"
 
-				mobilnrcountry="45"& request("login")
-				message=  "Login til Onetimer med dit mobilnr og password:"& password1 &" Link: http://mom.main-solution.dk - SMS kan ikke besvares!"
-				
-					Set objXMLHTTP = Server.CreateObject("Microsoft.XMLHTTP")
-					objXMLHTTP.Open "Get", "http://46.32.62.21:8080/index.php/http_api/send_sms?login=DONGWFM&pass=Poli10et&to="& mobilnrcountry &"&message="& message &"&flash=1", False
-					objXMLHTTP.Send
-			end if
+    cmdInsert.Parameters.Append cmdInsert.CreateParameter("@fornavn", 202, 1, 50, fornavn)
+    cmdInsert.Parameters.Append cmdInsert.CreateParameter("@efternavn", 202, 1, 50, efternavn)
+    cmdInsert.Parameters.Append cmdInsert.CreateParameter("@password1", 202, 1, 50, password1)
+    cmdInsert.Parameters.Append cmdInsert.CreateParameter("@login", 202, 1, 50, login)
+    cmdInsert.Parameters.Append cmdInsert.CreateParameter("@id_logintype", 3, 1, , id_logintype)
 
-		'Hvis man er ved at rette en eksisterende bruger
-			if request("action")="ret" then
-				sql1= "UPDATE tbllogin SET id_logintype = "& request("id_logintype") &", login = '"& request("login") &"', fornavn = '"& request("fornavn") &"', efternavn = '"& efternavn &"', password1 = '"& password1 &"' where id_login = " & id_login &" "
-				'response.write sql 
-				Conn.Execute(sql1)
-			end if
+    cmdInsert.Execute()
+	response.write cmdInsert.CommandText
+    Set cmdInsert = Nothing
 
-		response.redirect "default.asp" %>
+    mobilnrcountry = "45" & login
+    message = "Login til Onetimer med dit mobilnr og password:" & password1 & " Link: http://mom.main-solution.dk - SMS kan ikke besvares!"
+    Set objXMLHTTP = Server.CreateObject("Microsoft.XMLHTTP")
+    objXMLHTTP.Open "Get", "http://46.32.62.21:8080/index.php/http_api/send_sms?login=DONGWFM&pass=Poli10et&to=" & mobilnrcountry & "&message=" & message & "&flash=1", False
+    objXMLHTTP.Send
+
+' If updating an existing user
+elseif request("action")="ret" then
+    Dim cmdUpdate
+	Set cmdUpdate = Server.CreateObject("ADODB.Command")
+	cmdUpdate.ActiveConnection = Conn
+    cmdUpdate.CommandType = 1 'adCmdText
+    cmdUpdate.CommandText = "UPDATE tbllogin SET id_logintype = ?, login = ?, fornavn = ?, efternavn = ?, password1 = ? WHERE id_login = ?"
+
+    cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@id_logintype", 3, 1, , id_logintype)
+    cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@login", 202, 1, 50, login)
+    cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@fornavn", 202, 1, 50, fornavn)
+    cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@efternavn", 202, 1, 50, efternavn)
+    cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@password1", 202, 1, 50, password1)
+    cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@id_login", 3, 1, , id_login)
+
+    cmdUpdate.Execute()
+    Set cmdUpdate = Nothing
+End If
+response.redirect "default.asp"
+%>
 	</BODY>
 </HTML>
 <!--#include file="../closedb.asp"-->
