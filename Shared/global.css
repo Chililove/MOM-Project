@@ -50,3 +50,31 @@
 #pdfPreview {
   border-color: black;
 }/*# sourceMappingURL=global.css.map */
+
+span.error {
+  color: red;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1.4;
+  margin-top: 0.5em;
+  display: block;
+}
+
+.error-tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.error-tooltip span.error {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  white-space: nowrap;
+  background-color: #f2dede;
+  color: #a94442;
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ebccd1;
+  z-index: 10;
+  margin-left: 10px; /* Space between the input and tooltip */
+}

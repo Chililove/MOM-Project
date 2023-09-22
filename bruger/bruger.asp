@@ -1,5 +1,6 @@
 ﻿<!--#include file="../login/protect.inc"-->
 <!--#include file="../opendb.asp"-->
+<!--#include file="../shared/global.css"-->
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -14,6 +15,35 @@
 
 
 	</head>
+	<style>
+span.error {
+    color: red;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.4;
+    margin-top: 0.5em;
+    display: block;
+}
+
+	.error-tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.error-tooltip span.error {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    white-space: nowrap;
+    background-color: #f2dede;
+    color: #a94442;
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ebccd1;
+    z-index: 10;
+    margin-left: 10px; /* Space between the input and tooltip */
+}
+	</style>
 	<body>
 		<div id="page1" data-role="page">
 		<!-- header -->
@@ -39,12 +69,12 @@
 									</tr>
 									<tr>
 										<td style="text-align: center">
-										<input name="login" type="text" size="25" 
+										<input name="login" type="text" size="25" style="min-width: 720px;"
 
 										<%if request("action")="ret" then%>
 										value="<%=login%>" 
 										<%end if%>
-										required ></td>
+										required></td>
 									</tr>
 								<!-- Fornavn -->
 									<tr>
@@ -53,7 +83,7 @@
 									</tr>
 									<tr>
 										<td style="text-align: center">
-										<input name="fornavn" type="text" size="25" value="<%=fornavn%>" required ></td>
+										<input name="fornavn" type="text" size="25" style="min-width: 720px;" value="<%=fornavn%>" required ></td>
 									</tr>
 								<!-- Efternavn -->
 									<tr>
@@ -62,7 +92,7 @@
 									</tr>
 									<tr>
 										<td style="text-align: center">
-										<input name="efternavn" type="text" size="25" value="<%=efternavn%>" required ></td>
+										<input name="efternavn" type="text" size="25" style="min-width: 720px;" value="<%=efternavn%>" required ></td>
 									</tr>
 								<!-- Password -->
 									<tr>
@@ -71,7 +101,7 @@
 									</tr>
 									<tr>
 										<td style="text-align: center">
-										<input name="password1" type="text" size="25" value="<%=password1%>" required ></td>
+										<input name="password1" type="text" size="25" style="min-width: 720px;" value="<%=password1%>" required ></td>
 									</tr>
 								<!-- Profil -->
 									<tr>
@@ -149,7 +179,18 @@ $(document).ready(function() {
             id_logintype: {
                 required: "Type af login er påkrævet."
             }
-        }
+        },
+		 errorElement: 'span',  // Specify the element for the error text
+        errorPlacement: function (error, element) {
+             if (element.prop('tagName').toLowerCase() !== 'select') {
+        var tooltipWrapper = $('<div class="error-tooltip"></div>');
+        element.wrap(tooltipWrapper);
+        error.insertAfter(element);
+    } else {
+        error.insertAfter(element); // Just place the error after the select without wrapping it.
+    }
+}
+
     });
 });
 
