@@ -207,6 +207,7 @@
 							<% else %>
 								value=""
 							<% end if %>
+							readonly
 						<% else %>
 								value=""
 						<% end if %> style="min-width: 360px;" >
@@ -217,6 +218,7 @@
 								<input type="time" name="moede_tidspunkt" 
 						<% if  request("action")="show" AND NOT IsNull(moede_tidspunkt) then  %>
 								value="<%=rs("moede_tidspunkt")%>"
+								readonly
 						<% else %>
 								value=""
 						<% end if %> style="min-width: 360px;">
@@ -505,10 +507,16 @@ End If %>
 $(document).ready(function() {
     // Custom method for validating dates If they are in the past you cannot create an agenda in the past.
     $.validator.addMethod("dateGreaterThanOrEqualToday", function(value, element) {
-        const currentDate = new Date();
+		const currentDate = new Date();
         currentDate.setHours(0, 0, 0, 0);
         const inputDate = new Date(value);
+		<%If request("action")="show" Then%>
+		return inputDate;
+		<%Else%>
+		
         return inputDate >= currentDate;
+		<%end if%>
+        
     }, "Venligst vælg en dato i fremtiden.");
 
     $('form').validate({
