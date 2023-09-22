@@ -18,6 +18,7 @@
 	margin-top: 0.5em;
 	width: 100%;
 	float: none;
+	display: none;
 	}
 	@media 
 	{
@@ -104,6 +105,20 @@
 	width: 50%;
 	}
 
+	select + .error-dot {
+    top: 10px;    /* adjust as needed */
+    right: 10px; /* adjust as needed */
+}
+ td{
+	position: relative;
+ }
+
+ .assigned-users{
+	position: static;
+ }
+
+ 
+
 .error-dot {
     display: inline-block;
     width: 18px;
@@ -125,9 +140,9 @@
     padding: 5px 8px;
     border-radius: 4px;
     position: absolute;
-    left: 120%;
-    bottom: 100%;
-    transform: translateX(-50%);
+    left: 50%;
+    bottom: 0%;
+    transform: translateX(0);
     white-space: nowrap;  /* keeps the tooltip text in one line */
     pointer-events: none; /* ensures the tooltip doesn't interfere with interactions */
     opacity: 0.8;
@@ -137,6 +152,35 @@
 .input-wrapper{
 	position: relative;
 }
+
+.select-error-dot {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    top: 22px;    
+    right: 34px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.select-error-dot:hover::before {
+    content: attr(title);
+    background-color: #333;
+    color: #fff;
+    padding: 3px 6px;
+    border-radius: 4px;
+    position: absolute;
+    left: 120%;
+    bottom: 100%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 100;
+}
+
 
 </style>
 </head>
@@ -359,11 +403,12 @@ response.write("Converted time: " & moede_tidspunkt & "<br>")
               <%  Wend %>
            <% end if %>
         </select>
+	
 					</td>
 				</tr>
 			<!-- Møde deltagere -->
 				<tr>
-					<td style="text-align: center;">
+					<td class="assigned-users" style="text-align: center;">
 						<div class="dropdown-wrapper">
 							<div class="dropdown">
 								<button type="button" class="toggle-button">Assign employees</button>
@@ -526,13 +571,38 @@ $(document).ready(function() {
 	 	
 		errorElement: 'span',
 errorPlacement: function (error, element) {
-    // Create the red dot and set its title attribute to the error message
-    var errorDot = $('<span class="error-dot" title=""></span>');
-    errorDot.attr('title', error.text());
-    
-    // Insert the red dot after the form element
-    errorDot.insertAfter(element);
-}
+    var errorMessage = error.text();
+
+    if (!$(element).next('.error-dot').length && !$(element).closest('td').find('.select-error-dot').length) {
+        if (element.is('select')) {
+            //create the red dot
+            var errorDot = $('<span class="select-error-dot" title=""></span>').attr('data-error', errorMessage);
+            errorDot.attr('title', errorMessage);
+            // Insert the red dot after the select element for selection
+            errorDot.appendTo(element.closest('td'));
+        } else {
+            // For non-select elements, create the normal red dot
+            var errorDot = $('<span class="error-dot" title=""></span>').attr('data-error', errorMessage);
+            errorDot.attr('title', errorMessage);
+            // Insert the red dot after the form element
+            errorDot.insertAfter(element);
+        }
+    }
+},
+highlight: function (element) {
+        // Show the error dot when there's an error.
+    },
+    unhighlight: function (element) {
+        // Hide the error dot when the error is corrected.
+        if ($(element).is('select')) {
+            $(element).closest('td').find('.select-error-dot').remove();
+        } else {
+            $(element).next('.error-dot').remove();
+        }
+    },
+	onkeyup: function(element) {
+        $(element).valid();
+    }
 });
     });
 </script>
