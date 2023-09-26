@@ -59,22 +59,22 @@
 	margin-right: 80px;
 	}
 	.dropdown-content {
-	visibility: hidden;
-	display: flex;
-	position: absolute;
-	left: 0;
-	width: 300px;
-	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	background-color: #f9f9f9;
-	overflow-y: auto;
-	z-index: 1;
-	max-height: 250px;
-	margin-left: 300px;
-	margin-top: -150px;
-	flex-wrap: wrap;
-	flex-direction: row;
-	padding: 6px;
+	border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    width: 400px; /* Set width of the dropdown */
+    max-height: 400px; /* Maximum height */
+    overflow-y: auto; /* Make it scrollable if content is too long */
+    position: absolute;
+    z-index: 10;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Optional: Adds a shadow to make it look like a pop-up */
+    padding: 15px; /* Optional: Adds some padding inside */
 	}
+
+.positioned-dropdown {
+    /* Adjusting the position if required */
+    left: auto !important;
+    right: 0 !important;
+}
 
 	label {
 	display: block;
@@ -82,9 +82,10 @@
 	}
 
 	.label-container {
-	width: 50%;
+		flex: 1 1 50%;
+	
 	box-sizing: border-box;
-	text-align: center;
+	padding: 5px;
 	}
 
 	.dropdown-wrapper {
@@ -181,6 +182,67 @@
     z-index: 100;
 }
 
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+    z-index: 1000;
+}
+
+.modal {
+   display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    max-height: 400px;
+    overflow-y: auto;
+    width: 80%;
+    max-width: 500px;
+}
+
+.close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+
+body.modal-open .modal {
+    display: block;
+}
+
+.close-modal {
+    display: inline-block;
+    padding: 0.5em 1em;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    cursor: pointer;
+    float: right; // Makes it appear at the top right corner of the modal.
+}
+
+.close-modal:hover {
+    background-color: #d32f2f;
+}
 
 </style>
 </head>
@@ -409,60 +471,75 @@ response.write("Converted time: " & moede_tidspunkt & "<br>")
 					</td>
 				</tr>
 			<!-- Møde deltagere -->
-				<tr>
-					<td class="assigned-users" style="text-align: center;">
-						<div class="dropdown-wrapper">
-							<div class="dropdown">
-								<button type="button" class="toggle-button">Assign employees</button>
-									<div class="dropdown-content">
-										<%  SQL3="Select * from tbllogin order by id_login"
-										set objRS3 = conn.Execute(SQL3)
-										while not objRS3.EOF 
-										%>
-											<div class="label-container">
-												<div class="user-list">
-													<label class="user-item">
-														<input type="checkbox" name="id_login" class="checkuser" value="<%=objRS3("id_login")%>"
-														<%If request("action")="show" Then%>
-														<%If assignedEmployees.Exists(CStr(objRS3("id_login"))) Then%>
-														checked="checked"
-														<%else%>
-														<%end if%>
-														<%End If%>>
-														<%=objRS3("login")%>
-													</label>
-												</div>
-											</div>
-										<% objRS3.MoveNext
-										Wend %>
-									</div>
-								</div>
-							</div>
-						</td>
+			<tr>
+    <td class="assigned-users" style="text-align: center;">
+
+        <!-- Button to open modal -->
+        <button type="button" class="toggle-button">Assign employees</button>
+
+        <!-- Modal -->
+        <div class="modal">
+            <div class="modal-content">
+
+                <!-- Close button -->
+                <span class="close-button">&times;</span>
+
+                <!-- Populate user list here -->
+                <div class="user-list">
+                    <%  SQL3="Select * from tbllogin order by id_login"
+                        set objRS3 = conn.Execute(SQL3)
+                        while not objRS3.EOF 
+                    %>
+                        <div class="label-container">
+                            <label class="user-item">
+                                <input type="checkbox" name="id_login" class="checkuser" value="<%=objRS3("id_login")%>"
+                                <%If request("action")="show" Then%>
+                                <%If assignedEmployees.Exists(CStr(objRS3("id_login"))) Then%>
+                                checked="checked"
+                                <%else%>
+                                <%end if%>
+                                <%End If%>>
+                                <%=objRS3("login")%>
+                            </label>
+                        </div>
+                    <% objRS3.MoveNext
+                    Wend %>
+                </div>
+            </div>
+        </div>
+    </td>
 					<script>
-						document.addEventListener("DOMContentLoaded", function() {
-							const toggleButton = document.querySelector(".toggle-button");
-							const dropdownContent = document.querySelector(".dropdown-content");
+   
+document.addEventListener("DOMContentLoaded", function() {
+    const modal = document.querySelector(".modal");
+    const modalContent = document.querySelector(".modal-content");
+    const toggleButton = document.querySelector(".toggle-button");
+    const closeButton = document.querySelector(".close-button");
 
-							toggleButton.addEventListener("click", function() {
+    // Function to show the modal
+    function showModal() {
+        modal.style.display = "block";
+    }
 
-								// visibility on/off
-								const isVisible = dropdownContent.style.visibility === 'visible';
+    // Function to close the modal
+    function closeModal() {
+        modal.style.display = "none";
+    }
 
-								dropdownContent.style.visibility = isVisible ? 'hidden' : 'visible';
-								if (!isVisible)
-								{
-									const rect = toggleButton.getBoundingClientRect();
-								dropdownContent.classList.add("positioned-dropdown");
-								dropdownContent.style.right = 0;
-								dropdownContent.style.left = `${rect.left + window.scrollX + rect.width}px`;
-								dropdownContent.style.top = `${rect.top + window.scrollY}px`;
-								}
-								else {
-									dropdownContent.classList.remove("positioned-dropdown");
-									 }
-							});
-						});
+    // Click event to show the modal
+    toggleButton.addEventListener("click", showModal);
+
+    // Click event to close the modal
+    closeButton.addEventListener("click", closeModal);
+
+    // Close the modal if clicked outside of it
+    window.addEventListener("click", function(event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+});
+
 					</script>
 				</tr>
 			<!-- Møde info -->
