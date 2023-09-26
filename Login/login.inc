@@ -3,9 +3,15 @@
 <%
 
 If Request.Form("Action") = "Login" Then
+' COmment: make a function for replace to call with all kinds of characters to move on submit to db.
+	'login = replaceglyf(reques.form("login"))
+
 	login=(request.form("login"))
 	password1=(request.form("password"))
 	login = (Trim(Replace(Request.Form("login"),"'","")))
+	login = (Trim(Replace(Request.Form("login"),"<","")))
+	login = (Trim(Replace(Request.Form("login"),"%","")))
+	login = (Trim(Replace(Request.Form("login"),">","")))
 	password1 = (Trim(Replace(Request.Form("password"),"'","")))
 
 		If Len(login) > 0 And Len(password1) > 0 Then
