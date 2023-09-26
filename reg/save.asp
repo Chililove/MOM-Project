@@ -224,7 +224,7 @@ If request("action") = "edit" Then
         End If
     Next
 	'this redirect to the default page -v-
-    'response.redirect "../default.asp"
+    response.redirect "../default.asp"
 	response.write "Edit action executed successfully."
 
 End If

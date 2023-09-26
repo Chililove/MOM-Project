@@ -1,5 +1,6 @@
 ﻿<!--#include file="../login/protect.inc"-->
 <!--#include file="../opendb.asp"-->
+<!--#include file="../shared/global.css"-->
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -10,8 +11,39 @@
 		<script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
 		<link type="text/css" rel="stylesheet" href="../jquery/jquery-te-1.4.0.css">
 		<script type="text/javascript" src="../jquery/jquery-te-1.4.0.min.js" charset="utf-8"></script>
-		<script src="../jquery/jquery.validate.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
+
 	</head>
+	<style>
+span.error {
+    color: red;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.4;
+    margin-top: 0.5em;
+    display: block;
+}
+
+	.error-tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.error-tooltip span.error {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    white-space: nowrap;
+    background-color: #f2dede;
+    color: #a94442;
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ebccd1;
+    z-index: 10;
+    margin-left: 10px; /* Space between the input and tooltip */
+}
+	</style>
 	<body>
 		<div id="page1" data-role="page">
 		<!-- header -->
@@ -37,12 +69,12 @@
 									</tr>
 									<tr>
 										<td style="text-align: center">
-										<input name="login" type="text" size="25" 
+										<input name="login" type="text" size="25" style="min-width: 720px;"
 
 										<%if request("action")="ret" then%>
 										value="<%=login%>" 
 										<%end if%>
-										required ></td>
+										required></td>
 									</tr>
 								<!-- Fornavn -->
 									<tr>
@@ -51,7 +83,7 @@
 									</tr>
 									<tr>
 										<td style="text-align: center">
-										<input name="fornavn" type="text" size="25" value="<%=fornavn%>" required ></td>
+										<input name="fornavn" type="text" size="25" style="min-width: 720px;" value="<%=fornavn%>" required ></td>
 									</tr>
 								<!-- Efternavn -->
 									<tr>
@@ -60,7 +92,7 @@
 									</tr>
 									<tr>
 										<td style="text-align: center">
-										<input name="efternavn" type="text" size="25" value="<%=efternavn%>" required ></td>
+										<input name="efternavn" type="text" size="25" style="min-width: 720px;" value="<%=efternavn%>" required ></td>
 									</tr>
 								<!-- Password -->
 									<tr>
@@ -69,7 +101,7 @@
 									</tr>
 									<tr>
 										<td style="text-align: center">
-										<input name="password1" type="text" size="25" value="<%=password1%>" required ></td>
+										<input name="password1" type="text" size="25" style="min-width: 720px;" value="<%=password1%>" required ></td>
 									</tr>
 								<!-- Profil -->
 									<tr>
@@ -102,10 +134,72 @@
 									</tr>
 								</table>
 								<input type="hidden" name="id_login" value="<%=id_login%>">
+
+								<script>
+$(document).ready(function() {
+    $('form').validate({
+        rules: {
+            login: {
+                required: true,
+                minlength: 2
+            },
+            fornavn: {
+                required: true,
+                minlength: 2
+            },
+            efternavn: {
+                required: true,
+                minlength: 2
+            },
+            password1: {
+                required: true,
+                minlength: 2
+            },
+            id_logintype: {
+                required: true
+            }
+        },
+        messages: {
+            login: {
+                required: "Login navn er påkrævet.",
+                minlength: "Login skal være mindst 2 tegn."
+            },
+            fornavn: {
+                required: "Fornavn er påkrævet.",
+                minlength: "Fornavn skal være mindst 2 tegn."
+            },
+            efternavn: {
+                required: "Efternavn er påkrævet.",
+                minlength: "Efternavn skal være mindst 2 tegn."
+            },
+            password1: {
+                required: "Password er påkrævet.",
+                minlength: "Password skal være mindst 2 tegn."
+            },
+            id_logintype: {
+                required: "Type af login er påkrævet."
+            }
+        },
+		 errorElement: 'span',  // Specify the element for the error text
+        errorPlacement: function (error, element) {
+             if (element.prop('tagName').toLowerCase() !== 'select') {
+        var tooltipWrapper = $('<div class="error-tooltip"></div>');
+        element.wrap(tooltipWrapper);
+        error.insertAfter(element);
+    } else {
+        error.insertAfter(element); // Just place the error after the select without wrapping it.
+    }
+}
+
+    });
+});
+
+</script>
 							</form>
 						
 						<!--#include file="../shared/footer.asp"-->
 		</div>
 	</body>
+
 </html>
 <!--#include file="../closedb.asp"-->

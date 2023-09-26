@@ -5,6 +5,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 <!--<link rel="stylesheet" href="jquery/jquery.mobile-1.4.5.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="../shared/global.css">
 <script src="../jquery/jquery-1.8.2.min.js"></script>
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>-->
@@ -17,6 +18,7 @@
 	margin-top: 0.5em;
 	width: 100%;
 	float: none;
+	display: none;
 	}
 	@media 
 	{
@@ -37,6 +39,16 @@
 	font-weight: bold;
 	padding-right: .25em;
 	}
+
+ span.error {
+    color: red;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.4;
+    margin-top: 0.5em;
+    display: block;
+}
+
 	}
 
 	.dropdown {
@@ -92,10 +104,88 @@
 	.checkuser{
 	width: 50%;
 	}
+
+	select + .error-dot {
+    top: 10px;    /* adjust as needed */
+    right: 10px; /* adjust as needed */
+}
+ td{
+	position: relative;
+ }
+
+ .assigned-users{
+	position: static;
+ }
+
+ 
+
+.error-dot {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    top: 10px;    /* half of its size to be outside of the input box */
+    right: 34px;  /* half of its size to be outside of the input box */
+    cursor: pointer;
+    z-index: 10;
+}
+
+
+.error-dot:hover::before {
+    content: attr(title);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 8px;
+    border-radius: 4px;
+    position: absolute;
+    left: 50%;
+    bottom: 0%;
+    transform: translateX(0);
+    white-space: nowrap;  /* keeps the tooltip text in one line */
+    pointer-events: none; /* ensures the tooltip doesn't interfere with interactions */
+    opacity: 0.8;
+    z-index: 100;
+}
+
+.input-wrapper{
+	position: relative;
+}
+
+.select-error-dot {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    top: 22px;    
+    right: 34px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.select-error-dot:hover::before {
+    content: attr(title);
+    background-color: #333;
+    color: #fff;
+    padding: 3px 6px;
+    border-radius: 4px;
+    position: absolute;
+    left: 120%;
+    bottom: 100%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 100;
+}
+
+
 </style>
 </head>
 <!--onSubmit="return validateForm();" if the function can be used it needs to live here in the form post -->
-<form data-ajax="false" method="post" 
+<form data-ajax="false" method="post"
 	
 	<% if request("action")="show" then %>
 	action='save.asp?action=edit&id_agenda=<%=request.QueryString("id_agenda")%>'  
@@ -109,6 +199,7 @@
 					<td style="text-align: center">
 						<div style="display:flex;">
 							<div style="width:50%">Start dato
+								<div class="input-wrapper">
 								<input type="date" name="moede_dato"
 						<% if  request("action")="show" then %>
 							<% if  NOT IsNull(rs("moede_dato")) then %>
@@ -116,17 +207,22 @@
 							<% else %>
 								value=""
 							<% end if %>
+							readonly
 						<% else %>
 								value=""
-						<% end if %> >
+						<% end if %> style="min-width: 360px;" >
+							</div>
 							</div>
 							<div style="width:50%">Start tid
+								<div class="input-wrapper">
 								<input type="time" name="moede_tidspunkt" 
 						<% if  request("action")="show" AND NOT IsNull(moede_tidspunkt) then  %>
 								value="<%=rs("moede_tidspunkt")%>"
+								readonly
 						<% else %>
 								value=""
-						<% end if %> >
+						<% end if %> style="min-width: 360px;">
+							</div>
 							</div>
 						</div>
 					</td>
@@ -196,6 +292,7 @@ response.write("Converted time: " & moede_tidspunkt & "<br>")
 
 				<tr>			
 					<td style="text-align: center">
+						<div class="input-wrapper">
 						<input name="moede_navn" type="text"
 					<% if  request("action")="show" AND NOT IsNull(moede_navn) then %>
 							value="<%=moede_navn%>"
@@ -203,11 +300,12 @@ response.write("Converted time: " & moede_tidspunkt & "<br>")
 							value=""
 					<% end if %>
 							style="width: 720px">
+							</div>
 					</td>
 				</tr>
 			<!-- Møde subject meetingtype dropdown -->
 				<tr>
-					<td style="text-align: center">
+					<td style="text-align: center;">
 						<select name="id_meetingtype" required >
 										<% SQL3="Select * from tblmeeting_type order by id_meetingtype"
 										set objRS3 = conn.Execute(SQL3) %>
@@ -241,7 +339,9 @@ response.write("Converted time: " & moede_tidspunkt & "<br>")
 				</tr>
 				<tr>
 					<td style="text-align: center">
+						<div class="input-wrapper">
 						<input name="emne" type="text" value="<%=emne%>" style="width: 720px">
+						</div>
 					</td>
 				</tr>
 			<!-- Møde beskrivelse -->
@@ -252,7 +352,9 @@ response.write("Converted time: " & moede_tidspunkt & "<br>")
 				</tr>
 				<tr>
 					<td style="text-align: center">
-						<textarea name="beskrivelse" rows="4" cols="50"><%=beskrivelse%></textarea>
+						<div class="input-wrapper">
+						<textarea name="beskrivelse" rows="4" cols="50" style="min-width: 720px;"><%=beskrivelse%></textarea>
+						</div>
 					</td>
 				</tr>
 			<!-- Møde note -->
@@ -263,7 +365,9 @@ response.write("Converted time: " & moede_tidspunkt & "<br>")
 				</tr>
 				<tr>
 					<td style="text-align: center">
-						<textarea name="noter" rows="4" cols="50"><%=noter%></textarea>
+						<div class="input-wrapper">
+						<textarea name="noter" rows="4" cols="50" style="min-width: 720px;"><%=noter%></textarea>
+						</div>
 					</td>
 				</tr>
 			<!-- Møde afdeling -->
@@ -301,11 +405,12 @@ response.write("Converted time: " & moede_tidspunkt & "<br>")
               <%  Wend %>
            <% end if %>
         </select>
+	
 					</td>
 				</tr>
 			<!-- Møde deltagere -->
 				<tr>
-					<td style="text-align: center;">
+					<td class="assigned-users" style="text-align: center;">
 						<div class="dropdown-wrapper">
 							<div class="dropdown">
 								<button type="button" class="toggle-button">Assign employees</button>
@@ -368,7 +473,9 @@ response.write("Converted time: " & moede_tidspunkt & "<br>")
 				</tr>
 				<tr>
 					<td style="text-align: center">
+						<div class="input-wrapper">
 						<textarea name="additionalinfo" rows="4" cols="50"><%=additionalinfo%></textarea>
+						</div>
 					</td>
 				</tr>
 			<!-- Møde submit btn -->
@@ -398,23 +505,36 @@ End If %>
 			</table>
 <script>
 $(document).ready(function() {
+    // Custom method for validating dates If they are in the past you cannot create an agenda in the past.
+    $.validator.addMethod("dateGreaterThanOrEqualToday", function(value, element) {
+		const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+        const inputDate = new Date(value);
+		<%If request("action")="show" Then%>
+		return inputDate;
+		<%Else%>
+		
+        return inputDate >= currentDate;
+		<%end if%>
+        
+    }, "Venligst vælg en dato i fremtiden.");
+
     $('form').validate({
         rules: {
             moede_dato: {
                 required: true,
-                dateISO: true
-				// Validating the date is in ISO format (YYYY-MM-DD)
+                dateISO: true,
+                dateGreaterThanOrEqualToday: true
             },
             moede_tidspunkt: {
                 required: true
-                // It is possible to validate the time format if needed
             },
             moede_navn: {
                 required: true,
                 minlength: 2
             },
             id_meetingtype: {
-                required: false
+                required: true
             },
             emne: {
                 required: true,
@@ -424,79 +544,76 @@ $(document).ready(function() {
                 required: true,
                 minlength: 5
             },
-            noter: {
-                required: false
-            },
             id_afdeling: {
-                required: false
-            },
-            additionalinfo: {
-                required: false
+                required: true
             }
         },
         messages: {
+            moede_dato: {
+                required: "Dato er påkrævet.",
+                dateISO: "Dette er ikke en dato.",
+                dateGreaterThanOrEqualToday: "Vælg dagens dato eller en dato i fremtiden."
+            },
+            moede_tidspunkt: {
+                required: "Møde tidspunkt er påkrævet."
+            },
+            moede_navn: {
+                required: "Møde navn er påkrævet.",
+                minlength: "Møde navn skal være mindst 2 tegn."
+            },
+            id_meetingtype: {
+                required: "Type af møde er påkrævet."
+            },
+            emne: {
+                required: "Emne er påkrævet.",
+                minlength: "Emne skal være mindst 2 tegn."
+            },
+            beskrivelse: {
+                required: "Beskrivelse er påkrævet.",
+                minlength: "Beskrivelse skal være mindst 5 tegn."
+            },
+            id_afdeling: {
+                required: "Valg af afdeling er påkrævet."
+            }
+        },
+	 	
+		errorElement: 'span',
+errorPlacement: function (error, element) {
+    var errorMessage = error.text();
 
+    if (!$(element).next('.error-dot').length && !$(element).closest('td').find('.select-error-dot').length) {
+        if (element.is('select')) {
+            //create the red dot
+            var errorDot = $('<span class="select-error-dot" title=""></span>').attr('data-error', errorMessage);
+            errorDot.attr('title', errorMessage);
+            // Insert the red dot after the select element for selection
+            errorDot.appendTo(element.closest('td'));
+        } else {
+            // For non-select elements, create the normal red dot
+            var errorDot = $('<span class="error-dot" title=""></span>').attr('data-error', errorMessage);
+            errorDot.attr('title', errorMessage);
+            // Insert the red dot after the form element
+            errorDot.insertAfter(element);
         }
-    });
+    }
+},
+highlight: function (element) {
+        // Show the error dot when there's an error.
+    },
+    unhighlight: function (element) {
+        // Hide the error dot when the error is corrected.
+        if ($(element).is('select')) {
+            $(element).closest('td').find('.select-error-dot').remove();
+        } else {
+            $(element).next('.error-dot').remove();
+        }
+    },
+	onkeyup: function(element) {
+        $(element).valid();
+    }
 });
-/*
-function validateForm() {
-    var errorMsg = "";
-    var moede_dato = document.querySelector("[name='moede_dato']").value;
-    var moede_tidspunkt = document.querySelector("[name='moede_tidspunkt']").value;
-    var moede_navn = document.querySelector("[name='moede_navn']").value;
-	var moede_tidspunkt = document.querySelector("[name='moede_navn']").value;
-    var meetingType = document.querySelector("[name='id_meetingtype']").value;
-    var emne = document.querySelector("[name='emne']").value;
-	var beskrivelse = document.querySelector("[name='beskrivelse']").value;
-	var afdeling = document.querySelector("[name='id_afdeling']").value;
-
-
- 	if (!startDate) {
-       errorMsg += "Start date is required.<br>";
-    }
-
-    if (!startTime) {
-       errorMsg += "Start time is required.<br>";
-   }
-
-	 if (!moede_dato) {
-        errorMsg += "Dato for møde er påkrævet.<br>";
-    }
-	
-	if (!moede_tidspunkt) {
-        errorMsg += "Møde tidspunkt er påkrævet.<br>";
-    }
-
-    if (!moede_navn) {
-        errorMsg += "Møde navn er påkrævet.<br>";
-    }
-
-    if (!meetingType) {
-        errorMsg += "Type af møde er påkrævet.<br>";
-    }
-
-    if (!emne) {
-        errorMsg += "Emne er påkrævet-<br>";
-    }
-
- if (!beskrivelse) {
-        errorMsg += "Beskrivelse er påkrævet.<br>";
-    }
-
-	if (!afdeling) {
-        errorMsg += "Valg af afdeling er påkrævet.<br>";
-    }
-
-    if (errorMsg) {
-        document.getElementById("errorMessages").innerHTML = errorMsg;
-        return false; // preventing submit
-    }
-    return true; // allowing submit
-}
-*/
+    });
 </script>
-
 		</form>
 		
 

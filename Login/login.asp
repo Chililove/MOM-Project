@@ -23,38 +23,22 @@ Session("user")=""
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>OneTimer</title>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link rel="stylesheet" href="../jquery/jquery.mobile-1.4.5.css" />
 <link rel="stylesheet" href="../shared/global.css" />
 <script src="../jquery/jquery-1.8.2.min.js"></script>
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
-<script>
-function openPopup() {
-				document.getElementById('popup').style.display = 'block';
-			}
-function closePopup() {
-    document.getElementById('popup').style.display = 'none';
-}
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
 
 </head>
-<% if s=1 then %>
-<body onload="openPopup()">         
-<% else %>
-<body>         
-<% end if %>
+
 <div id='fpimg'>
         <img src="Game-On.png"/>
 </div>
 
-    <div id="popup" class="popup">
-        <div class="popup-content">
-            <p>  <%=strERR%> </p>
-            <button onclick="closePopup()">OK</button>
-        </div>
-    </div>
 <form id="loginform" method="POST" action="login.asp" target="_top">
 <div data-role="footer" data-id="footer" data-position="fixed">
 <h1>MoM Login</h1>  
@@ -75,12 +59,18 @@ function closePopup() {
         </tr>-->
 				<tr>
 								<td>
+                								<div class="input-wrapper">
+
 <input name="login"  type="text" value="" placeholder="Login">
+</div>
 </td>
 				</tr>
 				<tr>
 								<td>
+                								<div class="input-wrapper">
+
 <input name="password"  type="password" value="" id="password" placeholder="Password">
+</div>
 	<span onclick="togglePasswordVisibility()" style="cursor: pointer; padding: 5px 5px; color: grey; opacity: 60%; border: 1px solid #ccc; border-radius: 5px;" id="showHideButton" >Show password inputs</span>
 	
 	<script>
@@ -121,7 +111,69 @@ function closePopup() {
 				</tr>
 </table>
 </form>
+
 </form>
+<script>
+$(document).ready(function() {
+    $('form').validate({
+        rules: {
+            login: {
+                required: true,
+                minlength: 2
+            },
+            password: {
+                required: true,
+                minlength: 2
+            }  
+        },
+        messages: {
+            login: {
+                required: "Login er påkrævet.",
+                minlength: "Login skal have mindst 2 tegn"
+            },
+            password: {
+                required: "Password er påkrævet.",
+                minlength: "Password skal have mindst 2 tegn"
+            }
+        },
+	 	
+		errorElement: 'span',
+errorPlacement: function (error, element) {
+    var errorMessage = error.text();
+
+    if (!$(element).next('.error-dot').length && !$(element).closest('td').find('.select-error-dot').length) {
+        if (element.is('select')) {
+            //create the red dot
+            var errorDot = $('<span class="select-error-dot" title=""></span>').attr('data-error', errorMessage);
+            errorDot.attr('title', errorMessage);
+            // Insert the red dot after the select element for selection
+            errorDot.appendTo(element.closest('td'));
+        } else {
+            // For non-select elements, create the normal red dot
+            var errorDot = $('<span class="error-dot" title=""></span>').attr('data-error', errorMessage);
+            errorDot.attr('title', errorMessage);
+            // Insert the red dot after the form element
+            errorDot.insertAfter(element);
+        }
+    }
+},
+highlight: function (element) {
+        // Show the error dot when there's an error.
+    },
+    unhighlight: function (element) {
+        // Hide the error dot when the error is corrected.
+        if ($(element).is('select')) {
+            $(element).closest('td').find('.select-error-dot').remove();
+        } else {
+            $(element).next('.error-dot').remove();
+        }
+    },
+	onkeyup: function(element) {
+        $(element).valid();
+    }
+});
+    });
+</script>
 <!-- wrap inside DOMcontentloaded to ensure script runs after page has been fully loaded safe manipulation of DOM elements -->
 <script> document.addEventListener('DOMContentLoaded', function() {
   var inputs = document.querySelectorAll('input[type="text"], input[type="password"]');
@@ -180,6 +232,35 @@ label {
   font-weight: 600;
   margin-bottom: 5px;
 }
+label.error {
+	color: red;
+	font-size: 16px;
+	font-weight: normal;
+	line-height: 1.4;
+	margin-top: 0.5em;
+	width: 100%;
+	float: none;
+	display: none;
+	}
+	@media 
+	{
+	label.error {
+	margin-left: 0;
+	display: block;
+	}
+	}
+	@media 
+	{
+	label.error {
+	display: inline-block;
+	margin-left: 22%;
+}
+	}
+	em {
+	color: red;
+	font-weight: bold;
+	padding-right: .25em;
+	}
 
 input[type="text"],
 input[type="password"] {
@@ -230,6 +311,47 @@ input[type="submit"][data-icon="phone"]:hover {
 #logo{
 	color: black;
 
+}
+span.error {
+    color: red;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.4;
+    margin-top: 0.5em;
+    display: block;
+}
+.error-dot {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    top: 14px;    /* half of its size to be outside of the input box */
+    right: 10px;  /* half of its size to be outside of the input box */
+    cursor: pointer;
+    z-index: 10;
+}
+
+
+.error-dot:hover::before {
+    content: attr(title);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 8px;
+    border-radius: 4px;
+    position: absolute;
+    left: 50%;
+    bottom: 0%;
+    transform: translateX(0);
+    white-space: nowrap;  /* keeps the tooltip text in one line */
+    pointer-events: none; /* ensures the tooltip doesn't interfere with interactions */
+    opacity: 0.8;
+    z-index: 100;
+}
+
+.input-wrapper{
+	position: relative;
 }
 </style>
 
