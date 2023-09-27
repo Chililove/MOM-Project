@@ -6,17 +6,17 @@
 </HEAD>
 	<BODY>
 		<% 
-		'Data modtaget fra form
-			id_login = Trim(request("id_login"))
-			fornavn = Trim(request("fornavn"))
-			efternavn = Trim(request("efternavn"))
-			login = Trim(request("login"))
-            mailadresse = Trim(request("mailadresse"))
-			password1 = Trim(request("password1"))
-			logintype = Trim(request("logintype"))
-			id_logintype = Trim(request("id_logintype"))
+    ' Data modtaget fra form
+		id_login = Trim(request("id_login"))
+		fornavn = Trim(request("fornavn"))
+		efternavn = Trim(request("efternavn"))
+		login = Trim(request("login"))
+        mailadresse = Trim(request("mailadresse"))
+		password1 = Trim(request("password1"))
+		logintype = Trim(request("logintype"))
+		id_logintype = Trim(request("id_logintype"))
 
-' Validation pattern init
+    ' Validation pattern init
 	Function IsValidInput(str, pattern)
 		Dim regEx
 		Set regEx = New RegExp
@@ -28,16 +28,9 @@
 	' Validate inputs using IsValidInput function
 	Dim pattern
 	pattern = "^[a-zA-Z0-9åøæÅØÆ@]+$" ' pattern
-    
-
-    
-
-
-
 
 	If Not IsValidInput(login, pattern) Or Not IsValidInput(password1, pattern) Or Not IsValidInput(mailadresse, patternEmail)Then
 		Response.Write("Ugyldigt input fundet")
-        Response.Write("Checking email: " & mailadresse & "<br>")
 		Response.End
 	End If
 
@@ -50,7 +43,6 @@
   '  HashPassword = objCrypt.Value
   '  Set objCrypt = Nothing
 'End Function
-
 
 	'password1Hashed = HashPassword(password1)
 
@@ -100,7 +92,6 @@ elseif request("action")="ret" then
 End If
 response.redirect "default.asp"
 %>
-
 	</BODY>
 </HTML>
 <!--#include file="../closedb.asp"-->
