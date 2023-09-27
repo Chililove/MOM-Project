@@ -83,7 +83,9 @@ span.error {
 									</tr>
 									<tr>
 										<td style="text-align: center">
+										<div class="input-wrapper">
 										<input name="fornavn" type="text" size="25" style="min-width: 720px;" value="<%=fornavn%>" required ></td>
+										</div>
 									</tr>
 								<!-- Efternavn -->
 									<tr>
@@ -92,16 +94,33 @@ span.error {
 									</tr>
 									<tr>
 										<td style="text-align: center">
+									<div class="input-wrapper">
 										<input name="efternavn" type="text" size="25" style="min-width: 720px;" value="<%=efternavn%>" required ></td>
+									</div>
+									</tr>
+									<!--Email-->
+									<tr>
+										<td style="text-align: center">
+										Email</td>
+									</tr>
+									<tr>
+										<td style="text-align: center">
+									<div class="input-wrapper">
+										<input name="mailadresse" type="text" size="25" style="min-width: 720px;" value="<%=mailadresse%>" required ></td>
+									</div>
 									</tr>
 								<!-- Password -->
+
 									<tr>
 										<td style="text-align: center">
 										Password:</td>
 									</tr>
 									<tr>
 										<td style="text-align: center">
+										<div class="input-wrapper">
 										<input name="password1" type="text" size="25" style="min-width: 720px;" value="<%=password1%>" required ></td>
+									</div>
+									
 									</tr>
 								<!-- Profil -->
 									<tr>
@@ -137,6 +156,10 @@ span.error {
 
 								<script>
 $(document).ready(function() {
+	$.validator.addMethod("patternEmail", function(value, element) {
+    return this.optional(element) || /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/.test(value);
+}, "Dette er ikke en gyldig email.");
+
     $('form').validate({
         rules: {
             login: {
@@ -150,6 +173,13 @@ $(document).ready(function() {
             efternavn: {
                 required: true,
                 minlength: 2
+            },
+			mailadresse: {
+                required: true,
+                minlength: 2,
+				email: true,
+				patternEmail: true
+
             },
             password1: {
                 required: true,
@@ -171,6 +201,12 @@ $(document).ready(function() {
             efternavn: {
                 required: "Efternavn er påkrævet.",
                 minlength: "Efternavn skal være mindst 2 tegn."
+            },
+			 mailadresse: {
+                required: "Email er påkrævet.",
+                minlength: "Email skal være mindst 2 tegn.",
+				email: "Dette er ikke en gyldig email.",
+				patternEmail: "Dette er ikke en gyldig email."
             },
             password1: {
                 required: "Password er påkrævet.",

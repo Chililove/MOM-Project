@@ -32,6 +32,8 @@ set rs=conn.execute(sql)
 								<th style="width: 25%">Fornavn</th>
 
 								<th style="width: 25%">Efternavn</th>
+								
+								<th style="width: 25%">Email</th>
 
 								<th style="width: 25%">Profil</th>
 
@@ -52,6 +54,8 @@ do while not rs.eof
 								<td style="width: 25%"><%=rs("fornavn")%></td>
 			
 								<td style="width: 25%"><%=rs("efternavn")%></td>
+
+								<td style="width: 25%"><%=rs("mailadresse")%></td>
 			
 								<td style="width: 25%"><%=rs("logintype")%></td>
 			
