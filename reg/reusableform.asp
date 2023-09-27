@@ -82,10 +82,12 @@
 	}
 
 	.label-container {
-		flex: 1 1 50%;
-	
+		flex: 0 0 50%;
+		margin-bottom: 10px;
+		
+	/*flex: 1 1 50%;
 	box-sizing: border-box;
-	padding: 5px;
+	padding: 5px;*/
 	}
 
 	.dropdown-wrapper {
@@ -99,11 +101,18 @@
 	}
 
 	.user-item{
-	width: 80px;
+		display: flex;
+		align-items: center;
+	width: 60%;
 	}
 
+	.user-list-container{
+		  display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+	}
 	.checkuser{
-	width: 50%;
+		align-items: center;
 	}
 
 	select + .error-dot {
@@ -118,7 +127,72 @@
 	position: static;
  }
 
- 
+ .input-wrapper{
+	position: relative;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+    z-index: 1000;
+}
+
+.modal {
+   display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+
+}
+
+.modal-content {
+    position: absolute;
+	align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    max-height: 400px;
+    overflow-y: auto;
+    width: 80%;
+    max-width: 500px;	
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+body.modal-open .modal {
+    display: block;
+}
+
+.close-modal {
+    display: inline-block;
+    padding: 0.5em 1em;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    cursor: pointer;
+    float: right; // Makes it appear at the top right corner of the modal.
+}
+
+.close-modal:hover {
+    background-color: #d32f2f;
+}
 
 .error-dot {
     display: inline-block;
@@ -150,9 +224,6 @@
     z-index: 100;
 }
 
-.input-wrapper{
-	position: relative;
-}
 
 .select-error-dot {
     display: inline-block;
@@ -182,73 +253,9 @@
     z-index: 100;
 }
 
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0,0,0,0.5);
-    display: none;
-    z-index: 1000;
-}
-
-.modal {
-   display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 1000;
-
-}
-
-.modal-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    max-height: 400px;
-    overflow-y: auto;
-    width: 80%;
-    max-width: 500px;
-}
-
-.close-button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    cursor: pointer;
-}
-
-body.modal-open .modal {
-    display: block;
-}
-
-.close-modal {
-    display: inline-block;
-    padding: 0.5em 1em;
-    background-color: #f44336;
-    color: white;
-    border: none;
-    cursor: pointer;
-    float: right; // Makes it appear at the top right corner of the modal.
-}
-
-.close-modal:hover {
-    background-color: #d32f2f;
-}
-
 </style>
 </head>
-<!--onSubmit="return validateForm();" if the function can be used it needs to live here in the form post -->
 <form data-ajax="false" method="post"
-	
 	<% if request("action")="show" then %>
 	action='save.asp?action=edit&id_agenda=<%=request.QueryString("id_agenda")%>'  
 	<% else %>
@@ -484,7 +491,8 @@ response.write("Converted time: " & moede_tidspunkt & "<br>")
                 <!-- Close button -->
                 <span class="close-button">&times;</span>
 
-                <!-- Populate user list here -->
+                <!-- Populating user list -->
+			<div class="user-list-container">
                 <div class="user-list">
                     <%  SQL3="Select * from tbllogin order by id_login"
                         set objRS3 = conn.Execute(SQL3)
@@ -499,12 +507,15 @@ response.write("Converted time: " & moede_tidspunkt & "<br>")
                                 <%else%>
                                 <%end if%>
                                 <%End If%>>
-                                <%=objRS3("login")%>
+                                 <%=objRS3("login")%>
+								 <br>
+								 <%=objRS3("fornavn")%>&nbsp;<%=objRS3("efternavn")%>
                             </label>
                         </div>
                     <% objRS3.MoveNext
                     Wend %>
                 </div>
+				</div>
             </div>
         </div>
     </td>
@@ -574,9 +585,8 @@ document.addEventListener("DOMContentLoaded", function() {
 							Else
 								' Just one checkbox was selected
 								Response.Write("Selected User ID: " & selectedUsers & "<br />")
-								
 							End If
-End If %>
+					End If %>
 					</td>
 				</tr>
 			</table>
