@@ -1,5 +1,6 @@
 <!--#include file="../login/protect.inc"-->
 <!--#include file="../opendb.asp"-->
+On Error Resume Next
 <HTML>
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -228,6 +229,47 @@ If request("action") = "edit" Then
 	response.write "Edit action executed successfully."
 
 End If
+
+Dim cmd, sql, action, id_agenda
+
+action = Request("action")
+id_agenda = Request("id_agenda")
+
+If Request("action") = "delete" Then
+ If IsEmpty(id_agenda) Or IsNull(id_agenda) Or Not IsNumeric(id_agenda) Then
+        Response.Write("error")
+        Exit Sub
+    Else
+        id_agenda = CInt(id_agenda)
+    End If
+    ' id_agenda should been validated as shown above
+
+    ' deleting from the tblassign_users_to_agenda table
+    Set cmd = Server.CreateObject("ADODB.Command")
+    cmd.ActiveConnection = conn
+    sql = "DELETE FROM tblassign_users_to_agenda WHERE id_agenda = ?"
+    cmd.CommandText = sql
+    cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda) ' 3 is adInteger
+    cmd.Execute
+
+    ' Then, delete from the tbl_agenda table
+    Set cmd = Server.CreateObject("ADODB.Command")
+    cmd.ActiveConnection = conn
+    sql = "DELETE FROM tbl_agenda WHERE id_agenda = ?"
+    cmd.CommandText = sql
+    cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda)
+    cmd.Execute
+
+    If Err.Number <> 0 Then
+    Response.Write("Error: " & Err.Description)
+End If
+
+End If
+
+
+
+
+
 
 '****Start new job existing day
 'sql="UPDATE tbl_agenda SET moede_navn='" & moede_navn & "', emne='" & emne & "', beskrivelse='" & beskrivelse & "',noter='" & noter & "', additionalinfo='" & additionalinfo & "', id_meetingtype='" & id_meetingtype & "', id_afdeling='" & id_afdeling & "',id_login='" & id_login & "', moede_dato='" & moede_dato & "',
