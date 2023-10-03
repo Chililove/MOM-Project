@@ -35,18 +35,17 @@ Session("user")=""
 
 </head>
 
-<div id='fpimg'>
+  <div id='fpimg'>
         <img src="Game-On.png"/>
-</div>
+  </div>
 
 <form id="loginform" method="POST" action="login.asp" target="_top">
-<div data-role="footer" data-id="footer" data-position="fixed">
-<h1>MoM Login</h1>  
-</div>
+  <div data-role="footer" data-id="footer" data-position="fixed">
+    <h1>MoM Login</h1>  
+  </div>
 
     
 <table align="center" >
-				
        <!-- <tr>
           <%' If LEN(strERR)<1 Then %>
             <td>
@@ -57,57 +56,49 @@ Session("user")=""
           <%' End If %>
             </td>
         </tr>-->
-				<tr>
-								<td>
-                								<div class="input-wrapper">
+	<tr>
+			<td>
+          <div class="input-wrapper">
+            <input name="login"  type="text" value="" placeholder="Login">
+          </div>
+      </td>
+	</tr>
+	<tr>
+			<td>
+          <div class="input-wrapper">
+            <input name="password"  type="password" value="" id="password" placeholder="Password">
+          </div>
 
-<input name="login"  type="text" value="" placeholder="Login">
-</div>
-</td>
-				</tr>
-				<tr>
-								<td>
-                								<div class="input-wrapper">
-
-<input name="password"  type="password" value="" id="password" placeholder="Password">
-</div>
 	<span onclick="togglePasswordVisibility()" style="cursor: pointer; padding: 5px 5px; color: grey; opacity: 60%; border: 1px solid #ccc; border-radius: 5px;" id="showHideButton" >Show password inputs</span>
-	
+
 	<script>
-	function togglePasswordVisibility() {
-    var passwordInput = document.getElementById('password');
-	var showSpan = event.target;
+	  function togglePasswordVisibility() {
+      var passwordInput = document.getElementById('password');
+	    var showSpan = event.target;
     if (passwordInput.type === "password") {
-      passwordInput.type = "text";
-	  showSpan.textContent= "Hide";
+        passwordInput.type = "text";
+	      showSpan.textContent= "Hide";
 	  
     } else {
-      passwordInput.type = "password";
-	  showSpan.textContent= "Show";
+        passwordInput.type = "password";
+	      showSpan.textContent= "Show";
     }
   }
 	</script>
 
-	</td>
-		</tr>
-			<tr>
-				<td>
-	<input type="submit" value="Login" data-theme="a" data-icon="check" name="Action">
-	</td>
-		</tr>
-			<tr>
-				<td >
-		<form method="POST" action="login_glemt.asp" target="_top">
-<script>
-
-</script>
+	    </td>
+	</tr>
+	<tr>
+			<td>
+	      <input type="submit" value="Login" data-theme="a" data-icon="check" name="Action">
+	    </td>
+	</tr>
+	<tr>
+			<td >
+		    <form method="POST" action="login_glemt.asp" target="_top">
 
 <input type="submit" value="Lost Password" data-theme="a" data-icon="phone" name="Action" >
-<!--<button id="knap1" class="knap">Cancel</button>
-<button id="knap2"  class="knap">Cancel</button>
-<button id="knap3"  class="knap">Cancel</button>
-<a href="hej" class="nodecor">HEj</a>-->
-</td>
+      </td>
 				</tr>
 </table>
 </form>

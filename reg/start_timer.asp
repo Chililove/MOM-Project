@@ -29,31 +29,9 @@
 			<%end if%>
 				<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
 		</div>
-
 <!--#include file="../reg/reusableform.asp"-->
-
 <!--#include file="../shared/footer.asp"-->
 	</div>
 </body>
-
-<script>
-// $( "#page1" ).on( "pageinit", function() {
-// 	$( "form" ).validate({
-// 		rules: {
-// 			meeting_name: {
-// 				required: true
-// 		/},
-// 			id_meetingtype: {
-// 				required: true
-// 			}
-// 		},
-// 		errorPlacement: function( error, element ) {
-// 		error.insertAfter( element.parent() );
-// 		// error.appendTo('#errordiv');
-		
-// 		}
-// 	});
-// });
-</script>
 </html>
 <!--#include file="../closedb.asp"-->

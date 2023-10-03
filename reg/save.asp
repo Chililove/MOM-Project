@@ -249,7 +249,7 @@ if request("action")="slut" then
 	sql="UPDATE tblregistrering SET sluttid = '"& sluttid &"' where id_registrering="& request("id_registrering")&"  "
 	Conn.Execute(sql)
 end if
-'response.redirect "../default.asp"
+response.redirect "../default.asp"
 %>
 </BODY>
 </HTML>

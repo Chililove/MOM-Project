@@ -121,7 +121,6 @@
 			<%end if%>
 <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
 	</div>
-
 	<!--<div id='fpimg'>
         <img src="..\Login\Game-On.png"/>
 </div>-->
@@ -133,31 +132,10 @@
 	' id_agenda= rs("id_agenda")
 	id_agenda1= request.QueryString("id_agenda")
 %>
-<!--#include file="../reg/reusableform.asp"-->		
-		
+<!--#include file="../reg/reusableform.asp"-->			
 <!--#include file="../shared/footer.asp"--></div>
 
 </body>
-
-<script>
-// $( "#page1" ).on( "pageinit", function() {
-// 	$( "form" ).validate({
-// 		rules: {
-// 			meeting_name: {
-// 				required: true
-// 		/},
-// 			id_meetingtype: {
-// 				required: true
-// 			}
-// 		},
-// 		errorPlacement: function( error, element ) {
-// 		error.insertAfter( element.parent() );
-// 		// error.appendTo('#errordiv');
-		
-// 		}
-// 	});
-// });
-</script>
 </html>
 
 

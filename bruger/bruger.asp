@@ -12,8 +12,6 @@
 		<link type="text/css" rel="stylesheet" href="../jquery/jquery-te-1.4.0.css">
 		<script type="text/javascript" src="../jquery/jquery-te-1.4.0.min.js" charset="utf-8"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-
-
 	</head>
 	<style>
 span.error {
@@ -103,61 +101,70 @@ span.error {
 					</tr>
 									<!--Email-->
 					<tr>
-										<td style="text-align: center">
-										Email</td>
-									</tr>
-									<tr>
-										<td style="text-align: center">
-									<div class="input-wrapper">
-										<input name="mailadresse" type="text" size="25" style="min-width: 720px;" value="<%=mailadresse%>" required ></td>
-									</div>
-									</tr>
+						<td style="text-align: center">
+										Email
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center">
+							<div class="input-wrapper">
+								<input name="mailadresse" type="text" size="25" style="min-width: 720px;" value="<%=mailadresse%>" required >
+						</td>
+							</div>
+					</tr>
 								<!-- Password -->
 
-									<tr>
-										<td style="text-align: center">
-										Password:</td>
-									</tr>
-									<tr>
-										<td style="text-align: center">
-										<div class="input-wrapper">
-										<input name="password1" type="text" size="25" style="min-width: 720px;" value="<%=password1%>" required ></td>
-									</div>
+					<tr>
+						<td style="text-align: center">
+										Password
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center">
+							<div class="input-wrapper">
+								<input name="password1" type="text" size="25" style="min-width: 720px;" value="<%=password1%>" required >
+						</td>
+							</div>
 									
-									</tr>
+					</tr>
 								<!-- Profil -->
-									<tr>
-										<td style="text-align: center">
-										Profil</td>
-									</tr>
-									<tr>
-										<td style="text-align: center">
-										<select name="id_logintype" required >
-										<%if request("action")="ret" then%><option selected="" value="<%=id_logintype%>"><%=logintype%>
-										</option>
-										<%end if%>
-										<%												
-										SQL3="Select * from tbllogintype order by logintype asc "
-										set objRS3 = conn.Execute(SQL3)
-										while not objRS3.EOF
-										%>
-										<option value='<%=objRS3("id_logintype")%>' style="text-align: center">
-										<%=objRS3("logintype")%>
-										</option>
-										<%
-										objRS3.MoveNext
-										Wend
-										%></select></td>
-									</tr>
+					<tr>
+						<td style="text-align: center">
+										Profil
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center">
+							<select name="id_logintype" required >
+								<%if request("action")="ret" then%>
+								<option selected="" value="<%=id_logintype%>"><%=logintype%>
+								</option>
+									<%end if%>
+									<%												
+									SQL3="Select * from tbllogintype order by logintype asc "
+									set objRS3 = conn.Execute(SQL3)
+									while not objRS3.EOF
+									%>
+								<option value='<%=objRS3("id_logintype")%>' style="text-align: center">
+									<%=objRS3("logintype")%>
+								</option>
+									<%
+									objRS3.MoveNext
+									Wend
+									%>
+								</select>
+							</td>
+						</tr>
 								<!-- save btn -->
-									<tr>
-										<td style="text-align: center">
-										<input name="Submit1" type="submit" value="Gem" data-theme="a" data-icon="check"></td>
-									</tr>
-								</table>
+						<tr>
+							<td style="text-align: center">
+								<input name="Submit1" type="submit" value="Gem" data-theme="a" data-icon="check">
+							</td>
+						</tr>
+				</table>
 								<input type="hidden" name="id_login" value="<%=id_login%>">
 
-								<script>
+<script>
 $(document).ready(function() {
 	$.validator.addMethod("patternEmail", function(value, element) {
     return this.optional(element) || /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/.test(value);
@@ -229,16 +236,15 @@ $(document).ready(function() {
         error.insertAfter(element); // Just place the error after the select without wrapping it.
     }
 }
-
     });
 });
 
 </script>
-							</form>
+			</form>
 						
-						<!--#include file="../shared/footer.asp"-->
-		</div>
-	</body>
+<!--#include file="../shared/footer.asp"-->
+	</div>
+</body>
 
 </html>
 <!--#include file="../closedb.asp"-->
