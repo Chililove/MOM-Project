@@ -12,67 +12,59 @@
 </head>
 
 <body>
-
-
-<div data-role="header" data-id="header" data-position="fixed">
-				<h1>Brugere</h1>
-				<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">
-				Home</a> </div>
+	<div data-role="header" data-id="header" data-position="fixed">
+		<h1>Brugere</h1>
+			<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">
+				Home
+			</a>
+	</div>
 <%
-
 sql="select * from qrylogin order by login desc "
 set rs=conn.execute(sql)
 %>
-<ul data-role="listview" data-inset="false" data-filter="true">
+	<ul data-role="listview" data-inset="false" data-filter="true">
 				<li data-role="list-divider">
-				<table style="width: 100%">
-				<tr style="text-align: left">
-								<th style="width: 25%">Login</th>
+					<table style="width: 100%">
+						<tr style="text-align: left">
+							<th style="width: 25%">Login</th>
 
-								<th style="width: 25%">Fornavn</th>
+							<th style="width: 25%">Fornavn</th>
 
-								<th style="width: 25%">Efternavn</th>
+							<th style="width: 25%">Efternavn</th>
+								
+							<th style="width: 25%">Email</th>
 
-								<th style="width: 25%">Profil</th>
-
-					</tr>
-				</table>
+							<th style="width: 25%">Profil</th>
+						</tr>
+					</table>
 				</li>
 				<%
 do while not rs.eof
 %>
-				<li>
+			<li>
 				<a data-ajax="false" href='../bruger/bruger.asp?action=ret&amp;id_login=<%=rs("id_login")%>'>
-				<table style="width: 100%">
-				
-								
-								<tr>
+					<table style="width: 100%">		
+							<tr>
 								<td style="width: 25%"><%=rs("login")%></td>
 			
 								<td style="width: 25%"><%=rs("fornavn")%></td>
 			
 								<td style="width: 25%"><%=rs("efternavn")%></td>
+
+								<td style="width: 25%"><%=rs("mailadresse")%></td>
 			
 								<td style="width: 25%"><%=rs("logintype")%></td>
 			
-								</tr>
-								
-				
-				</table>
+							</tr>
+					</table>
 				</a>
-				
-				
-				</li>
-				<%
+			</li>
+<%
  rs.movenext
 loop
-%> 
-			
-
-</ul>
+%> 			
+	</ul>
 <!--#include file="../shared/footer.asp"-->
-
 </body>
 <!--#include file="../closedb.asp"-->
-
 </html>

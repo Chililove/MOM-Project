@@ -48,60 +48,82 @@ span.error {
 		<div id="page1" data-role="page">
 		<!-- header -->
 			<div data-role="header" data-id="header" data-position="fixed">
-				<%if request("action")="ret" then%>
-				<!--#include file="alle_felter.asp"-->
-				<h1>Ret bruger</h1>
-				<%else%>
-				<h1>Opret bruger</h1>
-				<%end if%>
+					<%if request("action")="ret" then%>
+					<!--#include file="alle_felter.asp"-->
+					<h1>Ret bruger</h1>
+					<%else%>
+					<h1>Opret bruger</h1>
+					<%end if%>
 				<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">
 					Home
 				</a> 
 			</div>
 		<!-- form -->
 			<form data-ajax="false" method="post" action='save.asp?action=<%=request("action")%>'>
-								<table align="center" style="width: 50%">
+				<table align="center" style="width: 50%">
 								<!-- Login -->
-									<tr>
-										<th style="text-align: center">
-											Login
-										</th>
-									</tr>
-									<tr>
-										<td style="text-align: center">
-										<input name="login" type="text" size="25" style="min-width: 720px;"
-
-										<%if request("action")="ret" then%>
-										value="<%=login%>" 
-										<%end if%>
-										required></td>
-									</tr>
+					<tr>
+						<th style="text-align: center">
+							Login
+						</th>
+					</tr>
+					<tr>
+						<td style="text-align: center">
+							<input name="login" type="text" size="25" style="min-width: 720px;"
+								<%if request("action")="ret" then%>
+								value="<%=login%>" 
+								<%end if%>
+								required>
+						</td>
+					</tr>
 								<!-- Fornavn -->
-									<tr>
-										<td style="text-align: center">
-										Fornavn</td>
-									</tr>
-									<tr>
-										<td style="text-align: center">
-										<input name="fornavn" type="text" size="25" style="min-width: 720px;" value="<%=fornavn%>" required ></td>
-									</tr>
+					<tr>
+						<td style="text-align: center">
+							Fornavn
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center">
+							<div class="input-wrapper">
+								<input name="fornavn" type="text" size="25" style="min-width: 720px;" value="<%=fornavn%>" required ></td>
+							</div>
+					</tr>
 								<!-- Efternavn -->
-									<tr>
+					<tr>
+						<td style="text-align: center">
+							Efternavn
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center">
+							<div class="input-wrapper">
+								<input name="efternavn" type="text" size="25" style="min-width: 720px;" value="<%=efternavn%>" required >
+						</td>
+							</div>
+					</tr>
+									<!--Email-->
+					<tr>
 										<td style="text-align: center">
-										Efternavn</td>
+										Email</td>
 									</tr>
 									<tr>
 										<td style="text-align: center">
-										<input name="efternavn" type="text" size="25" style="min-width: 720px;" value="<%=efternavn%>" required ></td>
+									<div class="input-wrapper">
+										<input name="mailadresse" type="text" size="25" style="min-width: 720px;" value="<%=mailadresse%>" required ></td>
+									</div>
 									</tr>
 								<!-- Password -->
+
 									<tr>
 										<td style="text-align: center">
 										Password:</td>
 									</tr>
 									<tr>
 										<td style="text-align: center">
+										<div class="input-wrapper">
 										<input name="password1" type="text" size="25" style="min-width: 720px;" value="<%=password1%>" required ></td>
+									</div>
+									
 									</tr>
 								<!-- Profil -->
 									<tr>
@@ -137,6 +159,10 @@ span.error {
 
 								<script>
 $(document).ready(function() {
+	$.validator.addMethod("patternEmail", function(value, element) {
+    return this.optional(element) || /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/.test(value);
+}, "Dette er ikke en gyldig email.");
+
     $('form').validate({
         rules: {
             login: {
@@ -150,6 +176,13 @@ $(document).ready(function() {
             efternavn: {
                 required: true,
                 minlength: 2
+            },
+			mailadresse: {
+                required: true,
+                minlength: 2,
+				email: true,
+				patternEmail: true
+
             },
             password1: {
                 required: true,
@@ -171,6 +204,12 @@ $(document).ready(function() {
             efternavn: {
                 required: "Efternavn er påkrævet.",
                 minlength: "Efternavn skal være mindst 2 tegn."
+            },
+			 mailadresse: {
+                required: "Email er påkrævet.",
+                minlength: "Email skal være mindst 2 tegn.",
+				email: "Dette er ikke en gyldig email.",
+				patternEmail: "Dette er ikke en gyldig email."
             },
             password1: {
                 required: "Password er påkrævet.",
