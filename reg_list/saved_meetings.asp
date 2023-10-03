@@ -8,15 +8,14 @@
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
 </head>
 
-<div data-role="header" data-id="header" data-position="fixed">
-    <h1 >List of meetings</h1>
-        <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
-        <a class="ui-btn-right" href="http://mom.main-solution.dk/login/login.asp" data-ajax="false" data-icon="power">logoff</a>
-</div>
+    <div data-role="header" data-id="header" data-position="fixed">
+        <h1 >List of meetings</h1>
+            <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
+            <a class="ui-btn-right" href="http://mom.main-solution.dk/login/login.asp" data-ajax="false" data-icon="power">logoff</a>
+    </div>
 <body>
 <!--#include file="../opendb.asp"-->
 <%
-
 sql="select * from qrysaved_meetings"
 'where oprettetaf=" &session("id_login")"
 set rs=conn.execute(sql)
@@ -84,8 +83,6 @@ loop
         }
 </style>
 <!--#include file="../shared/footer.asp"-->
-
 </body>
 <!--#include file="../closedb.asp"-->
-
 </html>
