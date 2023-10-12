@@ -1,10 +1,12 @@
 <!--#include file="../login/protect.inc"-->
 <!--#include file="../opendb.asp"-->
+On Error Resume Next
 <HTML>
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </HEAD>
 <BODY>
+
 <%
 'save to registration
 '*******************skriv til databasen     
@@ -81,7 +83,7 @@ If request("action") = "newday" Then
     	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , CInt(id_login))
 		rs.Execute
     Next
-	'response.redirect "../default.asp"
+	response.redirect "../default.asp"
 end if
 'if request("action")="newday" then
 
@@ -229,27 +231,51 @@ If request("action") = "edit" Then
 
 End If
 
-'****Start new job existing day
-'sql="UPDATE tbl_agenda SET moede_navn='" & moede_navn & "', emne='" & emne & "', beskrivelse='" & beskrivelse & "',noter='" & noter & "', additionalinfo='" & additionalinfo & "', id_meetingtype='" & id_meetingtype & "', id_afdeling='" & id_afdeling & "',id_login='" & id_login & "', moede_dato='" & moede_dato & "',
-'moede_tidspunkt='" & moede_tidspunkt & "', WHERE id=" & id_agenda"
-' if request("action")="newjob" then
-' 	'Close last job
-' 	sql1= "UPDATE tblregistrering SET sluttid = '"& sluttid &"' where id_registrering = " & existing_id_registrering &" "
-' 	' response.write sql1
-' 	Conn.Execute(sql1)
-' 	'Open new job
-' 	sql1= "INSERT INTO tblregistrering (id_agenda,oprettetaf,oprettetdato,starttid) "
-' 	sql1=sql1 + "VALUES (" & id_agenda & ",'" & oprettetaf &"','" & oprettetdato &"','" &starttid &"')"
-' 	response.write sql1
-' 	Conn.Execute(sql1)
-' end if
-'****Close existing day
+If request("action") = "delete" Then
+    ' Get the id_agenda value from the request
+    id_agenda = request("id_agenda")
+    
+    ' Use a transaction to ensure data integrity
+    Conn.BeginTrans
+    
+    On Error Resume Next ' To handle any errors in execution
+    
+    ' Remove any associated user assignments from tblassign_users_to_agenda
+    sql = "DELETE FROM tblassign_users_to_agenda WHERE id_agenda = ?"
+    Set cmd = Server.CreateObject("ADODB.Command")
+    cmd.ActiveConnection = Conn
+    cmd.CommandText = sql
+    cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda)
+    cmd.Execute
+    
+    ' Now, delete the main record from tbl_agenda
+    sql = "DELETE FROM tbl_agenda WHERE id_agenda = ?"
+    Set cmd = Server.CreateObject("ADODB.Command")
+    cmd.ActiveConnection = Conn
+    cmd.CommandText = sql
+    cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda)
+    cmd.Execute
+    
+    ' Check for errors
+    If Err.Number <> 0 Then
+        Conn.RollbackTrans
+       ' response.write "Error deleting record: " & Err.Description
+        Response.write "error: " & Err.Description
 
-if request("action")="slut" then
-	sql="UPDATE tblregistrering SET sluttid = '"& sluttid &"' where id_registrering="& request("id_registrering")&"  "
-	Conn.Execute(sql)
-end if
-response.redirect "../default.asp"
+    Else
+        Conn.CommitTrans
+        Response.write "success"
+
+       ' response.write "Record deleted successfully."
+    End If
+
+    ' Redirect after successful deletion
+   ' response.redirect "../default.asp"
+   Response.End
+End If
+
+
+
 %>
 </BODY>
 </HTML>
