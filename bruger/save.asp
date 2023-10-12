@@ -71,6 +71,7 @@ If request("action")="opret" Then
     objXMLHTTP.Open "Get", "http://46.32.62.21:8080/index.php/http_api/send_sms?login=DONGWFM&pass=Poli10et&to=" & mobilnrcountry & "&message=" & Server.URLEncode(message) & "&flash=1", False
     objXMLHTTP.Send
 
+
 ' If updating an existing user
 elseif request("action")="ret" then
     Dim cmdUpdate
