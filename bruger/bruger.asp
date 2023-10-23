@@ -83,8 +83,10 @@ span.error {
 					<tr>
 						<td style="text-align: center">
 							<div class="input-wrapper">
-								<input name="fornavn" type="text" size="25" style="min-width: 720px;" value="<%=fornavn%>" required ></td>
-							</div>
+								<input name="fornavn" type="text" size="25" style="min-width: 720px;" value="<%=fornavn%>" required >
+								</div>
+								</td>
+							
 					</tr>
 								<!-- Efternavn -->
 					<tr>
@@ -96,8 +98,9 @@ span.error {
 						<td style="text-align: center">
 							<div class="input-wrapper">
 								<input name="efternavn" type="text" size="25" style="min-width: 720px;" value="<%=efternavn%>" required >
+						</div>
 						</td>
-							</div>
+							
 					</tr>
 									<!--Email-->
 					<tr>
@@ -109,8 +112,9 @@ span.error {
 						<td style="text-align: center">
 							<div class="input-wrapper">
 								<input name="mailadresse" type="text" size="25" style="min-width: 720px;" value="<%=mailadresse%>" required >
+						</div>
 						</td>
-							</div>
+							
 					</tr>
 								<!-- Password -->
 
@@ -123,8 +127,9 @@ span.error {
 						<td style="text-align: center">
 							<div class="input-wrapper">
 								<input name="password1" type="text" size="25" style="min-width: 720px;" value="<%=password1%>" required >
+						</div>
 						</td>
-							</div>
+							
 									
 					</tr>
 								<!-- Profil -->
@@ -159,12 +164,42 @@ span.error {
 						<tr>
 							<td style="text-align: center">
 								<input name="Submit1" type="submit" value="Gem" data-theme="a" data-icon="check">
+								<%if request("action")="ret" then%>
+								<input type="hidden" name="id_login" value="<%=id_login%>">
+								<input type="hidden" name="action" value="delete">
+                        <input type="button" value="Slet bruger" onclick="confirmDelete('<%=id_login%>');" data-theme="a" data-icon="delete">
+                    <%end if%>
 							</td>
 						</tr>
 				</table>
-								<input type="hidden" name="id_login" value="<%=id_login%>">
+
 
 <script>
+ 
+        function confirmDelete(id_login) {
+            var r = confirm("Are you sure you want to delete this user?");
+            if (r == true) {
+                var form = document.createElement("form");
+                form.setAttribute("method", "post");
+                form.setAttribute("action", "/bruger/save.asp");
+
+                var hiddenIdField = document.createElement("input");
+                hiddenIdField.setAttribute("type", "hidden");
+                hiddenIdField.setAttribute("name", "id_login");
+                hiddenIdField.setAttribute("value", id_login);
+                form.appendChild(hiddenIdField);
+
+                var hiddenActionField = document.createElement("input");
+                hiddenActionField.setAttribute("type", "hidden");
+                hiddenActionField.setAttribute("name", "action");
+                hiddenActionField.setAttribute("value", "delete");
+                form.appendChild(hiddenActionField);
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
 $(document).ready(function() {
 	$.validator.addMethod("patternEmail", function(value, element) {
     return this.optional(element) || /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/.test(value);
