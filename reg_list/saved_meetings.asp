@@ -28,10 +28,19 @@
 <body>
 <!--#include file="../opendb.asp"-->
 <%
-sql="select * from qrysaved_meetings"
-'where oprettetaf=" &session("id_login")"
+dim id_login
+	id_login = session("login_id")
+
+If session("administrator") = True Then
+
+    sql = "SELECT * FROM qrysaved_meetings"
+Else
+sql = "SELECT * FROM qrysaved_meetings qm JOIN tblassign_users_to_agenda uma ON qm.id_agenda = uma.id_agenda WHERE uma.id_login = '" & session("login_id") & "'"
+End If
+
 set rs=conn.execute(sql)
 %>
+
 <ul data-role="listview" data-inset="false" data-filter="false">
 				
 <%
@@ -46,7 +55,9 @@ do while not rs.eof
                 <td style="width: 40%; font-weight: bold;"> <%=rs("moede_navn")%> </td>
 		    </tr>
                <!-- Your delete button for each agenda -->
+               <% If session("administrator") = True Then %>
 <button class="delete-button" data-id="<%=rs("id_agenda")%>">Delete</button>
+<%end if%>
         </table>
          
     </a>
