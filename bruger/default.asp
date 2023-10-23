@@ -35,30 +35,31 @@ set rs=conn.execute(sql)
 							<th style="width: 25%">Email</th>
 
 							<th style="width: 25%">Profil</th>
+
 						</tr>
 					</table>
 				</li>
 				<%
-do while not rs.eof
-%>
-			<li>
-				<a data-ajax="false" href='../bruger/bruger.asp?action=ret&amp;id_login=<%=rs("id_login")%>'>
-					<table style="width: 100%">		
-							<tr>
-								<td style="width: 25%"><%=rs("login")%></td>
-			
-								<td style="width: 25%"><%=rs("fornavn")%></td>
-			
-								<td style="width: 25%"><%=rs("efternavn")%></td>
+					do while not rs.eof
+				%>
+				<li>
+					<a data-ajax="false" href='../bruger/bruger.asp?action=ret&amp;id_login=<%=rs("id_login")%>'>
+						<table style="width: 100%">		
+								<tr>
+									<td style="width: 25%"><%=rs("login")%></td>
+				
+									<td style="width: 25%"><%=rs("fornavn")%></td>
+				
+									<td style="width: 25%"><%=rs("efternavn")%></td>
 
-								<td style="width: 25%"><%=rs("mailadresse")%></td>
-			
-								<td style="width: 25%"><%=rs("logintype")%></td>
-			
-							</tr>
-					</table>
-				</a>
-			</li>
+									<td style="width: 25%"><%=rs("mailadresse")%></td>
+				
+									<td style="width: 25%"><%=rs("logintype")%></td>
+				
+								</tr>
+						</table>
+					</a>
+				</li>
 <%
  rs.movenext
 loop
