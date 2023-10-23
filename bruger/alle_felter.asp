@@ -8,6 +8,7 @@ do while not rs.eof
 	fornavn=rs("fornavn")
 	efternavn=rs("efternavn")
 	password1=rs("password1")
+	mailadresse=rs("mailadresse")
 	id_logintype=rs("id_logintype")
 	logintype=rs("logintype")
 rs.movenext
