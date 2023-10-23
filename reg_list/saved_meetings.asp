@@ -56,7 +56,9 @@ do while not rs.eof
                 <td style="width: 40%; font-weight: bold;"> <%=rs("moede_navn")%> </td>
 		    </tr>
                <!-- Your delete button for each agenda -->
+               <% If session("administrator") = True Then %>
 <button class="delete-button" data-id="<%=rs("id_agenda")%>">Delete</button>
+<%end if%>
         </table>
          
     </a>
