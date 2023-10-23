@@ -82,8 +82,6 @@
 
     End If
 
-   ' Response.End
-
 End If
    response.redirect "default.asp"
 

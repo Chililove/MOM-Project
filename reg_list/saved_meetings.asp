@@ -38,7 +38,6 @@ Else
 sql = "SELECT * FROM qrysaved_meetings qm JOIN tblassign_users_to_agenda uma ON qm.id_agenda = uma.id_agenda WHERE uma.id_login = '" & session("login_id") & "'"
 End If
 
-response.write (sql)
 set rs=conn.execute(sql)
 %>
 
