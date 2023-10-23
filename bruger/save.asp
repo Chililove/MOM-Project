@@ -78,12 +78,15 @@
         Response.write "error: " & Err.Description
     Else
         Conn.CommitTrans
-        Response.write "success"
+       ' Response.write "success"
+
     End If
 
-    Response.End
+   ' Response.End
+
 End If
-   
+   response.redirect "default.asp"
+
     ' Data modtaget fra form
 	
 'Response.Write("ID Login: " & id_login & "<br>")
@@ -119,6 +122,7 @@ End If
 		'Response.Write("Ugyldigt input fundet")
 		Response.End
 	End If
+    
 
 ' Password hashing
 '	Function HashPassword(password)
