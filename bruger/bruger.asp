@@ -160,6 +160,35 @@ span.error {
 								</select>
 							</td>
 						</tr>
+									<!-- Company -->
+					<tr>
+						<td style="text-align: center">
+										Company
+						</td>
+					</tr>
+						<tr>
+						<td style="text-align: center">
+							<select name="id_company" required >
+								<%if request("action")="ret" then%>
+								<option selected="" value="<%=id_company%>"><%=id_company%>
+								</option>
+									<%end if%>
+									<%												
+									SQL3="Select * from tbl_companies order by id_company asc "
+									set objRS3 = conn.Execute(SQL3)
+									while not objRS3.EOF
+									%>
+								<option value='<%=objRS3("id_company")%>' style="text-align: center">
+									<%=objRS3("company_name")%>
+								</option>
+									<%
+									objRS3.MoveNext
+									Wend
+									%>
+								</select>
+							</td>
+						</tr>
+
 								<!-- save btn -->
 						<tr>
 							<td style="text-align: center">

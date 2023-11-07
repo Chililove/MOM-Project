@@ -19,6 +19,7 @@
 		password1 = Trim(request.form("password1"))
 		logintype = Trim(request.form("logintype"))
 		id_logintype = Trim(request.form("id_logintype"))
+        id_company = Trim(request.form("id_company"))
 
 'DELETE
 
@@ -111,7 +112,7 @@ If request("action")="opret" Then
 	cmdInsert.ActiveConnection = Conn
     cmdInsert.CommandType = 1  'adCmdText
         On Error Resume Next
-    cmdInsert.CommandText = "INSERT INTO tbllogin (fornavn, efternavn, mailadresse, password1, login, id_logintype) VALUES (?, ?, ?, ?, ?, ?)"
+    cmdInsert.CommandText = "INSERT INTO tbllogin (fornavn, efternavn, mailadresse, password1, login, id_logintype, id_company) VALUES (?, ?, ?, ?, ?, ?, ?)"
 
     cmdInsert.Parameters.Append cmdInsert.CreateParameter("@fornavn", 202, 1, 50, fornavn)
     cmdInsert.Parameters.Append cmdInsert.CreateParameter("@efternavn", 202, 1, 50, efternavn)
@@ -119,6 +120,9 @@ If request("action")="opret" Then
     cmdInsert.Parameters.Append cmdInsert.CreateParameter("@password1", 202, 1, 50, password1) 'store hashed password here
     cmdInsert.Parameters.Append cmdInsert.CreateParameter("@login", 202, 1, 50, login)
     cmdInsert.Parameters.Append cmdInsert.CreateParameter("@id_logintype", 3, 1, , id_logintype)
+    cmdInsert.Parameters.Append cmdInsert.CreateParameter("@id_company", 3, 1, , id_company)
+
+
 
     cmdInsert.Execute()
 If Err.Number <> 0 Then
@@ -145,7 +149,7 @@ elseif request("action")="ret" then
     cmdUpdate.CommandType = 1 'adCmdText
         On Error Resume Next
 
-    cmdUpdate.CommandText = "UPDATE tbllogin SET id_logintype = ?, login = ?, fornavn = ?, efternavn = ?, mailadresse = ?, password1 = ? WHERE id_login = ?"
+    cmdUpdate.CommandText = "UPDATE tbllogin SET id_logintype = ?, login = ?, fornavn = ?, efternavn = ?, mailadresse = ?, password1 = ?, id_company = ? WHERE id_login = ?"
 
     cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@id_logintype", 3, 1, , id_logintype)
     cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@login", 202, 1, 50, login)
@@ -154,6 +158,8 @@ elseif request("action")="ret" then
     cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@mailadresse", 202, 1, 30, mailadresse)
     cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@password1", 202, 1, 50, password1) 'store hashed password
     cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@id_login", 3, 1, , id_login)
+    cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@id_company", 3, 1, , id_company)
+
 
     cmdUpdate.Execute()
 
@@ -166,9 +172,9 @@ On Error GoTo 0
 
 End If
 Response.Write("Received login: " & Request.Form("login"))
+response.write success
 
-
-response.redirect "default.asp"
+'response.redirect "default.asp"
 
 
 
