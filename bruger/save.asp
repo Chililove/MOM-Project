@@ -20,6 +20,7 @@
 		logintype = Trim(request.form("logintype"))
 		id_logintype = Trim(request.form("id_logintype"))
         id_company = Trim(request.form("id_company"))
+        company_name = Trim(request.form("company_name"))
 
 'DELETE
 
@@ -122,8 +123,6 @@ If request("action")="opret" Then
     cmdInsert.Parameters.Append cmdInsert.CreateParameter("@id_logintype", 3, 1, , id_logintype)
     cmdInsert.Parameters.Append cmdInsert.CreateParameter("@id_company", 3, 1, , id_company)
 
-
-
     cmdInsert.Execute()
 If Err.Number <> 0 Then
     Response.Write "An error occurred: " & Err.Description
@@ -157,9 +156,8 @@ elseif request("action")="ret" then
     cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@efternavn", 202, 1, 50, efternavn)
     cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@mailadresse", 202, 1, 30, mailadresse)
     cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@password1", 202, 1, 50, password1) 'store hashed password
-    cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@id_login", 3, 1, , id_login)
     cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@id_company", 3, 1, , id_company)
-
+    cmdUpdate.Parameters.Append cmdUpdate.CreateParameter("@id_login", 3, 1, , id_login)
 
     cmdUpdate.Execute()
 
@@ -171,16 +169,11 @@ On Error GoTo 0
     Set cmdUpdate = Nothing
 
 End If
-Response.Write("Received login: " & Request.Form("login"))
-response.write success
+'Response.Write("Received login: " & Request.Form("login"))
 
-'response.redirect "default.asp"
-
-
+response.redirect "default.asp"
 
 %>
-
-
 	</BODY>
 </HTML>
 <!--#include file="../closedb.asp"-->

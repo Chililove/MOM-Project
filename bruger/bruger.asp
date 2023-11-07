@@ -170,7 +170,7 @@ span.error {
 						<td style="text-align: center">
 							<select name="id_company" required >
 								<%if request("action")="ret" then%>
-								<option selected="" value="<%=id_company%>"><%=id_company%>
+								<option selected="" value="<%=id_company%>"><%=company_name%>
 								</option>
 									<%end if%>
 									<%												
@@ -261,6 +261,9 @@ $(document).ready(function() {
             },
             id_logintype: {
                 required: true
+            },
+			id_company: {
+                required: true
             }
         },
         messages: {
@@ -288,6 +291,9 @@ $(document).ready(function() {
             },
             id_logintype: {
                 required: "Type af login er påkrævet."
+            },
+			 id_company: {
+                required: "Virksomheds-id er påkrævet."
             }
         },
 		 errorElement: 'span',  // Specify the element for the error text
