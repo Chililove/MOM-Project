@@ -12,10 +12,82 @@
 <script src="jquery/jquery.mobile-1.4.5.min.js"></script>
 
 </head>
+<style>
+.user-profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f5f5f5;
+    margin-bottom: 30px; /* Spacing between profile and rest of page content */
+}
 
+.user-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.user-info h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.user-info p {
+    color: #666;
+    font-size: 14px;
+}
+
+.nav-tabs {
+    list-style-type: none;
+    padding: 0;
+}
+
+.nav-tabs li {
+    display: inline;
+    margin-right: 10px;
+}
+
+.nav-tabs li a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.nav-tabs li a:hover {
+    text-decoration: underline;
+}
+</style>
 <body>
 
 <!--#include file="reg/check_sluttid.asp"-->
+<%
+
+
+dim id_login
+	id_login = session("login_id")
+
+sql = "SELECT fornavn, efternavn, login, mailadresse FROM tbllogin WHERE id_login = id_login"
+
+
+set rs=conn.execute(sql)
+
+
+%>
+<!-- User Profile Display -->
+<div class="user-profile">
+    <div class="user-details">
+        <img src="login/orangedude.png" alt="User Avatar" class="user-avatar"> <!-- Replace with dynamic avatar if available -->
+        <div class="user-info">
+        <h2><%=rs("login")%></h2>
+            <h2><%=rs("fornavn") & " " & rs("efternavn")%></h2> <!-- Replace with your session variable names -->
+            <p><%=email%></p> <!-- Replace with your session variable names -->
+            <!-- More user details here -->
+        </div>
+    </div>
+   
+</div>
+
 
 <ul data-role="listview">
 				
