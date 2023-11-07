@@ -34,6 +34,8 @@
 
 <!-- <li><a data-ajax="false" href="reg_list/list_my_sum.asp">Last 10 days</a></li> -->
 <li><a data-ajax="false" href="reg_list/saved_meetings.asp">Saved meetings</a></li>
+<li><a data-ajax="false" href="reg_list/my_meetings.asp">My meetings</a></li>
+
 
 <%if session("administrator")=true then%>				
 <li><a data-ajax="false" href="bruger/">User list</a></li>
