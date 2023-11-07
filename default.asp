@@ -81,7 +81,7 @@ set rs=conn.execute(sql)
         <div class="user-info">
         <h2><%=rs("login")%></h2>
             <h2><%=rs("fornavn") & " " & rs("efternavn")%></h2> <!-- Replace with your session variable names -->
-            <p><%=email%></p> <!-- Replace with your session variable names -->
+            <p><%=rs("email")%></p> <!-- Replace with your session variable names -->
             <!-- More user details here -->
         </div>
     </div>
