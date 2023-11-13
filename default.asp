@@ -13,31 +13,7 @@
 
 </head>
 <style>
-.user-profile {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #f5f5f5;
-    margin-bottom: 30px; /* Spacing between profile and rest of page content */
-}
 
-.user-avatar {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-}
-
-.user-info h2 {
-    margin: 0;
-    font-size: 24px;
-    color: #333;
-}
-
-.user-info p {
-    color: #666;
-    font-size: 14px;
-}
 
 .nav-tabs {
     list-style-type: none;
@@ -62,7 +38,9 @@
 
 <!--#include file="reg/check_sluttid.asp"-->
 
-        <img src="login/orangedude.png" alt="User Avatar" class="user-avatar"> <!-- Replace with dynamic avatar if available -->
+       <!-- <img src="login/orangedude.png" alt="User Avatar" class="user-avatar">  Replace with dynamic avatar if available -->
+
+<!--#include file="bruger/user-profile.asp"-->
 
 
 <ul data-role="listview">
