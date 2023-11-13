@@ -40,8 +40,9 @@ If Not IsEmpty(id_login) Then
         <p><%= rs("fornavn") & " " & rs("efternavn") %></p>
         <p>Email: <%= rs("mailadresse") %></p>
     </div>
+              <button onclick="location.href='bruger/bruger.asp?action=ret&id_login=<%=id_login%>'" class="edit-profile-button">Edit</button>
+
 </div>
-        <a href='bruger/bruger.asp?action=ret&id_login=<%=id_login%>' class="edit-button" data-ajax="false">Edit Profile</a>
 
 
         <%
@@ -58,52 +59,72 @@ Else
 End If
 %>
 <style>
- .user-profile {
-        display: flex;
-        align-items: center;
-        background-color: #f9f9f9;
-        border: 1px solid #ddd;
-        padding: 20px;
-        margin: 20px auto;
-        margin-left: 1%;
-        border-radius: 8px;
-        max-width: 600px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
+.user-profile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* This will space out the avatar/info and the edit button */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 15px;
+    max-width: 600px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
 
-    .user-avatar {
-        flex-shrink: 0;
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        margin-right: 20px;
-        border: 3px solid #2c3e50;
-        object-fit: cover;
-    }
+.user-avatar {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
 
-    .user-info {
-        flex-grow: 1;
-    }
+.user-info {
+    flex-grow: 1;
+}
 
-    .user-info h2 {
-        margin: 0;
-        color: #333;
-        font-size: 24px;
-        font-weight: normal;
-    }
+.user-info h2, .user-info p {
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-    .user-info p {
-        margin: 5px 0;
-        color: #555;
-    }
+.user-info h2 {
+    font-size: 24px;
+    color: #333;
+}
 
-    .user-info p:first-of-type {
-        font-size: 16px;
-        font-weight: bold;
-    }
+.user-info p {
+    color: #555;
+    font-size: 14px;
+}
 
-    .user-info p:last-of-type {
-        font-size: 14px;
-        color: #888;
-    }
+.edit-profile-button {
+    padding: 10px 20px;
+    margin-top: -10%;
+    background-color: transparent;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    border: none; /* Remove any default border */
+    cursor: pointer; /* Change cursor to pointer */
+    width: 14% !important;
+}
+
+.edit-profile-button:hover {
+    background-color: #0056b3; /* Change the color on hover */
+}
+
+.edit-profile-button::before {
+    content: '\270E'; /* Unicode pencil icon */
+    margin-right: 5px;
+    /* Adjust the size and alignment as needed */
+    vertical-align: middle;
+}
+
+   
 </style>
