@@ -61,32 +61,8 @@
 <body>
 
 <!--#include file="reg/check_sluttid.asp"-->
-<%
 
-
-dim id_login
-	id_login = session("login_id")
-
-sql = "SELECT fornavn, efternavn, login, mailadresse FROM tbllogin WHERE id_login = id_login"
-
-
-set rs=conn.execute(sql)
-
-
-%>
-<!-- User Profile Display -->
-<div class="user-profile">
-    <div class="user-details">
         <img src="login/orangedude.png" alt="User Avatar" class="user-avatar"> <!-- Replace with dynamic avatar if available -->
-        <div class="user-info">
-        <h2><%=rs("login")%></h2>
-            <h2><%=rs("fornavn") & " " & rs("efternavn")%></h2> <!-- Replace with your session variable names -->
-            <p><%=rs("email")%></p> <!-- Replace with your session variable names -->
-            <!-- More user details here -->
-        </div>
-    </div>
-   
-</div>
 
 
 <ul data-role="listview">

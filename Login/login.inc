@@ -21,6 +21,9 @@ If Request.Form("Action") = "Login" Then
 			If Not (rs.BOF Or rs.EOF) Then
 				login_id = rs("id_login")
 				login = rs("login")
+				company_id = rs("id_company")
+
+
 
 				if  rs("id_logintype")=1 then
 					session("administrator")=true
@@ -35,8 +38,9 @@ If Request.Form("Action") = "Login" Then
 
 			If Len(login_id) Then
 			'set session
-				Session("login_id") = login_id'
+				Session("id_login") = login_id
 				Session("login") = login
+				Session("id_company") = company_id
 				Response.Redirect "../default.asp"
 			End If
 
