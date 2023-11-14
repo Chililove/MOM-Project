@@ -29,13 +29,13 @@
 <!--#include file="../opendb.asp"-->
 <%
 dim id_login
-	id_login = session("login_id")
+	id_login = session("id_login")
 
 If session("administrator") = True Then
 
     sql = "SELECT * FROM qrysaved_meetings"
 Else
-sql = "SELECT * FROM qrysaved_meetings qm JOIN tblassign_users_to_agenda uma ON qm.id_agenda = uma.id_agenda WHERE uma.id_login = '" & session("login_id") & "'"
+sql = "SELECT * FROM qrysaved_meetings qm JOIN tblassign_users_to_agenda uma ON qm.id_agenda = uma.id_agenda WHERE uma.id_login = '" & session("id_login") & "'"
 End If
 
 set rs=conn.execute(sql)
