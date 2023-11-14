@@ -3,14 +3,14 @@
 <!--#include file="../shared/global.css"-->
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="Content-Type" content="text/html; chaRset=UTF-8">
 		<title>OneTimer</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="../jquery/jquery.mobile-1.4.5.css">
 		<script src="../jquery/jquery-1.8.2.min.js"></script>
 		<script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
 		<link type="text/css" rel="stylesheet" href="../jquery/jquery-te-1.4.0.css">
-		<script type="text/javascript" src="../jquery/jquery-te-1.4.0.min.js" charset="utf-8"></script>
+		<script type="text/javascript" src="../jquery/jquery-te-1.4.0.min.js" chaRset="utf-8"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 	</head>
 	<style>
@@ -139,11 +139,6 @@ span.error {
 						</td>
 					</tr>
 
-
-
-
-
-
 					<tr>
     <td style="text-align: center">
         <% ' Check if the action is edit and if the user is an admin
@@ -166,7 +161,8 @@ span.error {
             </select>
         <% Else %>
             <% ' For non-admins or other actions, show the selected option but disable the select
-               SQL3 = "SELECT logintype FROM tbllogintype WHERE id_logintype = " & Session("login_id")
+               SQL3 = "SELECT logintype FROM tbllogintype WHERE id_logintype = '" &Session("id_logintype") & "'"
+
                Set objRS3 = conn.Execute(SQL3)
                If Not objRS3.EOF Then %>
                    <input type="text" name="logintype" value="<%=objRS3("logintype")%>" disabled>
@@ -178,40 +174,84 @@ span.error {
     </td>
 </tr>
 
-									<!-- Company -->
-					<tr>
+<!-- Company -->
+
+	<tr>
 						<td style="text-align: center">
 										Company
 						</td>
 					</tr>
-						<tr>
-						<td style="text-align: center">
-							<select name="id_company" required >
-								<%if request("action")="ret" then%>
-								<option selected="" value="<%=id_company%>"><%=company_name%>
-								</option>
-									<%end if%>
-									<%												
-									SQL3="Select * from tbl_companies order by id_company asc "
-									set objRS3 = conn.Execute(SQL3)
-									while not objRS3.EOF
-									%>
-								<option value='<%=objRS3("id_company")%>' style="text-align: center">
-									<%=objRS3("company_name")%>
-								</option>
-									<%
-									objRS3.MoveNext
-									Wend
-									%>
-								</select>
-							</td>
-						</tr>
+<tr>
+    <td style="text-align: center">
+        <% 
+        ' Check if the action is to edit and if the user is an admin
+        If Request("action") = "ret" Then
+            ' Fetch the current company ID for the user
+            Dim sql1, companyid
+            sql1 = "SELECT id_company FROM tbllogin WHERE id_login = " & id_login
+            Set Rs = conn.Execute(sql1)
+            
+            If Not Rs.EOF Then
+                companyid = Rs("id_company")
+            End If
+            Rs.Close()
+            Set Rs = Nothing
+            
+            ' Display a dropdown for admins or a disabled text field for non-admins
+            If Session("administrator") = True Then
+                ' Dropdown for admin to change the company
+                %>
+                <select name="id_company" required>
+                    <% 
+                    Dim sql2, RS
+                    sql2 = "SELECT * FROM tbl_companies ORDER BY company_name ASC"
+                    Set RS = conn.Execute(sql2)
+                    
+                    While Not RS.EOF
+                        Dim isSelectedA
+                        isSelectedA = ""
+                        If RS("id_company") = companyid Then
+                            isSelectedA = "selected"
+                        End If
+                    %>
+                        <option value='<%=RS("id_company")%>' <%=isSelectedA%>><%=RS("company_name")%></option>
+                    <%
+                        Rs.MoveNext
+                    Wend
+                    RS.Close()
+                    Set RS = Nothing
+                    %>
+                </select>
+                <%
+            Else
+                ' Disabled text field for non-admin showing company name
+                Dim sql4, rss
+                sql4 = "SELECT company_name FROM tbl_companies WHERE id_company = " & companyid
+                Set rss = conn.Execute(sql4)
+                
+                If Not rss.EOF Then
+                %>
+                    <input type="text" name="company_name" value="<%=rss("company_name")%>" disabled>
+                <%
+                End If
+                rss.Close()
+                Set rss = Nothing
+            End If
+        End If
+        %>
+    </td>
+</tr>
+
+
+
+									
+
 
 								<!-- save btn -->
 						<tr>
 							<td style="text-align: center">
 								<input name="Submit1" type="submit" value="Gem" data-theme="a" data-icon="check">
-								<%if request("action")="ret" then%>
+								<%if request("action")="ret" and Session("administrator") then%>
 								<input type="hidden" name="id_login" value="<%=id_login%>">
 								<input type="hidden" name="action" value="delete">
                         <input type="button" value="Slet bruger" onclick="confirmDelete('<%=id_login%>');" data-theme="a" data-icon="delete">
