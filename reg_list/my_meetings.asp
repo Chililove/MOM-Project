@@ -29,8 +29,8 @@
 <!--#include file="../opendb.asp"-->
 <%
 dim id_login
-	id_login = session("login_id")
-sql ="SELECT * FROM qrysaved_meetings WHERE oprettetaf = '" &session("login_id") & "'"
+	id_login = session("id_login")
+sql ="SELECT * FROM qrysaved_meetings WHERE oprettetaf = '" &session("id_login") & "'"
 set rs=conn.execute(sql)
 %>
 

@@ -12,10 +12,36 @@
 <script src="jquery/jquery.mobile-1.4.5.min.js"></script>
 
 </head>
+<style>
 
+
+.nav-tabs {
+    list-style-type: none;
+    padding: 0;
+}
+
+.nav-tabs li {
+    display: inline;
+    margin-right: 10px;
+}
+
+.nav-tabs li a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.nav-tabs li a:hover {
+    text-decoration: underline;
+}
+</style>
 <body>
 
 <!--#include file="reg/check_sluttid.asp"-->
+
+       <!-- <img src="login/orangedude.png" alt="User Avatar" class="user-avatar">  Replace with dynamic avatar if available -->
+
+<!--#include file="bruger/user-profile.asp"-->
+
 
 <ul data-role="listview">
 				
