@@ -10,13 +10,16 @@
 <!-- This is what you are working on -->
 <%
 ' Define variables for CRUD operations
-Dim action, cmd, sql, company_id, company_name, company_cvr, ErrMsg
+Dim action, cmd, sql, company_id, company_name, company_cvr, ErrMsg, telefon, company_email
 
 ' Get the action parameter from the request
 action = Trim(Request("action"))
 company_id = Trim(Request.QueryString("id_company"))
 company_name = Trim(Request.Form("company_name"))
 company_cvr = Trim(Request.Form("cvr"))
+telefon = Trim(Request.Form("telefon"))
+company_email = Trim(Request.Form("email"))
+
 
 ' Protect against SQL injection by validating all inputs
 If company_name = "" Or company_cvr = "" Then
@@ -29,13 +32,17 @@ If ErrMsg = "" Then
     ' CREATE a new company
     If action = "create" Then
         ' Prepare the SQL statement for INSERT
-        sql = "INSERT INTO tbl_companies (company_name, cvr) VALUES (?, ?)"
+        sql = "INSERT INTO tbl_companies (company_name, cvr, telefon, email) VALUES (?, ?, ?, ?)"
         Set cmd = Server.CreateObject("ADODB.Command")
         cmd.ActiveConnection = Conn
         cmd.CommandText = sql
         cmd.CommandType = 1 'adCmdText
         cmd.Parameters.Append cmd.CreateParameter("@company_name", 202, 1, 50, company_name)
         cmd.Parameters.Append cmd.CreateParameter("@cvr", 202, 1, 50, company_cvr)
+        cmd.Parameters.Append cmd.CreateParameter("@telefon", 202, 1, 50, telefon)
+        cmd.Parameters.Append cmd.CreateParameter("@email", 202, 1, 50, company_email)
+
+
         
         ' Execute the INSERT command
         On Error Resume Next
@@ -51,14 +58,19 @@ If ErrMsg = "" Then
     ' UPDATE an existing company
     ElseIf action = "update" Then
         ' Prepare the SQL statement for UPDATE
-        sql = "UPDATE tbl_companies SET company_name = ?, cvr = ? WHERE id_company = ?"
+        sql = "UPDATE tbl_companies SET company_name = ?, cvr = ?, telefon = ?, email = ? WHERE id_company = ?"
         Set cmd = Server.CreateObject("ADODB.Command")
         cmd.ActiveConnection = Conn
         cmd.CommandText = sql
         cmd.CommandType = 1 'adCmdText
         cmd.Parameters.Append cmd.CreateParameter("@company_name", 202, 1, 50, company_name)
         cmd.Parameters.Append cmd.CreateParameter("@cvr", 202, 1, 50, company_cvr)
+        cmd.Parameters.Append cmd.CreateParameter("@telefon", 202, 1, 50, telefon)
+        cmd.Parameters.Append cmd.CreateParameter("@email", 202, 1, 50, company_email)
         cmd.Parameters.Append cmd.CreateParameter("@id_company", 3, 1, , company_id)
+
+
+
         
         ' Execute the UPDATE command
         On Error Resume Next

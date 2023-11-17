@@ -30,7 +30,10 @@ set rs=conn.execute(sql)
 
 							<th style="width: 25%">cvr</th>
 
-							<th style="width: 25%">id</th>
+                            <th style="width: 25%">telefon</th>
+
+							<th style="width: 25%">email</th>
+
 								
 							
 						</tr>
@@ -48,7 +51,10 @@ set rs=conn.execute(sql)
 				
 									<td style="width: 25%"><%=rs("cvr")%></td>
 				
-									<td style="width: 25%"><%=rs("id_company")%></td>
+                                    <td style="width: 25%"><%=rs("telefon")%></td>
+
+									<td style="width: 25%"><%=rs("email")%></td>
+
 
 								</tr>
 						</table>

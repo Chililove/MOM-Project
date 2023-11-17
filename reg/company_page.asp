@@ -126,7 +126,7 @@
 </div>-->
 
 <%
-Dim sql, rs, company_name, cvr, id_company
+Dim sql, rs, company_name, cvr, id_company, telefon, email
 
 ' Check if an id_company is provided in the query string
 If Len(Request.QueryString("id_company")) > 0 Then
@@ -141,6 +141,8 @@ If Len(Request.QueryString("id_company")) > 0 Then
         If Not rs.EOF Then
             company_name = rs("company_name")
             cvr = rs("cvr")
+            telefon = rs("telefon")
+            email = rs("email")
         End If
 
         rs.Close
@@ -153,6 +155,8 @@ Else
     ' Initialize company_name and cvr to empty strings
     company_name = ""
     cvr = ""
+    telefon = ""
+    email = ""
 End If
 %>
 

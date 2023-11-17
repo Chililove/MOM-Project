@@ -37,6 +37,8 @@ If Request.QueryString("action") = "update" And Not IsEmpty(Request.QueryString(
     If Not rs.EOF Then
         company_name = rs("company_name")
         cvr = rs("cvr")
+        telefon = rs("telefon")
+        email = rs("email")
     End If
     rs.Close
 End If
@@ -56,6 +58,13 @@ End If
 
     <label for="cvr">CVR:</label>
     <input type="number" id="cvr" name="cvr" value="<%=cvr%>" required>
+
+     <label for="telefon">TLF:</label>
+    <input type="number" id="telefon" name="telefon" value="<%=telefon%>" required>
+
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" value="<%=email%>" required>
+
 
      <% If Request.QueryString("action") = "update" Then %>
         <input type="hidden" name="id_company" value="<%=company_id%>">
