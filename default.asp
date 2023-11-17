@@ -66,6 +66,9 @@
 <%if session("administrator")=true then%>				
 <li><a data-ajax="false" href="bruger/">User list</a></li>
 <li><a data-ajax="false" href="bruger/bruger.asp?action=opret">New user</a></li>
+<li><a data-ajax="false" href="reg_list/company_list.asp">Company list</a></li>
+<li><a data-ajax="false" href="reg/company_page.asp?action=create">Add a company </a></li>
+
 <%end if%>
 				
 </ul>
