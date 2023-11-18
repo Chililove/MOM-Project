@@ -185,60 +185,35 @@ span.error {
     <td style="text-align: center">
         <% 
         ' Check if the action is to edit and if the user is an admin
-        If Request("action") = "ret" Then
-            ' Fetch the current company ID for the user
-            Dim sql1, companyid
-            sql1 = "SELECT id_company FROM tbllogin WHERE id_login = " & id_login
-            Set Rs = conn.Execute(sql1)
-            
-            If Not Rs.EOF Then
-                companyid = Rs("id_company")
-            End If
-            Rs.Close()
-            Set Rs = Nothing
-            
-            ' Display a dropdown for admins or a disabled text field for non-admins
-            If Session("administrator") = True Then
-                ' Dropdown for admin to change the company
+         If Request("action") = "ret" And Session("administrator") Then %>
+            <select name="id_company" required>
+                <% ' If editing, show the selected option for the admin
+                   SQL3 = "SELECT * FROM tbl_companies ORDER BY company_name ASC"
+                   Set objRS3 = conn.Execute(SQL3)
+                   While Not objRS3.EOF
+                       If objRS3("id_company") = id_company Then %>
+                           <option selected value='<%=objRS3("id_company")%>'><%=objRS3("company_name")%></option>
+                       <% Else %>
+                           <option value='<%=objRS3("id_company")%>'><%=objRS3("company_name")%></option>
+                       <% End If
+                       objRS3.MoveNext
+                   Wend
+                   objRS3.Close()
+                   Set objRS3 = Nothing
                 %>
-                <select name="id_company" required>
-                    <% 
-                    Dim sql2, RS
-                    sql2 = "SELECT * FROM tbl_companies ORDER BY company_name ASC"
-                    Set RS = conn.Execute(sql2)
-                    
-                    While Not RS.EOF
-                        Dim isSelectedA
-                        isSelectedA = ""
-                        If RS("id_company") = companyid Then
-                            isSelectedA = "selected"
-                        End If
-                    %>
-                        <option value='<%=RS("id_company")%>' <%=isSelectedA%>><%=RS("company_name")%></option>
-                    <%
-                        Rs.MoveNext
-                    Wend
-                    RS.Close()
-                    Set RS = Nothing
-                    %>
-                </select>
-                <%
-            Else
-                ' Disabled text field for non-admin showing company name
-                Dim sql4, rss
-                sql4 = "SELECT company_name FROM tbl_companies WHERE id_company = " & companyid
-                Set rss = conn.Execute(sql4)
-                
-                If Not rss.EOF Then
-                %>
-                    <input type="text" name="company_name" value="<%=rss("company_name")%>" disabled>
-                <%
-                End If
-                rss.Close()
-                Set rss = Nothing
-            End If
-        End If
-        %>
+            </select>
+        <% Else %>
+            <% ' For non-admins or other actions, show the selected option but disable the select
+               SQL3 = "SELECT company_name FROM tbl_companies WHERE id_company = '" &Session("id_company") & "'"
+
+               Set objRS3 = conn.Execute(SQL3)
+               If Not objRS3.EOF Then %>
+                   <input type="text" name="company_name" value="<%=objRS3("company_name")%>" disabled>
+               <% End If
+               objRS3.Close()
+               Set objRS3 = Nothing
+            %>
+        <% End If %>
     </td>
 </tr>
 
