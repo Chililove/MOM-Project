@@ -20,11 +20,15 @@
 	</div>
 <%
  If Session("administrator") Then
-sql="select * from qrylogin order by login desc "
+
+ 'id_company = session("id_company")
+
+sql="select * from qrylogin where id_company =  " & session("id_company") & " order by login desc "
 set rs=conn.execute(sql)
+
 %>
 <%Else
-response.redirect("/default.asp") %>
+'response.redirect("/default.asp") %>
 <%End if%>
 	<ul data-role="listview" data-inset="false" data-filter="true">
 				<li data-role="list-divider">

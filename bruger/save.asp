@@ -19,7 +19,7 @@
 		password1 = Trim(request.form("password1"))
 		logintype = Trim(request.form("logintype"))
 		id_logintype = Trim(request.form("id_logintype"))
-        id_company = Trim(request.form("id_company"))
+        id_company = session    ("id_company")
         company_name = Trim(request.form("company_name"))
 
 'DELETE
@@ -112,7 +112,7 @@ If request("action")="opret" Then
     Set cmdInsert = Server.CreateObject("ADODB.Command")
 	cmdInsert.ActiveConnection = Conn
     cmdInsert.CommandType = 1  'adCmdText
-        On Error Resume Next
+        'On Error Resume Next
     cmdInsert.CommandText = "INSERT INTO tbllogin (fornavn, efternavn, mailadresse, password1, login, id_logintype, id_company) VALUES (?, ?, ?, ?, ?, ?, ?)"
 
     cmdInsert.Parameters.Append cmdInsert.CreateParameter("@fornavn", 202, 1, 50, fornavn)
@@ -128,7 +128,7 @@ If Err.Number <> 0 Then
     Response.Write "An error occurred: " & Err.Description
     ' Handle error appropriately
 End If
-On Error GoTo 0
+'On Error GoTo 0
 
 	response.write cmdInsert.CommandText
     Set cmdInsert = Nothing
