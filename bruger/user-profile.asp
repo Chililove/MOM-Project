@@ -20,7 +20,7 @@ If Not IsEmpty(id_login) Then
       '  .CommandText = "SELECT fornavn, efternavn, login, mailadresse FROM tbllogin WHERE id_login = ?"
 
       ' Would be nice to add company name to this profile view, but i cannot extract company name from the qrylogin view for some reason i do not know
-                .CommandText = "SELECT fornavn, efternavn, login, mailadresse FROM qrylogin WHERE id_login = ?"
+                .CommandText = "SELECT fornavn, efternavn, login, mailadresse, company_name FROM qrylogin WHERE id_login = ?"
 
         .CommandType = 1 'adCmdText
         .Parameters.Append .CreateParameter("@id_login", 3, 1, , id_login)
@@ -36,7 +36,9 @@ If Not IsEmpty(id_login) Then
       <div class="user-profile">
     <img src="login/orangedude.png" alt="User Avatar" class="user-avatar">
     <div class="user-info">
-        <h2><%= rs("login") %></h2>
+            <h2><%= rs("company_name") %></h2>
+
+        <h3><%= rs("login") %></h3>
         <p><%= rs("fornavn") & " " & rs("efternavn") %></p>
         <p>Email: <%= rs("mailadresse") %></p>
     </div>
