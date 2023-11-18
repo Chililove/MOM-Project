@@ -11,6 +11,7 @@ do while not rs.eof
 	mailadresse=rs("mailadresse")
 	id_logintype=rs("id_logintype")
 	logintype=rs("logintype")
+	id_company=rs("id_company")
 rs.movenext
 loop
 %>
