@@ -340,6 +340,7 @@ body.modal-open .modal {
 						id_meetingtype=rs("id_meetingtype")
 						id_afdeling=rs("id_afdeling")
 						id_login=rs("id_login")
+						id_company=rs("id_company")
 						'For showing that I get the right converted data back from db
 response.write("Converted date: " & moede_dato & "<br>")
 response.write("Converted time: " & moede_tidspunkt & "<br>")
@@ -570,7 +571,8 @@ document.addEventListener("DOMContentLoaded", function() {
 				<tr>
 					<td style="text-align: center">
 						<input name="existing_id_registrering" type="hidden" value="<%=existing_id_registrering%>">
-						<input type="hidden" name="oprettetaf" value='<%=session("login_id")%>'>
+						<input type="hidden" name="oprettetaf" value='<%=session("id_login")%>'>
+						<input type="hidden" name="id_company" value='<%=session("id_company")%>'>
 						<input name="Submit1" type="submit" value="Start meeting" data-theme="a" data-icon="check">
 						
 						<!--This is how I can save multiple users to an agenda - There is for sure a better way to do this.. I just don't-->

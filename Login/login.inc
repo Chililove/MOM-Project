@@ -13,6 +13,7 @@ If Request.Form("Action") = "Login" Then
 	login = (Trim(Replace(Request.Form("login"),"%","")))
 	login = (Trim(Replace(Request.Form("login"),">","")))
 	password1 = (Trim(Replace(Request.Form("password"),"'","")))
+	
 
 		If Len(login) > 0 And Len(password1) > 0 Then
 			SQL2 = "SELECT * FROM tbllogin WHERE (login = '" & login & "') AND (password1 = '" & password1 & "') and (id_logintype=1 or id_logintype=2)"
@@ -22,12 +23,13 @@ If Request.Form("Action") = "Login" Then
 				login_id = rs("id_login")
 				login = rs("login")
 				logintype_id =rs("id_logintype")
-				company_id = rs("id_company")
+				company_id =rs("id_company")
 
+Response.Write("Session company_id at login: " & Session("id_company"))
 
 
 				if  logintype_id=1 then
-					session("administrator")=true
+					session("administrator")=true 'company logintype
 				else
 					session("administrator")=false
 				end if
@@ -43,7 +45,10 @@ If Request.Form("Action") = "Login" Then
 				Session("login") = login
 				Session("id_logintype") = logintype_id
 				Session("id_company") = company_id
+				Response.Write("Session company_id 2: " & Session("id_company"))
+
 				Response.Redirect "../default.asp"
+				
 			End If
 
 		Else
