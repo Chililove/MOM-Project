@@ -140,18 +140,20 @@ If Len(Request.QueryString("id_meetingtype")) > 0 Then
         Set rs = Conn.Execute(sql)
 
         If Not rs.EOF Then
-            id_meetingtype = rs("meeting_type")
+            id_meetingtype = rs("id_meetingtype")
+			meeting_type = rs("meeting_type")
         End If
 
         rs.Close
         Set rs = Nothing
     Else
-        Response.Write("Invalid company ID for meetingtypes.")
+        Response.Write("Invalid  ID for meetingtypes.")
     End If
 Else
     ' If there is no id_meetingtype in the query string, I'm creating a new meetingtype
     ' Initialize meetingtype to an  empty string
     id_meetingtype = ""
+	meeting_type = ""
 End If
 %>
 
