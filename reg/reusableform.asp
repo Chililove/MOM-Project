@@ -380,7 +380,7 @@ response.write("Companyid: " & id_company & "<br>")
 				<tr>
 					<td style="text-align: center;">
 						<select name="id_meetingtype" required >
-										<% SQL3="Select * from tblmeeting_type order by id_meetingtype"
+										<% SQL3="Select * from tblmeeting_type  where id_company = "&session("id_company")&" order by id_meetingtype"
 										set objRS3 = conn.Execute(SQL3) %>
 									<% if  request("action")="show" then %>
 										<%if NOT IsNull(id_meetingtype) then %>
@@ -453,7 +453,7 @@ response.write("Companyid: " & id_company & "<br>")
 
             if request("action")="show" then
                 if NOT IsNull(id_afdeling) then 
-                    SQL4 = "Select * from tbl_afdeling_2nd WHERE id_afdeling= " & id_afdeling
+                    SQL4 = "Select * from tbl_afdeling_2nd WHERE id_company = "&session("id_company")&" order by id_afdeling"
                     set objRS4 = conn.Execute(SQL4) 
                     afdeling = objRS4("afdeling") %>
                 <option selected="" value=""><%=afdeling%></option>

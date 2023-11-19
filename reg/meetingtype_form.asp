@@ -13,7 +13,7 @@ $(document).ready(function() {
     // Client-side validation logic here
     $('#meetingtypeForm').submit(function(e) {
         var meetingtype = $('#meetingtype').val();
-        // Example validation: check if companyName is not empty and cvr is numeric
+        // Example validation: check if name is not empty and cvr is numeric
         if(meetingtype.trim() === '' ) {
             alert('Please enter a valid meetingtype id.');
             e.preventDefault(); // Prevent form submission if validation fails
@@ -28,6 +28,8 @@ $(document).ready(function() {
 
 <body>
 <%
+    Response.Write(id_meetingtype)
+
 ' Check if we are updating an existing company
 If Request.QueryString("action") = "update" And Not IsEmpty(Request.QueryString("id_company")) Then
     company_id = Request.QueryString("id_company")
@@ -45,11 +47,13 @@ End If
     <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
 </div>
 <%IF Request.QueryString("action") = "update" then%>
+
 <form id="meetingtypeForm" method="post" action="save_meetingtype.asp?action=update&id_meetingtype=<%=id_meetingtype%>">
 <%Else%>
 <form id="meetingtypeForm" method="post" action="save_meetingtype.asp?action=create">
 <%end if%>
     <label for="meeting_type">Meetingtype:</label>
+    <!-- Why do i get the name of the field back instead of the id?? -->
     <input type="text" id="meeting_type" name="meeting_type" value="<%=meeting_type%>" required>
 
      <% If Request.QueryString("action") = "update" Then %>
@@ -63,7 +67,7 @@ End If
 </form>
 
 <%
-sql = "SELECT * FROM tblmeeting_type ORDER BY meeting_type DESC"
+sql = "SELECT * FROM tblmeeting_type  where id_company =  " & session("id_company") & " ORDER BY meeting_type DESC"
 Set rs = Conn.Execute(sql)
 
 If rs.EOF Then

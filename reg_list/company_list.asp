@@ -19,7 +19,7 @@
 			</a>
 	</div>
 <%
-sql="select * from tbl_companies order by company_name desc "
+sql="select * from tbl_companies  where id_company =  " & session("id_company") & " order by company_name desc "
 set rs=conn.execute(sql)
 %>
 	<ul data-role="listview" data-inset="false" data-filter="true">
