@@ -284,9 +284,10 @@ body.modal-open .modal {
 							</div>
 							<div style="width:50%">Start tid
 								<div class="input-wrapper">
-								<input type="time" name="moede_tidspunkt" 
+								<input type="text" name="moede_tidspunkt" 
 						<% if  request("action")="show" AND NOT IsNull(moede_tidspunkt) then  %>
-								value="<%=rs("moede_tidspunkt")%>"
+								value="<%=LEFT(rs("moede_tidspunkt"), 5)%>"
+
 								readonly
 						<% else %>
 								value=""
@@ -340,9 +341,12 @@ body.modal-open .modal {
 						id_meetingtype=rs("id_meetingtype")
 						id_afdeling=rs("id_afdeling")
 						id_login=rs("id_login")
+						id_company=rs("id_company")
 						'For showing that I get the right converted data back from db
 response.write("Converted date: " & moede_dato & "<br>")
 response.write("Converted time: " & moede_tidspunkt & "<br>")
+response.write("Companyid: " & id_company & "<br>")
+
 		
 						sql = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=" & id_agenda
 					Dim assignedEmployees
@@ -444,7 +448,7 @@ response.write("Converted time: " & moede_tidspunkt & "<br>")
 					<td style="text-align: center">
 			<select name="id_afdeling" required >
 
-            <% SQL3 = "Select * from tbl_afdeling_2nd order by id_afdeling"
+            <% SQL3 = "Select * from tbl_afdeling_2nd where id_company = "&session("id_company")&" order by id_afdeling"
             set objRS3 = conn.Execute(SQL3)
 
             if request("action")="show" then
@@ -494,7 +498,7 @@ response.write("Converted time: " & moede_tidspunkt & "<br>")
                 <!-- Populating user list -->
 			<div class="user-list-container">
                 <div class="user-list">
-                    <%  SQL3="Select * from tbllogin order by id_login"
+                    <%  SQL3="Select * from tbllogin where id_company =  '" & session("id_company") & "' order by id_login"
                         set objRS3 = conn.Execute(SQL3)
                         while not objRS3.EOF 
                     %>
@@ -570,7 +574,8 @@ document.addEventListener("DOMContentLoaded", function() {
 				<tr>
 					<td style="text-align: center">
 						<input name="existing_id_registrering" type="hidden" value="<%=existing_id_registrering%>">
-						<input type="hidden" name="oprettetaf" value='<%=session("login_id")%>'>
+						<input type="hidden" name="oprettetaf" value='<%=session("id_login")%>'>
+						<input type="hidden" name="id_company" value='<%=session("id_company")%>'>
 						<input name="Submit1" type="submit" value="Start meeting" data-theme="a" data-icon="check">
 						
 						<!--This is how I can save multiple users to an agenda - There is for sure a better way to do this.. I just don't-->

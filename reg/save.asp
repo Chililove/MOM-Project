@@ -12,6 +12,8 @@ On Error Resume Next
 '*******************skriv til databasen     
 response.write "Action: " & request("action") & "<br/>"
 response.write "ID Agenda: " & request("id_agenda") & "<br/>"
+response.write "ID company: " & request("id_company") & "<br/>"
+
 
 id_agenda=request("id_agenda")
 existing_id_registrering=request("existing_id_registrering")
@@ -27,6 +29,9 @@ id_afdeling=request("id_afdeling")
 id_login=request("id_login")
 moede_dato=request("moede_dato")
 moede_tidspunkt= request("moede_tidspunkt")
+id_company = Session("id_company")
+Response.Write("Session savecompany_id: " & Session("id_company"))
+
 ' moede_tidspunkt=LEFT(RIGHT(request("moede_tidspunkt"),12),5)
 
 aar=datepart("yyyy",oprettetdato)
@@ -45,10 +50,12 @@ sluttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 
 Set rs = Server.CreateObject("ADODB.Command")
 rs.ActiveConnection = Conn
+'id_company = Session("id_company")
+'Response.Write("Session save2company_id: " & Session("id_company"))
 
 If request("action") = "newday" Then
-    sql1 = "INSERT INTO tbl_agenda (moede_navn, emne, beskrivelse, noter, additionalinfo, oprettetaf, oprettetdato, starttid, id_meetingtype, id_afdeling, moede_dato, moede_tidspunkt) "
-    sql2 = "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '" & moede_tidspunkt & "')"
+    sql1 = "INSERT INTO tbl_agenda (moede_navn, emne, beskrivelse, noter, additionalinfo, oprettetaf, oprettetdato, starttid, id_meetingtype, id_afdeling, moede_dato, moede_tidspunkt, id_company) "
+    sql2 = "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     
     rs.CommandText = sql1 & sql2
     rs.Parameters.Append rs.CreateParameter("@moede_navn", 202, 1, 255, moede_navn)
@@ -62,11 +69,15 @@ If request("action") = "newday" Then
 	rs.Parameters.Append rs.CreateParameter("@id_meetingtype", 3, 1, , id_meetingtype)
 	rs.Parameters.Append rs.CreateParameter("@id_afdeling", 3, 1, , id_afdeling)
     rs.Parameters.Append rs.CreateParameter("@moede_dato", 7, 1, , moede_dato)
+    rs.Parameters.Append rs.CreateParameter("@moede_tidspunkt", 135, 1, 50, moede_tidspunkt)
+    rs.Parameters.Append rs.CreateParameter("@id_company", 3, 1, , id_company)
+
     'rs.Parameters.Append rs.CreateParameter("@moede_tidspunkt", 135, 1, , moede_tidspunkt)
 
 	sql = sql1 + sql2
 	response.write sql
     rs.Execute(sql)
+    'Response.Write("Session savec33ompany_id: " & Session("id_company"))
 
 	 Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agenda")
     new_id_agenda = rs(0).Value
@@ -137,6 +148,7 @@ if request("action")="show" then
         id_login = rs("id_login")
         moede_dato = rs("moede_dato")
         moede_tidspunkt = rs("moede_tidspunkt")
+        id_company = rs("id_company")
 
         ' Preparing the SQL command for the next query
         Set cmd = CreateObject("ADODB.Command")
@@ -169,6 +181,7 @@ If request("action") = "edit" Then
         "id_afdeling = ?, " & _
         "moede_dato = ?, " & _
         "moede_tidspunkt = ? " & _
+        "id_company = ? " & _
         "WHERE id_agenda = ?"
     
     ' Create a command object and set its properties
@@ -185,7 +198,8 @@ If request("action") = "edit" Then
     cmd.Parameters.Append cmd.CreateParameter("@id_meetingtype", 3, 1, , id_meetingtype)
     cmd.Parameters.Append cmd.CreateParameter("@id_afdeling", 3, 1, , id_afdeling)
     cmd.Parameters.Append cmd.CreateParameter("@moede_dato", 7, 1, 255, moede_dato)
-    cmd.Parameters.Append cmd.CreateParameter("@moede_tidspunkt", 202, 1, 255, moede_tidspunkt)
+    cmd.Parameters.Append cmd.CreateParameter("@moede_tidspunkt", 135, 1, 255, moede_tidspunkt)
+    cmd.Parameters.Append cmd.CreateParameter("@id_company", 3, 1, , id_company)
     cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda)
     
     ' Execute the command

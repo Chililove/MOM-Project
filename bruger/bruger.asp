@@ -139,104 +139,66 @@ span.error {
 						</td>
 					</tr>
 
-					<tr>
-    <td style="text-align: center">
-        <% ' Check if the action is edit and if the user is an admin
-           If Request("action") = "ret" And Session("administrator") Then %>
-            <select name="id_logintype" required>
-                <% ' If editing, show the selected option for the admin
-                   SQL3 = "SELECT * FROM tbllogintype ORDER BY logintype ASC"
-                   Set objRS3 = conn.Execute(SQL3)
-                   While Not objRS3.EOF
-                       If objRS3("id_logintype") = id_logintype Then %>
-                           <option selected value='<%=objRS3("id_logintype")%>'><%=objRS3("logintype")%></option>
-                       <% Else %>
-                           <option value='<%=objRS3("id_logintype")%>'><%=objRS3("logintype")%></option>
-                       <% End If
-                       objRS3.MoveNext
-                   Wend
-                   objRS3.Close()
-                   Set objRS3 = Nothing
-                %>
-            </select>
-        <% Else %>
-            <% ' For non-admins or other actions, show the selected option but disable the select
-               SQL3 = "SELECT logintype FROM tbllogintype WHERE id_logintype = '" &Session("id_logintype") & "'"
 
-               Set objRS3 = conn.Execute(SQL3)
-               If Not objRS3.EOF Then %>
-                   <input type="text" name="logintype" value="<%=objRS3("logintype")%>" disabled>
-               <% End If
-               objRS3.Close()
-               Set objRS3 = Nothing
-            %>
-        <% End If %>
-    </td>
-</tr>
 
-<!-- Company -->
-
-	<tr>
-						<td style="text-align: center">
-										Company
-						</td>
-					</tr>
 <tr>
     <td style="text-align: center">
         <% 
-        ' Check if the action is to edit and if the user is an admin
-        If Request("action") = "ret" Then
-            ' Fetch the current company ID for the user
-            Dim sql1, companyid
-            sql1 = "SELECT id_company FROM tbllogin WHERE id_login = " & id_login
-            Set Rs = conn.Execute(sql1)
-            
-            If Not Rs.EOF Then
-                companyid = Rs("id_company")
-            End If
-            Rs.Close()
-            Set Rs = Nothing
-            
-            ' Display a dropdown for admins or a disabled text field for non-admins
-            If Session("administrator") = True Then
-                ' Dropdown for admin to change the company
-                %>
-                <select name="id_company" required>
+        ' Check if the user is an admin and if the action is to edit or create
+        If Session("administrator") Then 
+            ' Admins get a dropdown to change the company
+            ' If the action is edit, show the selected option
+            If Request("action") = "ret" Then
+                SQL3 = "SELECT * FROM tbllogintype ORDER BY logintype ASC"
+                Set objRS3 = conn.Execute(SQL3)
+        %>
+                <select name="id_logintype" required>
                     <% 
-                    Dim sql2, RS
-                    sql2 = "SELECT * FROM tbl_companies ORDER BY company_name ASC"
-                    Set RS = conn.Execute(sql2)
-                    
-                    While Not RS.EOF
-                        Dim isSelectedA
-                        isSelectedA = ""
-                        If RS("id_company") = companyid Then
-                            isSelectedA = "selected"
-                        End If
+                    While Not objRS3.EOF
+                        If objRS3("id_logintype") = id_logintype Then
                     %>
-                        <option value='<%=RS("id_company")%>' <%=isSelectedA%>><%=RS("company_name")%></option>
+                            <option selected value='<%=objRS3("id_logintype")%>'><%=objRS3("logintype")%></option>
                     <%
-                        Rs.MoveNext
+                        Else
+                    %>
+                            <option value='<%=objRS3("id_logintype")%>'><%=objRS3("logintype")%></option>
+                    <%
+                        End If
+                        objRS3.MoveNext
                     Wend
-                    RS.Close()
-                    Set RS = Nothing
+                    objRS3.Close()
+                    Set objRS3 = Nothing
                     %>
                 </select>
-                <%
-            Else
-                ' Disabled text field for non-admin showing company name
-                Dim sql4, rss
-                sql4 = "SELECT company_name FROM tbl_companies WHERE id_company = " & companyid
-                Set rss = conn.Execute(sql4)
-                
-                If Not rss.EOF Then
-                %>
-                    <input type="text" name="company_name" value="<%=rss("company_name")%>" disabled>
-                <%
-                End If
-                rss.Close()
-                Set rss = Nothing
+        <%
+            Else ' If the action is to create, show a regular dropdown without a selected option
+        %>
+                <select name="id_logintype" required>
+                    <% 
+                    SQL3 = "SELECT * FROM tbllogintype ORDER BY logintype ASC"
+                    Set objRS3 = conn.Execute(SQL3)
+                    While Not objRS3.EOF
+                    %>
+                        <option value='<%=objRS3("id_logintype")%>'><%=objRS3("logintype")%></option>
+                    <%
+                        objRS3.MoveNext
+                    Wend
+                    objRS3.Close()
+                    Set objRS3 = Nothing
+                    %>
+                </select>
+        <%
             End If
+        Else ' For non-admins, show the company name in a disabled input field
+            SQL3 = "SELECT logintype FROM tbllogintype WHERE id_logintype = '" & Session("id_logintype") & "'"
+            Set objRS3 = conn.Execute(SQL3)
+            If Not objRS3.EOF Then
+        %>
+                <input type="text" name="logintype" value="<%=objRS3("logintype")%>" disabled>
+        <%
+            End If
+            objRS3.Close()
+            Set objRS3 = Nothing
         End If
         %>
     </td>
@@ -244,7 +206,10 @@ span.error {
 
 
 
-									
+
+<!-- Company -->
+
+		
 
 
 								<!-- save btn -->
