@@ -19,7 +19,7 @@
 			</a>
 	</div>
 <%
-sql="select * from tbl_afdeling_2nd order by afdeling desc "
+sql="select * from tblmeeting_type order by meeting_type desc "
 set rs=conn.execute(sql)
 %>
 	<ul data-role="listview" data-inset="false" data-filter="true">
@@ -34,11 +34,11 @@ set rs=conn.execute(sql)
 					do while not rs.eof
 				%>
 				<li>
-					<a data-ajax="false" href='../reg/company_page.asp?action=update&amp;id_company=<%=rs("id_company")%>'>
+					<a data-ajax="false" href='../reg/meetingtype_page.asp?action=update&amp;id_meetingtype=<%=rs("id_meetingtype")%>'>
 
 						<table style="width: 100%">		
 								<tr>
-									<td style="width: 25%"><%=rs("afdeling")%></td>
+									<td style="width: 25%"><%=rs("meeting_type")%></td>
 								</tr>
 						</table>
 					</a>
