@@ -28,7 +28,7 @@ set rs=conn.execute(sql)
 
 %>
 <%Else
-'response.redirect("/default.asp") %>
+response.redirect("/default.asp") %>
 <%End if%>
 	<ul data-role="listview" data-inset="false" data-filter="true">
 				<li data-role="list-divider">

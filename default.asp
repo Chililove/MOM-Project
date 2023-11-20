@@ -55,10 +55,6 @@
 <%end if%>
 
 
-<!--li><a data-ajax="false" href="reg_list/list_my_last20.asp">Last 20 registrations</a></li>
-<li><a data-ajax="false" href="reg_list/list_my_last20X.asp">Last 20 reggistrations</a></li>-->
-
-<!-- <li><a data-ajax="false" href="reg_list/list_my_sum.asp">Last 10 days</a></li> -->
 <li><a data-ajax="false" href="reg_list/saved_meetings.asp">Saved meetings</a></li>
 <li><a data-ajax="false" href="reg_list/my_meetings.asp">My meetings</a></li>
 
@@ -66,8 +62,13 @@
 <%if session("administrator")=true then%>				
 <li><a data-ajax="false" href="bruger/">User list</a></li>
 <li><a data-ajax="false" href="bruger/bruger.asp?action=opret">New user</a></li>
-<li><a data-ajax="false" href="reg_list/company_list.asp">Company list</a></li>
-<li><a data-ajax="false" href="reg/company_page.asp?action=create">Add a company </a></li>
+<li><a data-ajax="false" href="reg_list/meetingtype_list.asp">Meetingtypes</a></li>
+<li><a data-ajax="false" href="reg/meetingtype_page.asp?action=create">Add a meetingtype </a></li>
+<li><a data-ajax="false" href="reg_list/afdeling_list.asp">Departments</a></li>
+<li><a data-ajax="false" href="reg/afdeling_page.asp?action=create">Add a department </a></li>
+<!--<li><a data-ajax="false" href="reg_list/company_list.asp">Company list</a></li>
+<li><a data-ajax="false" href="reg/company_page.asp?action=create">Add a company </a></li>-->
+
 
 <%end if%>
 				

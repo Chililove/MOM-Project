@@ -2,6 +2,13 @@
 <!--#include file="../opendb.asp"-->
 <!--#include file="../shared/global.css"-->
 <html>
+<%
+' Check if the user is an administrator
+If Not session("administrator") Then
+    ' If not an administrator, redirect them to an error page or some other action
+    Response.Redirect("access_denied.asp") ' Change "access_denied.asp" to the appropriate page
+End If
+%>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; chaRset=UTF-8">
 		<title>OneTimer</title>
