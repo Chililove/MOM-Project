@@ -28,7 +28,7 @@ $(document).ready(function() {
 
 <body>
 <%
-    Response.Write(id_meetingtype)
+    'Response.Write(id_meetingtype)
 
 ' Check if we are updating an existing company
 If Request.QueryString("action") = "update" And Not IsEmpty(Request.QueryString("id_company")) Then
@@ -58,14 +58,47 @@ End If
 
      <% If Request.QueryString("action") = "update" Then %>
         <input type="hidden" name="id_meetingtype" value="<%=id_meetingtype%>">
-            <button type="submit">Update meetingtype</button>
+
+     <button type="submit">Update meetingtype</button>
+<button type="button" id="deleteButton" value="Delete type" data-theme="a" data-icon="delete">Delete type</button>
+
+
 <%Else%>
     <button type="submit">Add meetingtype</button>
 
-    <% End If %>
-
+    <% End If %>    <!-- External "Delete" button with event listener -->
 </form>
+<!-- The rest of your code remains the same -->
 
+<script>
+    document.getElementById("deleteButton").addEventListener("click", function() {
+            console.log("Delete button clicked");
+
+        var r = confirm("Are you sure you want to delete this type?");
+        if (r == true) {
+            var formData = new FormData();
+            formData.append("action", "delete");
+
+            fetch("/reg/save_meetingtype.asp?id_meetingtype=<%=id_meetingtype%>", {
+                method: "POST",
+                body: formData
+            })
+            .then(function(response) {
+                if (response.ok) {
+                    alert("Meeting type deleted successfully.");
+                    // Redirect to the list page or perform any other necessary actions'
+
+                    window.location.href = "/reg_list/meetingtype_list.asp";
+                } else {
+                    alert("An error occurred during meeting type deletion.");
+                }
+            })
+            .catch(function(error) {
+                console.error("Error:", error);
+            });
+        }
+    });
+</script>
 <%
 sql = "SELECT * FROM tblmeeting_type  where id_company =  " & session("id_company") & " ORDER BY meeting_type DESC"
 Set rs = Conn.Execute(sql)
