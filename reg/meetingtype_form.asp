@@ -26,6 +26,7 @@ $(document).ready(function() {
 </script>
 </head>
 <style>
+
 html,body {
   height:100%;
   width:100%;
@@ -39,9 +40,10 @@ form {
   width: 50%;
 }
 
-#meting_type{
+#meeting_type{
 padding: 2%;
 }
+
 
 </style>
 <body>
