@@ -25,7 +25,25 @@ $(document).ready(function() {
 
 </script>
 </head>
+<style>
+html,body {
+  height:100%;
+  width:100%;
+  margin:0;
+}
+body {
+  display:flex;
+}
+form {
+  margin:auto;
+  width: 50%;
+}
 
+#meting_type{
+padding: 2%;
+}
+
+</style>
 <body>
 <%
     'Response.Write(id_meetingtype)
@@ -86,9 +104,8 @@ End If
             .then(function(response) {
                 if (response.ok) {
                     alert("Meeting type deleted successfully.");
-                    // Redirect to the list page or perform any other necessary actions'
-
-                    window.location.href = "/reg_list/meetingtype_list.asp";
+                    // Redirecting to the list page or I could do another action?'
+                   ' window.location.href = "/reg_list/meetingtype_list.asp";
                 } else {
                     alert("An error occurred during meeting type deletion.");
                 }
