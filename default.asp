@@ -66,6 +66,8 @@
 <li><a data-ajax="false" href="reg/meetingtype_page.asp?action=create">Add a meetingtype </a></li>
 <li><a data-ajax="false" href="reg_list/afdeling_list.asp">Departments</a></li>
 <li><a data-ajax="false" href="reg/afdeling_page.asp?action=create">Add a department </a></li>
+<!--<li><a data-ajax="false" href="reg_list/company_list.asp">Company list</a></li>
+<li><a data-ajax="false" href="reg/company_page.asp?action=create">Add a company </a></li>-->
 
 
 <%end if%>
