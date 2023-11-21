@@ -9,6 +9,9 @@
 <link rel="stylesheet" href="../shared/global.css">
 <script src="../jquery/jquery-1.8.2.min.js"></script>
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>-->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
 <style>
 	label.error {
 	color: red;
@@ -426,8 +429,16 @@ response.write("Companyid: " & id_company & "<br>")
 				<tr>
 					<td style="text-align: center">
 						<div class="input-wrapper">
-						<textarea name="beskrivelse" rows="4" cols="50" style="min-width: 720px;"><%=beskrivelse%></textarea>
-						</div>
+<div id="editor" style="min-height: 200px;">
+  <!-- Existing content -->
+  <%= beskrivelse %>
+</div>
+
+<div>
+  <input type="text" id="agendaPointInput" placeholder="Enter agenda point">
+  <button type="button" id="addAgendaPoint">Add Agenda Point</button>
+</div>
+
 					</td>
 				</tr>
 			<!-- Møde note -->
@@ -706,7 +717,30 @@ highlight: function (element) {
 });
     });
 </script>
-		</form>
+<input type="hidden" name="beskrivelse" id="beskrivelseInput" value="<%=beskrivelse%>">
+
+<script>
+  document.querySelector('form').addEventListener('submit', function() {
+    document.querySelector('#beskrivelseInput').value = quill.root.innerHTML;
+  });
+</script>
+
+	</form>
+	<script>
+	 var quill = new Quill('#editor', {
+    theme: 'snow',
+    modules: {
+      toolbar: [
+        [{ 'font': [] }],
+        [{ 'header': '1'}, {'header': '2'}, { 'header': '3' }, { 'header': '4' }, { 'header': '5' }, { 'header': '6' }, { 'header': 'false' }],
+        ['bold', 'italic', 'underline'],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        ['link'],
+        ['clean']
+      ]
+    }
+  });
+  </script>
 		
 
 
