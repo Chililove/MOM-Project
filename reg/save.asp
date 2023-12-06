@@ -32,6 +32,8 @@ moede_tidspunkt= request("moede_tidspunkt")
 id_company = Session("id_company")
 Response.Write("Session savecompany_id: " & Session("id_company"))
 
+ logins = Request.Form("id_login")
+
 ' moede_tidspunkt=LEFT(RIGHT(request("moede_tidspunkt"),12),5)
 
 aar=datepart("yyyy",oprettetdato)
@@ -54,8 +56,8 @@ rs.ActiveConnection = Conn
 'Response.Write("Session save2company_id: " & Session("id_company"))
 
 If request("action") = "newday" Then
-    sql1 = "INSERT INTO tbl_agenda (moede_navn, emne, beskrivelse, noter, additionalinfo, oprettetaf, oprettetdato, starttid, id_meetingtype, id_afdeling, moede_dato, moede_tidspunkt, id_company) "
-    sql2 = "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    sql1 = "INSERT INTO tbl_agenda (moede_navn, emne, beskrivelse, noter, additionalinfo, oprettetaf, oprettetdato, starttid, id_meetingtype, id_afdeling, moede_dato, moede_tidspunkt, id_company, participants) "
+    sql2 = "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     
     rs.CommandText = sql1 & sql2
     rs.Parameters.Append rs.CreateParameter("@moede_navn", 202, 1, 255, moede_navn)
@@ -71,31 +73,33 @@ If request("action") = "newday" Then
     rs.Parameters.Append rs.CreateParameter("@moede_dato", 7, 1, , moede_dato)
     rs.Parameters.Append rs.CreateParameter("@moede_tidspunkt", 135, 1, 50, moede_tidspunkt)
     rs.Parameters.Append rs.CreateParameter("@id_company", 3, 1, , id_company)
+    rs.Parameters.Append rs.CreateParameter("@participants", 202, 1, 255, logins)
 
     'rs.Parameters.Append rs.CreateParameter("@moede_tidspunkt", 135, 1, , moede_tidspunkt)
 
 	sql = sql1 + sql2
-	response.write sql
+	response.write "<br>" & sql & "<br>"
     rs.Execute(sql)
-    'Response.Write("Session savec33ompany_id: " & Session("id_company"))
 
-	 Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agenda")
-    new_id_agenda = rs(0).Value
-' could be this i was missing for the display and update of the assigned users ---------------------------------
-    selectedLogins = Split(Request.Form("id_login"), ",")
-    For Each id_login In selectedLogins
-        sql = "INSERT INTO tblassign_users_to_agenda (id_agenda, id_login) VALUES (?, ?); SELECT SCOPE_IDENTITY();"
-     '   Conn.Execute(sql)
+set rs = Conn.Execute("SELECT @@IDENTITY AS id_agenda1")
+ id_agenda1 = rs(0).Value
+ session("id_agenda") = id_agenda1
+sql= "SELECT participants FROM tbl_agenda WHERE id_agenda = "& id_agenda1 &""
+response.write sql & "<br>"
+set RS = Conn.Execute(sql)
 
-	 Set rs = Server.CreateObject("ADODB.Command")
-	rs.ActiveConnection = Conn
-		rs.CommandText = sql
-		rs.Parameters.Append rs.CreateParameter("@id_agenda", 3, 1, , new_id_agenda)
-    	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , CInt(id_login))
-		rs.Execute
-    Next
-	response.redirect "../default.asp"
+participants = Split(RS("participants"), ",")
+For Each participant In participants
+    response.write participant & "<br />"
+Next
+
+
+
+Response.Write "<script type='text/javascript'>"
+Response.Write "setTimeout(function() { window.location.href = './nextstep.asp'; }, 3000);"
+Response.Write "</script>"
 end if
+
 'if request("action")="newday" then
 
 	'sql1= "INSERT INTO tbl_agenda (moede_navn,emne,beskrivelse, noter, additionalinfo, oprettetaf,oprettetdato,starttid, id_meetingtype, id_afdeling, moede_dato, moede_tidspunkt) "
