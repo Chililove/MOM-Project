@@ -6,7 +6,9 @@ id_agenda = session("id_agenda")
 <body>
     <div style="display:flex; justify-content:center; align-items: center;">
         <a href="../default.asp"><button>Tilbage til forsiden?</button></a>
-        <a href="agendapoint_form.asp?id=<%=id_agenda%>"><button>Tilføj Agenda Punkter</button></a>
+                <a href="agendapoint_page.asp?id=<%=id_agenda%>"><button>Add agendapoints to selected meeting</button></a>
+
+       <!-- <a href="agendapoint_form.asp?id=<%'=id_agenda%>"><button>Tilføj Agenda Punkter</button></a> -->
     </div>
 
 
