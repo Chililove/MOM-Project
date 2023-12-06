@@ -1,18 +1,16 @@
 <!--#include file="../login/protect.inc"-->
 <!--#include file="../opendb.asp"-->
-On Error Resume Next
 <HTML>
 <HEAD>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </HEAD>
 <BODY>
-
 <%
 'save to registration
 '*******************skriv til databasen     
-response.write "Action: " & request("action") & "<br/>"
-response.write "ID Agendapoint: " & request("id_agendapoint") & "<br/>"
-response.write "ID company: " & request("id_company") & "<br/>"
+'response.write "Action: " & request("action") & "<br/>"
+'response.write "ID Agendapoint: " & request("id_agendapoint") & "<br/>"
+'response.write "ID company: " & request("id_company") & "<br/>"
 
 
 id_agendapoint=request("id_agendapoint")
@@ -25,8 +23,9 @@ id_agenda=request("id_agenda")
 id_login=request("id_login")
 dato=request("dato")
 id_company = Session("id_company")
-Response.Write("Session savecompany_id: " & Session("id_company"))
-
+id_agenda = request("id_agenda")
+'Response.Write("Session savecompany_id: " & Session("id_company"))
+Response.Write "agenda id =" & id_agenda
 aar=datepart("yyyy",oprettetdato)
 maaned=datepart("m",oprettetdato)
 dag=datepart("d",oprettetdato)
@@ -49,17 +48,27 @@ rs.ActiveConnection = Conn
 If request("action") = "newpoint" Then
     sql1 = "INSERT INTO tbl_agendapoints (point_name, short_desc, long_desc, id_agenda, id_login, dato, id_company) "
     sql2 = "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    sql = sql1 & sql2
     
-    rs.CommandText = sql1 & sql2
+    rs.CommandText = sql
     rs.Parameters.Append rs.CreateParameter("@point_name", 202, 1, 255, point_name)
     rs.Parameters.Append rs.CreateParameter("@short_desc", 202, 1, 255, short_desc)
-	rs.Parameters.Append rs.CreateParameter("@long_desc", 202, 1, -1, long_desc)
+	rs.Parameters.Append rs.CreateParameter("@long_desc", 203, 1, -1, long_desc)
 	rs.Parameters.Append rs.CreateParameter("@id_agenda", 3, 1, , id_agenda)
 	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , id_login)
     rs.Parameters.Append rs.CreateParameter("@dato", 7, 1, , dato)
     rs.Parameters.Append rs.CreateParameter("@id_company", 3, 1, , id_company)
 
     'rs.Parameters.Append rs.CreateParameter("@moede_tidspunkt", 135, 1, , moede_tidspunkt)
+
+' Set the parameter values
+rs.Parameters("@point_name").Value = point_name
+rs.Parameters("@short_desc").Value = short_desc
+rs.Parameters("@long_desc").Value = long_desc
+rs.Parameters("@id_agenda").Value = id_agenda
+rs.Parameters("@id_login").Value = id_login
+rs.Parameters("@dato").Value = dato
+rs.Parameters("@id_company").Value = id_company
 
 	sql = sql1 + sql2
 	response.write sql
@@ -79,9 +88,14 @@ If request("action") = "newpoint" Then
 		rs.CommandText = sql
 		rs.Parameters.Append rs.CreateParameter("@id_agendapoint", 3, 1, , new_id_agendapoint)
     	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , CInt(id_login))
+        rs.Parameters("@id_agendapoint").Value = id_agendapoint
+        rs.Parameters("@id_login").Value = id_login
+
 		rs.Execute
     Next
-	response.redirect "../default.asp"
+'Response.Write("Session savecompany_id: " & Session("id_company"))
+response.redirect "reusableform.asp?id_agenda=" & id_agenda
+	'response.redirect "../default.asp"
 end if	
 
 if request("action")="show" then
