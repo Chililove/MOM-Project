@@ -261,10 +261,10 @@
 
 </head>
 <form data-ajax="false" method="post"
-	<% if request("action")="show" then %>
+	<% if request.QueryString("action")="show" then %>
 	action='save_agendapoints.asp?action=edit&id_agendapoint=<%=request.QueryString("id_agendapoint")%>'  
 	<% else %>
-	action='save_agendapoints.asp?action=<%=request("action")%>'  
+	action='save_agendapoints.asp?action=<%=request.QueryString("action")%>'  
 	<% end if %>
 	style="position: relative;">
 			<table align="center" style="width: 50%">
@@ -272,7 +272,7 @@
 				<tr>
 					<td style="text-align: center">
 						<div style="display:flex;">
-							<div style="width:50%">Start dato
+							<div style="width:50%">Deadline date
 								<div class="input-wrapper">
 								<input type="date" name="date"
 						<% if  request("action")="show" then %>
@@ -362,7 +362,7 @@
 			<!-- Møde emne -->
 				<tr>
 					<th style="text-align: center">
-						Short description, kort beskrivelse
+						Short description
 					</th>
 				</tr>
 				<tr>
@@ -375,14 +375,15 @@
 			<!-- Møde beskrivelse -->
 				<tr>
 					<th style="text-align: center">
-						Long description, lang beskrivelse
+						Long description
 					</th>
 				</tr>
 				<tr>
 					<td style="text-align: center">
 						<div class="input-wrapper">
-
-			</td>
+                            <input type="text" name="long_desc">
+                        </div>
+			        </td>
 				</tr>
 		
 		
@@ -404,7 +405,10 @@
                 <!-- Populating user list -->
 			<div class="user-list-container">
                 <div class="user-list">
-                    <%  SQL3="Select * from tbllogin where id_company =  '" & session("id_company") & "' order by id_login"
+             
+                    <% 
+                    
+                     SQL3="Select * from tbllogin where id_company =  '" & session("id_company") & "' order by id_login"
                         set objRS3 = conn.Execute(SQL3)
                         while not objRS3.EOF 
                     %>
@@ -468,7 +472,8 @@ document.addEventListener("DOMContentLoaded", function() {
 				<tr>
 					<td style="text-align: center">
 						<input type="hidden" name="id_company" value='<%=session("id_company")%>'>
-						<input name="Submit1" type="submit" value="newpoint" data-theme="a" data-icon="check">
+                        <input type="hidden" name="id_agenda" value='<% if LEN(request.QueryString("id_agenda"))>0 then %><%=request.QueryString("id_agenda")%><% else %><%=session("id_agenda")%><% end if %>'>
+						<input name="Submit2" type="submit" value="newpoint" data-theme="a" data-icon="check">
 						
 						<!--This is how I can save multiple users to an agenda - There is for sure a better way to do this.. I just don't-->
 						<%If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
@@ -586,7 +591,7 @@ highlight: function (element) {
 });
     });
 </script>
-<input type="hidden" name="long_desc" id="longdescInput" value="<%=long_desc%>">
+
 
 <script>
   document.querySelector('form').addEventListener('submit', function() {

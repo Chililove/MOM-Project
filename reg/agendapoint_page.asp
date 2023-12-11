@@ -133,16 +133,17 @@ End If
 </div>-->
 
 <%
+
 Dim sql, rs, id_agendapoint
 
 ' Check if an id_company is provided in the query string
 If Len(Request.QueryString("id_agendapoint")) > 0 Then
-    ' Get the company ID from the query string and validate it
-    id_afdeling = Trim(Request.QueryString("id_agendapoint"))
+    ' Get the ID from the query string and validate it
+    id_agendapoint = Trim(Request.QueryString("id_agendapoint"))
 
 
     If IsNumeric(id_agendapoint) Then
-        ' SQL to get company details by id_company
+        ' SQL to get details by id_agendapoint
         sql = "SELECT * FROM tbl_agendapoints WHERE id_agendapoint = " & id_agendapoint
         Set rs = Conn.Execute(sql)
 
@@ -154,18 +155,19 @@ If Len(Request.QueryString("id_agendapoint")) > 0 Then
         rs.Close
         Set rs = Nothing
     Else
-        Response.Write("Invalid  ID for departments.")
+        Response.Write("Invalid  ID for agendapoint.")
     End If
 Else
     ' If there is no id in the query string, I'm creating a new one
-    ' Initialize afdeling to an  empty string
+    ' Initialize it to an  empty string
     id_agendapoint = ""
 	point_name = ""
 End If
 %>
 
 <!--#include file="../reg/agendapoint_form.asp"-->			
-<!--#include file="../shared/footer.asp"--></div>
+<!--#include file="../shared/footer.asp"-->
+</div>
 
 </body>
 </html>

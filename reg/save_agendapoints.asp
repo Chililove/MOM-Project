@@ -20,12 +20,11 @@ point_name=request("point_name")
 short_desc=request("short_desc")
 long_desc=request("long_desc")
 id_agenda=request("id_agenda")
-id_login=request("id_login")
-dato=request("dato")
+logins=request("id_login")
+dato=request("date")
 id_company = Session("id_company")
-id_agenda = request("id_agenda")
-'Response.Write("Session savecompany_id: " & Session("id_company"))
-Response.Write "agenda id =" & id_agenda
+'id_agenda = request("id_agenda")
+'Response.Write "agenda id =" & id_agenda
 aar=datepart("yyyy",oprettetdato)
 maaned=datepart("m",oprettetdato)
 dag=datepart("d",oprettetdato)
@@ -40,61 +39,62 @@ minutter=datepart("n",now())
 starttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 sluttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 
-Set rs = Server.CreateObject("ADODB.Command")
-rs.ActiveConnection = Conn
+'Set rs = Server.CreateObject("ADODB.Command")
+'rs.ActiveConnection = Conn
 'id_company = Session("id_company")
 'Response.Write("Session save2company_id: " & Session("id_company"))
 
 If request("action") = "newpoint" Then
     sql1 = "INSERT INTO tbl_agendapoints (point_name, short_desc, long_desc, id_agenda, id_login, dato, id_company) "
-    sql2 = "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    sql2 = "VALUES ('"& point_name &"', '"& short_desc &"', '"& long_desc &"', "& id_agenda &", '"& logins &"', '"& dato & "', "& id_company &")"
+    ' sql2 = "VALUES (?, ?, ?, ?, ?, ?, ?)"
     sql = sql1 & sql2
     
-    rs.CommandText = sql
-    rs.Parameters.Append rs.CreateParameter("@point_name", 202, 1, 255, point_name)
-    rs.Parameters.Append rs.CreateParameter("@short_desc", 202, 1, 255, short_desc)
-	rs.Parameters.Append rs.CreateParameter("@long_desc", 203, 1, -1, long_desc)
-	rs.Parameters.Append rs.CreateParameter("@id_agenda", 3, 1, , id_agenda)
-	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , id_login)
-    rs.Parameters.Append rs.CreateParameter("@dato", 7, 1, , dato)
-    rs.Parameters.Append rs.CreateParameter("@id_company", 3, 1, , id_company)
+'     rs.CommandText = sql
+'     rs.Parameters.Append rs.CreateParameter("@point_name", 202, 1, 255, point_name)
+'     rs.Parameters.Append rs.CreateParameter("@short_desc", 202, 1, 255, short_desc)
+' 	rs.Parameters.Append rs.CreateParameter("@long_desc", 203, 1, -1, long_desc)
+' 	rs.Parameters.Append rs.CreateParameter("@id_agenda", 3, 1, , id_agenda)
+' 	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , id_login)
+'     rs.Parameters.Append rs.CreateParameter("@dato", 7, 1, , dato)
+'     rs.Parameters.Append rs.CreateParameter("@id_company", 3, 1, , id_company)
 
-    'rs.Parameters.Append rs.CreateParameter("@moede_tidspunkt", 135, 1, , moede_tidspunkt)
-
-' Set the parameter values
-rs.Parameters("@point_name").Value = point_name
-rs.Parameters("@short_desc").Value = short_desc
-rs.Parameters("@long_desc").Value = long_desc
-rs.Parameters("@id_agenda").Value = id_agenda
-rs.Parameters("@id_login").Value = id_login
-rs.Parameters("@dato").Value = dato
-rs.Parameters("@id_company").Value = id_company
+' ' Set the parameter values
+' rs.Parameters("@point_name").Value = point_name
+' rs.Parameters("@short_desc").Value = short_desc
+' rs.Parameters("@long_desc").Value = long_desc
+' rs.Parameters("@id_agenda").Value = id_agenda
+' rs.Parameters("@id_login").Value = id_login
+' rs.Parameters("@dato").Value = dato
+' rs.Parameters("@id_company").Value = id_company
 
 	sql = sql1 + sql2
 	response.write sql
-    rs.Execute(sql)
+    set rs = Conn.Execute(sql)
     'Response.Write("Session savec33ompany_id: " & Session("id_company"))
 
-	 Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agendapoint")
-    new_id_agendapoint = rs(0).Value
-' could be this i was missing for the display and update of the assigned users ---------------------------------
-    selectedLogins = Split(Request.Form("id_login"), ",")
-    For Each id_login In selectedLogins
-        sql = "INSERT INTO tblassign_agendapoints (id_agendapoint, id_login) VALUES (?, ?); SELECT SCOPE_IDENTITY();"
-     '   Conn.Execute(sql)
+	'  Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agendapoint")
+    ' new_id_agendapoint = rs(0).Value
+    ' selectedLogins = Split(Request.Form("id_login"), ",")
+    ' For Each id_login In selectedLogins
+    '     sql = "INSERT INTO tblassign_agendapoints (id_agendapoint, id_login) VALUES (?, ?); SELECT SCOPE_IDENTITY();"
 
-	 Set rs = Server.CreateObject("ADODB.Command")
-	rs.ActiveConnection = Conn
-		rs.CommandText = sql
-		rs.Parameters.Append rs.CreateParameter("@id_agendapoint", 3, 1, , new_id_agendapoint)
-    	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , CInt(id_login))
-        rs.Parameters("@id_agendapoint").Value = id_agendapoint
-        rs.Parameters("@id_login").Value = id_login
+	'  Set rs = Server.CreateObject("ADODB.Command")
+	' rs.ActiveConnection = Conn
+	' 	rs.CommandText = sql
+	' 	rs.Parameters.Append rs.CreateParameter("@id_agendapoint", 3, 1, , new_id_agendapoint)
+    ' 	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , CInt(id_login))
+    '     rs.Parameters("@id_agendapoint").Value = id_agendapoint
+    '     rs.Parameters("@id_login").Value = id_login
 
-		rs.Execute
-    Next
+	' 	rs.Execute
+    ' Next
 'Response.Write("Session savecompany_id: " & Session("id_company"))
-response.redirect "reusableform.asp?id_agenda=" & id_agenda
+'response.redirect "reusableform.asp?id_agenda=" & id_agenda
+response.redirect "nextstep.asp?id_agenda=" & id_agenda
+
+'WHAT IF I AM ON THE ADD AGENDAPOINT PAGE FROM THE DROPDOWN PAGE; WHERE WILL IT SENT ME?
+
 	'response.redirect "../default.asp"
 end if	
 
@@ -150,7 +150,7 @@ If request("action") = "edit" Then
         "dato = ?, " & _
         "id_login = ?, " & _
         "id_agenda = ?, " & _
-        "id_company = ?, " & _
+        "id_company = ? " & _
         "WHERE id_agendapoint = ?"
     
     ' Create a command object and set its properties

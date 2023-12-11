@@ -287,7 +287,9 @@
 		<% sql="Select * from qry_agenda where id_agenda = '"& request.QueryString("id_agenda") &"'"
 			'response.write sql
 			set rs = Conn.execute(sql)
+			moede_datoOG=rs("moede_dato")
 			moede_dato=ConvertDateFormat(rs("moede_dato"))
+			moede_tidspunktOG=rs("moede_tidspunkt")
 			moede_tidspunkt=LEFT(rs("moede_tidspunkt"),5)
 			moede_navn=rs("moede_navn")
 			id_agenda=rs("id_agenda")
@@ -305,7 +307,6 @@
 			response.write("Converted date: " & moede_dato & "<br>")
 			response.write("Converted time: " & moede_tidspunkt & "<br>")
 			response.write("Companyid: " & id_company & "<br>")
-
 
 			sql = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=" & id_agenda
 			Dim assignedEmployees
@@ -331,13 +332,15 @@
 			<!-- Møde dato og tid-->
 				<tr>
 					<td style="text-align: center">
+									<%=moede_dato%>
+
 						<div style="display:flex;">
 							<div style="width:50%">Start dato
 								<div class="input-wrapper">
 								<input type="date" name="moede_dato"
 						<% if  request("action")="show" then %>
-							<% if  NOT IsNull(rs("moede_dato")) then %>
-									value="<%=rs("moede_dato")%>"
+							<% if NOT IsNull(moede_datoOG)=true then %>
+									value="<%=moede_datoOG%>"
 							<% else %>
 								value=""
 							<% end if %>
@@ -350,8 +353,8 @@
 							<div style="width:50%">Start tid
 								<div class="input-wrapper">
 								<input type="time" name="moede_tidspunkt" 
-						<% if  request("action")="show" AND NOT IsNull(moede_tidspunkt) then  %>
-								value="<%=LEFT(rs("moede_tidspunkt"), 5)%>"
+						<% if  request("action")="show" AND NOT IsNull(moede_tidspunktOG)=true then  %>
+								value="<%=moede_tidspunkt%>"
 
 								readonly
 						<% else %>
@@ -584,6 +587,7 @@
 								' Just one checkbox was selected
 								Response.Write("Selected User ID: " & selectedUsers & "<br />")
 							End If
+							Session("selectedUsers") = selectedUsers
 					End If %>
 					</td>
 				</tr>

@@ -75,8 +75,6 @@ If request("action") = "newday" Then
     rs.Parameters.Append rs.CreateParameter("@id_company", 3, 1, , id_company)
     rs.Parameters.Append rs.CreateParameter("@participants", 202, 1, 255, logins)
 
-    'rs.Parameters.Append rs.CreateParameter("@moede_tidspunkt", 135, 1, , moede_tidspunkt)
-
 	sql = sql1 + sql2
 	response.write "<br>" & sql & "<br>"
     rs.Execute(sql)
@@ -93,38 +91,12 @@ For Each participant In participants
     response.write participant & "<br />"
 Next
 
-
-
 Response.Write "<script type='text/javascript'>"
 Response.Write "setTimeout(function() { window.location.href = './nextstep.asp'; }, 3000);"
 Response.Write "</script>"
+
+' Response.redirect "./nextstep.asp"
 end if
-
-'if request("action")="newday" then
-
-	'sql1= "INSERT INTO tbl_agenda (moede_navn,emne,beskrivelse, noter, additionalinfo, oprettetaf,oprettetdato,starttid, id_meetingtype, id_afdeling, moede_dato, moede_tidspunkt) "
-	'sql2= "VALUES ('" & moede_navn &"','" & emne &"','" & beskrivelse &"','" & noter &"','" & additionalinfo &"','" & oprettetaf &"','" & oprettetdato &"','" & starttid &"', " & id_meetingtype &", " & id_afdeling &", '" & moede_dato & "', '" & moede_tidspunkt & "' )"
-	
-	'sql= sql1 & sql2
-	'response.write sql
-	'Conn.Execute(sql)
-
-   ' Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agenda")
-   ' new_id_agenda = rs(0).Value
-
-   ' selectedLogins = Split(Request.Form("id_login"), ",")
-   ' For Each id_login In selectedLogins
-    '    sql = "INSERT INTO tblassign_users_to_agenda (id_agenda, id_login) VALUES (" & new_id_agenda & ", " & id_login & "); SELECT SCOPE_IDENTITY();"
-    '    Conn.Execute(sql)
-   ' Next
-
-	'sql1= "INSERT INTO tblregistrering (id_agenda,oprettetaf,oprettetdato,starttid) "
-	'sql1=sql1 + "VALUES (" & id_agenda & ",'" & oprettetaf &"','" & oprettetdato &"','" &starttid &"')"
-	
-	'response.write sql1
-	'Conn.Execute(sql1)
-
- 'end if
 
 if request("action")="show" then
 
@@ -184,10 +156,10 @@ If request("action") = "edit" Then
         "id_meetingtype = ?, " & _
         "id_afdeling = ?, " & _
         "moede_dato = ?, " & _
-        "moede_tidspunkt = ? " & _
+        "moede_tidspunkt = ?, " & _
         "id_company = ? " & _
         "WHERE id_agenda = ?"
-    
+
     ' Create a command object and set its properties
     Set cmd = Server.CreateObject("ADODB.Command")
     Set cmd.ActiveConnection = Conn
@@ -201,7 +173,7 @@ If request("action") = "edit" Then
     cmd.Parameters.Append cmd.CreateParameter("@additionalinfo", 203, 1, -1, additionalinfo)
     cmd.Parameters.Append cmd.CreateParameter("@id_meetingtype", 3, 1, , id_meetingtype)
     cmd.Parameters.Append cmd.CreateParameter("@id_afdeling", 3, 1, , id_afdeling)
-    cmd.Parameters.Append cmd.CreateParameter("@moede_dato", 7, 1, 255, moede_dato)
+    cmd.Parameters.Append cmd.CreateParameter("@moede_dato", 7, 1, , moede_dato)
     cmd.Parameters.Append cmd.CreateParameter("@moede_tidspunkt", 135, 1, 255, moede_tidspunkt)
     cmd.Parameters.Append cmd.CreateParameter("@id_company", 3, 1, , id_company)
     cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda)
