@@ -35,7 +35,9 @@ set rs=conn.execute(sql)
 %>
 
 <ul data-role="listview" data-inset="false" data-filter="false">
-
+<%
+if not rs.eof then
+%>
 <%
 do while not rs.eof
 %>
@@ -49,8 +51,8 @@ do while not rs.eof
 		    </tr>
                <!-- Your delete button for each agenda -->
                <% If session("administrator") = True Then %>
-<button class="delete-button" data-id="<%=rs("id_agenda")%>">Delete</button>
-<%end if%>
+                <button class="delete-button" data-id="<%=rs("id_agenda")%>">Delete</button>
+                <%end if%>
         </table>
 
     </a>
@@ -64,7 +66,13 @@ do while not rs.eof
  rs.movenext
 loop
 %> 
-
+<%
+else
+%>
+<h3>None</h3>
+<%
+end if 
+%>
 </ul>
 
 <!-- Delete confirmation dialog -->

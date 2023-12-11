@@ -12,7 +12,7 @@ id_company = Session("id_company")
 
 
 ' Check if the user is logged in
-If Not IsEmpty(id_login) Then
+If LEN(id_login)>0 Then
     ' Create the SQL command to retrieve user data
     Set cmd = Server.CreateObject("ADODB.Command")
     With cmd
