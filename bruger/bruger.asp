@@ -133,7 +133,7 @@ span.error {
 					<tr>
 						<td style="text-align: center">
 							<div class="input-wrapper">
-								<input name="password1" type="text" size="25" style="min-width: 720px;" value="<%=password1%>" required >
+								<input name="password1" type="password" size="25" style="min-width: 720px;" value="<%=password1%>" required >
 						</div>
 						</td>
 							

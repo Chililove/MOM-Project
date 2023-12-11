@@ -9,6 +9,14 @@
 <link rel="stylesheet" href="../jquery/jquery.mobile-1.4.5.css">
 <script src="../jquery/jquery-1.8.2.min.js"></script>
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
+<style>
+	 ul > li > a > table > tbody > tr > td {
+	text-align:left;
+	}
+	 ul > li > table > tbody > tr > th {
+	text-align:left;
+	}
+</style>
 </head>
 <style>
    /* Style for the smaller button */
@@ -71,15 +79,15 @@ response.redirect("/default.asp") %>
 				<li data-role="list-divider">
 					<table style="width: 100%">
 						<tr style="text-align: left">
-							<th style="width: 25%">Login</th>
+							<th style="width: 20%">Login</th>
 
-							<th style="width: 25%">Fornavn</th>
+							<th style="width: 20%">Fornavn</th>
 
-							<th style="width: 25%">Efternavn</th>
+							<th style="width: 20%">Efternavn</th>
 								
-							<th style="width: 25%">Email</th>
+							<th style="width: 20%">Email</th>
 
-							<th style="width: 25%">Profil</th>
+							<th style="width: 20%">Profil</th>
 
 						</tr>
 					</table>
@@ -91,15 +99,15 @@ response.redirect("/default.asp") %>
 					<a data-ajax="false" href='../bruger/bruger.asp?action=ret&amp;id_login=<%=rs("id_login")%>'>
 						<table style="width: 100%">		
 								<tr>
-									<td style="width: 25%"><%=rs("login")%></td>
+									<td style="width: 20%"><%=rs("login")%></td>
 				
-									<td style="width: 25%"><%=rs("fornavn")%></td>
+									<td style="width: 20%"><%=rs("fornavn")%></td>
 				
-									<td style="width: 25%"><%=rs("efternavn")%></td>
+									<td style="width: 20%"><%=rs("efternavn")%></td>
 
-									<td style="width: 25%"><%=rs("mailadresse")%></td>
+									<td style="width: 20%"><%=rs("mailadresse")%></td>
 				
-									<td style="width: 25%"><%=rs("logintype")%></td>
+									<td style="width: 20%"><%=rs("logintype")%></td>
 				
 								</tr>
 						</table>
