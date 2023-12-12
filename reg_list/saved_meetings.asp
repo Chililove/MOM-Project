@@ -35,8 +35,10 @@ id_company = session("id_company")
 If session("administrator") = True Then
 
     sql = "SELECT * FROM qrysaved_meetings WHERE id_company =  '" & session("id_company") & "'"
+    response.write sql
 Else
 sql = "SELECT * FROM qrysaved_meetings qm JOIN tblassign_users_to_agenda uma ON qm.id_agenda = uma.id_agenda WHERE uma.id_login = '" & session("id_login") & "'"
+response.write sql
 End If
 
 set rs=conn.execute(sql)
@@ -44,6 +46,9 @@ set rs=conn.execute(sql)
 
 <ul data-role="listview" data-inset="false" data-filter="false">
 				
+<%
+if not rs.eof then
+%>
 <%
 do while not rs.eof
 %>
@@ -72,7 +77,13 @@ do while not rs.eof
  rs.movenext
 loop
 %> 
-
+<%
+else
+%>
+<h3>None</h3>
+<%
+end if 
+%>
 </ul>
 
 <!-- Delete confirmation dialog -->

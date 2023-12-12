@@ -1,15 +1,16 @@
-<head>
+<!--#include file="../login/protect.inc"-->
+<!--#include file="../opendb.asp"--><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>MoM</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-<link rel="stylesheet" href="jquery/jquery.mobile-1.4.5.css">
-<!--
+<link rel="stylesheet" href="../jquery/jquery.mobile-1.4.5.css">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="../shared/global.css">
 <script src="../jquery/jquery-1.8.2.min.js"></script>
-<script src="../jquery/jquery.mobile-1.4.5.min.js"></script>-->
+<script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
@@ -260,7 +261,26 @@
 </style>
 
 </head>
-
+	<%
+		moede_dato=request("moede_dato")
+		moede_tidspunkt= request("moede_tidspunkt")
+		' id_agenda=request("id_agenda")
+		moede_navn=request("moede_navn")
+		id_meetingtype=request("id_meetingtype")
+		emne=request("emne")
+		noter=request("noter")
+		id_afdeling=request("id_afdeling")
+		logins = request.form("id_login")
+		' response.write logins & "<br>"
+		additionalinfo=request("additionalinfo")
+		' existing_id_registrering=request("existing_id_registrering")
+		oprettetaf=request("oprettetaf")
+		id_company = Session("id_company")
+		oprettetdato=date()
+		beskrivelse=request("beskrivelse")
+		' id_login=request("id_login")
+		' Response.Write("Session savecompany_id: " & Session("id_company") & "<br>")
+	%>
 	<% Function ConvertDateFormat(inputDate)
 		Dim dateParts
 		dateParts = Split(inputDate, "-")
@@ -287,36 +307,55 @@
 		<% sql="Select * from qry_agenda where id_agenda = '"& request.QueryString("id_agenda") &"'"
 			'response.write sql
 			set rs = Conn.execute(sql)
-			moede_datoOG=rs("moede_dato")
-			moede_dato=ConvertDateFormat(rs("moede_dato"))
-			moede_tidspunktOG=rs("moede_tidspunkt")
-			moede_tidspunkt=LEFT(rs("moede_tidspunkt"),5)
-			moede_navn=rs("moede_navn")
-			id_agenda=rs("id_agenda")
-			oprettetaf=rs("oprettetaf")
-			oprettetdato=date()
-			emne=rs("emne")
-			beskrivelse=rs("beskrivelse")
-			noter=rs("noter")
-			additionalinfo=rs("additionalinfo")
-			id_meetingtype=rs("id_meetingtype")
-			id_afdeling=rs("id_afdeling")
-			id_login=rs("id_login")
-			id_company=rs("id_company")
-			'For showing that I get the right converted data back from db
-			response.write("Converted date: " & moede_dato & "<br>")
-			response.write("Converted time: " & moede_tidspunkt & "<br>")
-			response.write("Companyid: " & id_company & "<br>")
+			if NOT rs.EOF then
+				moede_dato=ConvertDateFormat(rs("moede_dato"))
+				moede_tidspunkt=LEFT(rs("moede_tidspunkt"),5)
+				moede_navn=rs("moede_navn")
+				id_agenda=rs("id_agenda")
+				oprettetaf=rs("oprettetaf")
+				oprettetdato=date()
+				emne=rs("emne")
+				beskrivelse=rs("beskrivelse")
+				noter=rs("noter")
+				additionalinfo=rs("additionalinfo")
+				id_meetingtype=rs("id_meetingtype")
+				id_afdeling=rs("id_afdeling")
+				id_login=rs("id_login")
+				id_company=rs("id_company")
+				'For showing that I get the right converted data back from db
+				response.write("Converted date: " & moede_dato & "<br>")
+				response.write("Converted time: " & moede_tidspunkt & "<br>")
+				response.write("Companyid: " & id_company & "<br>")
 
-			
-		%>
-	<%else%>
+
+				sql = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=" & id_agenda
+				Dim assignedEmployees
+				Set assignedEmployees = CreateObject("Scripting.Dictionary")
+				Set rs = Conn.Execute(sql)
+				While Not rs.EOF
+					assignedEmployees.Add CStr(rs("id_login")), True
+					rs.MoveNext
+				Wend 
+			else %>
 			<%= "no data" %>
+		<% end if%>
 	<% end if%>
+
+	<%
+		Dim selectedUsers
+		selectedUsers = Split(logins, ",")
+		Response.Write "Selected Users: "
+			For Each user In selectedUsers
+				sql="SELECT * FROM tbllogin WHERE id_login = "& user &" "
+				set rs = conn.execute(sql)
+				Response.Write rs("login") & ", "
+			Next
+				' Response.Write "<br>" & selectedUsers(2)
+	%>
 
 <form data-ajax="false" method="post"
 	<% if request("action")="show" then %>
-	action='save.asp?action=edit&id_agenda=<%=request.QueryString("id_agenda")%>'  
+	action='save.asp?action=edit&id_agendapoint=<%=request.QueryString("id_agendapoint")%>'  
 	<% else %>
 	action='save.asp?action=<%=request("action")%>'  
 	<% end if %>
@@ -325,15 +364,13 @@
 			<!-- Møde dato og tid-->
 				<tr>
 					<td style="text-align: center">
-									<%=moede_dato%>
-
 						<div style="display:flex;">
-							<div style="width:50%">Start dato
+							<div style="width:50%">Deadline dato
 								<div class="input-wrapper">
-								<input type="date" name="moede_dato"
+								<input type="date" name="date"
 						<% if  request("action")="show" then %>
-							<% if NOT IsNull(moede_datoOG)=true then %>
-									value="<%=moede_datoOG%>"
+							<% if  NOT IsNull(rs("date")) then %>
+									value="<%=rs("date")%>"
 							<% else %>
 								value=""
 							<% end if %>
@@ -343,136 +380,110 @@
 						<% end if %> style="min-width: 360px;" >
 							</div>
 							</div>
-							<div style="width:50%">Start tid
-								<div class="input-wrapper">
-								<input type="time" name="moede_tidspunkt" 
-						<% if  request("action")="show" AND NOT IsNull(moede_tidspunktOG)=true then  %>
-								value="<%=moede_tidspunkt%>"
-
-								readonly
-						<% else %>
-								value=""
-						<% end if %> style="min-width: 360px;">
-							</div>
-							</div>
-						</div>
-					</td>
-				</tr>
+	
 			<!-- Møde navn -->
 				<tr>
-					<th style="text-align: center">Name of meeting</th>
-					<td>
-						<input type="hidden" name="id_agenda" value="<%=id_agenda1%>">
-					</td>	
+					<th style="text-align: center">Name of agendapoint</th>
+
+				<%
+				Function ConvertDateFormat(inputDate)
+					Dim dateParts
+					dateParts = Split(inputDate, "-")
+						If UBound(dateParts) = 2 Then
+							ConvertDateFormat = dateParts(2) & "-" & dateParts(1) & "-" & dateParts(0)
+						Else
+							ConvertDateFormat = inputDate ' return original if format is unexpected
+						End If
+				End Function %>
+
+				<%
+				Function ExtractHoursMinutes(timeStamp)
+				Dim timeParts, timeString
+				timeParts = Split(timeStamp, " ") ' Split date from time
+					If UBound(timeParts) >= 1 Then
+						timeString = timeParts(1) ' This should be HH:mm:ss
+						ExtractHoursMinutes = Left(timeString, 5) ' This will return HH:mm
+					Else
+						ExtractHoursMinutes = ""
+					End If
+				End Function
+				%>
+				<% if request("action")="show" then %>
+					<% sql="Select * from tbl_agendapoints where id_agendapoint = '"& request.QueryString("id_agendapoint") &"'"
+						'response.write sql
+						set rs = Conn.execute(sql)
+						if not rs.eof then
+						dato=ConvertDateFormat(rs("dato"))
+						point_name=rs("point_name")
+						short_desc=rs("short_desc")
+						long_desc=rs("long_desc")
+                        id_login=rs("id_login")
+						id_agenda=rs("id_agenda")
+						id_company=rs("id_company")
+					
+					response.write("Companyid: " & id_company & "<br>")
+
+			
+							sql = "SELECT id_login FROM tblassign_agendapoints WHERE id_agendapoint=" & id_agendapoint
+						Dim assignedPointEmployees
+						Set assignedPointEmployees = CreateObject("Scripting.Dictionary")
+						Set rs = Conn.Execute(sql)
+						While Not rs.EOF
+								assignedPointEmployees.Add CStr(rs("id_login")), True
+								rs.MoveNext
+							Wend
+						else
+							response.write "no data"
+					end if
+				end if%>
+				<td>
+					<input type="hidden" name="id_agendapoint" value="<%=id_agendapoint1%>"></td>	
 				</tr>
 
 				<tr>			
 					<td style="text-align: center">
 						<div class="input-wrapper">
-						<input name="moede_navn" type="text"
-							<% if  request("action")="show" AND NOT IsNull(moede_navn) then %>
-								value="<%=moede_navn%>"
-							<% else %>
-								value=""
-							<% end if %>
-								style="width: 720px">
-						</div>
+						<input name="point_name" type="text"
+					<% if  request("action")="show" AND NOT IsNull(point_name) then %>
+							value="<%=point_name%>"
+					<% else %>
+							value=""
+					<% end if %>
+							style="width: 720px">
+							</div>
 					</td>
 				</tr>
-			<!-- Møde subject meetingtype dropdown -->
-				<tr>
-					<td style="text-align: center;">
-						<select name="id_meetingtype" required >
-								<% SQL3="Select * from tblmeeting_type  where id_company = "&session("id_company")&" order by id_meetingtype"
-								set objRS3 = conn.Execute(SQL3) %>
-							<% if  request("action")="show" then %>
-								<%if NOT IsNull(id_meetingtype) then %>
-									<% SQL4="Select * from tblmeeting_type WHERE id_meetingtype= "& id_meetingtype &""
-									'response.write objRS4
-									set objRS4 = conn.Execute(SQL4) 
-									meetingtype=objRS4("meeting_type")
-									%>
-									<option selected="" value="<%=objRS4("id_meetingtype")%>"><%=meetingtype%></option>
-								<% end if %>
-							<% else %>
-								<option selected="" value="">Select type of meeting</option>
-							<% end if 
-									while not objRS3.EOF %>
-										<option value='<%=objRS3("id_meetingtype")%>'>
-												<% if objRS3("id_meetingtype") = id_meetingtype then %> selected <% end if %>
-											<%=objRS3("meeting_type")%>
-										</option>
-									<% objRS3.MoveNext
-									Wend %>
-						</select>
-					</td>
-				</tr>
+			
 			<!-- Møde emne -->
 				<tr>
 					<th style="text-align: center">
-						Subject
+						Short description, kort beskrivelse
 					</th>
 				</tr>
 				<tr>
 					<td style="text-align: center">
 						<div class="input-wrapper">
-						<input name="emne" type="text" value="<%=emne%>" style="width: 720px">
+						<input name="short_desc" type="text" value="<%=short_desc%>" style="width: 720px">
 						</div>
 					</td>
 				</tr>
-			<!-- Møde note -->
+			<!-- Møde beskrivelse -->
 				<tr>
 					<th style="text-align: center">
-						Notes
+						Long description, lang beskrivelse
 					</th>
 				</tr>
 				<tr>
 					<td style="text-align: center">
 						<div class="input-wrapper">
-						<textarea name="noter" rows="4" cols="50" style="min-width: 720px;"><%=noter%></textarea>
-						</div>
-					</td>
-				</tr>
-			<!-- Møde afdeling -->
-				<tr>
-					<td style="text-align: center">
-						<select name="id_afdeling" required >
 
-						<% SQL3 = "Select * from tbl_afdeling_2nd where id_company = "&session("id_company")&" order by id_afdeling"
-						set objRS3 = conn.Execute(SQL3)
-
-						if request("action")="show" then
-							if NOT IsNull(id_afdeling) then 
-								SQL4 = "Select * from tbl_afdeling_2nd WHERE id_company = "&session("id_company")&" order by id_afdeling"
-								set objRS4 = conn.Execute(SQL4) 
-								afdeling = objRS4("afdeling") %>
-							<option selected="" value=""><%=afdeling%></option>
-						<% else %>
-							<option selected="" value="">Select Department</option>
-						<% end if %>
-						<%  while not objRS3.EOF %>
-								<option value='<%=objRS3("id_afdeling")%>' 
-									<% if objRS3("id_afdeling") = id_afdeling then %>selected
-									<% end if %>>
-									<%=objRS3("afdeling")%>
-								</option>
-						<% objRS3.MoveNext
-								Wend 
-						else %>
-								<option selected="" value="">Select Department</option>
-							<% while not objRS3.EOF %>
-								<option value='<%=objRS3("id_afdeling")%>'>
-									<%=objRS3("afdeling")%>
-								</option>
-							<% objRS3.MoveNext %>
-						<%  Wend %>
-					<% end if %>
-					</select>
-	
-					</td>
+			</td>
 				</tr>
-			<!-- Møde deltagere -->
-				<tr>
+		
+		
+			<!-- Assigned to agendapoint users -->
+            
+							<tr>
 					<td class="assigned-users" style="text-align: center;">
 
 						<!-- Button to open modal -->
@@ -488,110 +499,86 @@
 								<!-- Populating user list -->
 							<div class="user-list-container">
 								<div class="user-list">
-									<%
-										SQL3 = "SELECT * FROM tbllogin WHERE id_company = '" & session("id_company") & "' ORDER BY id_login"
-										Set objRS3 = conn.Execute(SQL3)
-
-										While Not objRS3.EOF
-											participants = Split(rs("participants"), ",")
-											checked = "" 
-
-											If Request("action") = "show" Then
-												For Each participant In participants
-													If Trim(CStr(participant)) = Trim(CStr(objRS3("id_login"))) Then
-														checked = "checked"
-														Exit For ' exit the loop if a match is found
-													End If
-												Next
-											End If
-										%>
-											<div class="label-container">
-												<label class="user-item">
-													<input type="checkbox" name="id_login" class="checkuser" value="<%=objRS3("id_login")%>" <%=checked%>>
-													<%=objRS3("login")%><br>
+									<%  SQL3="Select * from tbllogin where id_company =  '" & session("id_company") & "' order by id_login"
+										set objRS3 = conn.Execute(SQL3)
+										while not objRS3.EOF 
+									%>
+										<div class="label-container">
+											<label class="user-item">
+												<input type="checkbox" name="id_login" class="checkuser" value="<%=objRS3("id_login")%>"
+												<%If request("action")="show" Then%>
+												<%If assignedEmployees.Exists(CStr(objRS3("id_login"))) Then%>
+												checked="checked"
+												<%else%>
+												<%end if%>
+												<%End If%>>
+													<%=objRS3("login")%>
+													<br>
 													<%=objRS3("fornavn")%>&nbsp;<%=objRS3("efternavn")%>
-												</label>
-											</div>
-										<%
-											objRS3.MoveNext
-										Wend
-										objRS3.Close
-										%>
+											</label>
+										</div>
+									<% objRS3.MoveNext
+									Wend %>
 								</div>
 								</div>
 							</div>
 						</div>
 					</td>
 					<script>
-	
-						document.addEventListener("DOMContentLoaded", function() {
-							const modal = document.querySelector(".modal");
-							const modalContent = document.querySelector(".modal-content");
-							const toggleButton = document.querySelector(".toggle-button");
-							const closeButton = document.querySelector(".close-button");
+   
+					document.addEventListener("DOMContentLoaded", function() {
+						const modal = document.querySelector(".modal");
+						const modalContent = document.querySelector(".modal-content");
+						const toggleButton = document.querySelector(".toggle-button");
+						const closeButton = document.querySelector(".close-button");
 
-							// Function to show the modal
-							function showModal() {
-								modal.style.display = "block";
+						// Function to show the modal
+						function showModal() {
+							modal.style.display = "block";
+						}
+
+						// Function to close the modal
+						function closeModal() {
+							modal.style.display = "none";
+						}
+
+						// Click event to show the modal
+						toggleButton.addEventListener("click", showModal);
+
+						// Click event to close the modal
+						closeButton.addEventListener("click", closeModal);
+
+						// Close the modal if clicked outside of it
+						window.addEventListener("click", function(event) {
+							if (event.target === modal) {
+								closeModal();
 							}
-
-							// Function to close the modal
-							function closeModal() {
-								modal.style.display = "none";
-							}
-
-							// Click event to show the modal
-							toggleButton.addEventListener("click", showModal);
-
-							// Click event to close the modal
-							closeButton.addEventListener("click", closeModal);
-
-							// Close the modal if clicked outside of it
-							window.addEventListener("click", function(event) {
-								if (event.target === modal) {
-									closeModal();
-								}
-							});
 						});
+					});
 
 					</script>
 				</tr>
-			<!-- Møde info -->
-				<tr>
-					<th style="text-align: center">
-						Additional information
-					</th>
-				</tr>
+
+			<!-- Agendapoint submit btn -->
 				<tr>
 					<td style="text-align: center">
-						<div class="input-wrapper">
-						<textarea name="additionalinfo" rows="4" cols="50"><%=additionalinfo%></textarea>
-						</div>
-					</td>
-				</tr>
-			<!-- Møde submit btn -->
-				<tr>
-					<td style="text-align: center">
-						<input name="existing_id_registrering" type="hidden" value="<%=existing_id_registrering%>">
-						<input type="hidden" name="oprettetaf" value='<%=session("id_login")%>'>
 						<input type="hidden" name="id_company" value='<%=session("id_company")%>'>
-						<input name="Submit1" type="submit" value="Start meeting" data-theme="a" data-icon="check">
+						<input name="Submit1" type="submit" value="newpoint" data-theme="a" data-icon="check">
 						
 						<!--This is how I can save multiple users to an agenda - There is for sure a better way to do this.. I just don't-->
-						<%If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
-							Dim selectedUsers
-							selectedUsers = Request.Form("id_login")
-							If IsArray(selectedUsers) Then
-								' Multiple checkboxes were selected
-								For Each user In selectedUsers
-									Response.Write("Selected User ID: " & user & "<br />")
-								Next
-							Else
-								' Just one checkbox was selected
-								Response.Write("Selected User ID: " & selectedUsers & "<br />")
-							End If
-							Session("selectedUsers") = selectedUsers
-					End If %>
+					<%' If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
+					' 		Dim selectedUsersPoints
+					' 		selectedUsersPoints = Request.Form("id_login")
+					' 		If IsArray(selectedUsersPoints) Then
+					' 			' Multiple checkboxes were selected
+					' 			For Each user In selectedUsersPoints
+					' 				Response.Write("Selected User ID: " & user & "<br />")
+					' 			Next
+					' 		Else
+					' 			' Just one checkbox was selected
+					' 			Response.Write("Selected User ID: " & selectedUsersPoints & "<br />")
+					' 		End If
+					' End If %>
 					</td>
 				</tr>
 			</table>
@@ -613,59 +600,47 @@ $(document).ready(function() {
 
     $('form').validate({
         rules: {
-            moede_dato: {
+            dato: {
                 required: true,
                 dateISO: true,
                 dateGreaterThanOrEqualToday: true
             },
-            moede_tidspunkt: {
-                required: true
-            },
-            moede_navn: {
+            point_name: {
                 required: true,
                 minlength: 2
             },
-            id_meetingtype: {
+            id_login: {
                 required: true
             },
-            emne: {
+            short_desc: {
                 required: true,
                 minlength: 2
             },
-            beskrivelse: {
+            long_desc: {
                 required: true,
                 minlength: 5
-            },
-            id_afdeling: {
-                required: true
             }
         },
         messages: {
-            moede_dato: {
+            dato: {
                 required: "Dato er påkrævet.",
                 dateISO: "Dette er ikke en dato.",
                 dateGreaterThanOrEqualToday: "Vælg dagens dato eller en dato i fremtiden."
             },
-            moede_tidspunkt: {
-                required: "Møde tidspunkt er påkrævet."
+            point_name: {
+                required: "Agendapoint title er påkrævet.",
+                minlength: "Agendapoint title skal være mindst 2 tegn."
             },
-            moede_navn: {
-                required: "Møde navn er påkrævet.",
-                minlength: "Møde navn skal være mindst 2 tegn."
+            id_login: {
+                required: "Login er påkrævet."
             },
-            id_meetingtype: {
-                required: "Type af møde er påkrævet."
+            short_desc: {
+                required: "Beskrivelse er påkrævet.",
+                minlength: "Beskrivelse skal være mindst 2 tegn."
             },
-            emne: {
-                required: "Emne er påkrævet.",
-                minlength: "Emne skal være mindst 2 tegn."
-            },
-            beskrivelse: {
+            long_desc: {
                 required: "Beskrivelse er påkrævet.",
                 minlength: "Beskrivelse skal være mindst 5 tegn."
-            },
-            id_afdeling: {
-                required: "Valg af afdeling er påkrævet."
             }
         },
 	 	
@@ -706,11 +681,11 @@ highlight: function (element) {
 });
     });
 </script>
-<input type="hidden" name="beskrivelse" id="beskrivelseInput" value="<%=beskrivelse%>">
+<input type="hidden" name="long_desc" id="longdescInput" value="<%=long_desc%>">
 
 <script>
   document.querySelector('form').addEventListener('submit', function() {
-    document.querySelector('#beskrivelseInput').value = quill.root.innerHTML;
+    document.querySelector('#longdescInput').value = quill.root.innerHTML;
   });
 </script>
 
@@ -730,18 +705,9 @@ highlight: function (element) {
     }
   });
   </script>
-  <script>
-	document.getElementById('show-agendapoint-form').addEventListener('click', function () {
-		var agendapointsForm = document.getElementById('agendapoint-form');
-		agendapointsForm.style.display = 'block'; // Show the overlay
-	});
-
-	// Add logic to close the overlay when needed, e.g., by clicking a close button
-	document.getElementById('close-agendapoint-form').addEventListener('click', function () {
-		var agendapointsForm = document.getElementById('agendapoint-form');
-		agendapointsForm.style.display = 'none'; // Hide the overlay
-	});
-</script>
 		
+
+
+	<!--#include file="../closedb.asp"-->	
 
 

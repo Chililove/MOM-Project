@@ -69,13 +69,24 @@ End If
     <h1>Departments</h1>
     <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
 </div>
+<%if Request.QueryString("action") = "update" then%>
+	<h2 style="padding: 1%; height: .5px;">Edit department here</h2>
+<%else%>
+	<h2 style="padding: 1%; height: .5px;">Add a new department here</h2>
+<%end if%>
+
+
 <%IF Request.QueryString("action") = "update" then%>
 
 <form id="afdelingForm" method="post" action="save_afdeling.asp?action=update&id_afdeling=<%=id_afdeling%>">
 <%Else%>
 <form id="afdelingForm" method="post" action="save_afdeling.asp?action=create">
 <%end if%>
-    <label for="afdeling">Department:</label>
+<%if Request.QueryString("action") = "update" then%>
+        <label for="afdeling">Please fill out this form edit the department:</label>
+<%else%>
+    <label for="afdeling">Please fill out this form to create a new department:</label>
+<%end if%>
     <!-- Why do i get the name of the field back instead of the id?? -->
     <input type="text" id="afdeling" name="afdeling" value="<%=afdeling%>" required>
         <input type="hidden" name="id_afdeling" value="<%=id_afdeling%>">

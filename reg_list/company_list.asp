@@ -22,6 +22,8 @@
 sql="select * from tbl_companies  where id_company =  " & session("id_company") & " order by company_name desc "
 set rs=conn.execute(sql)
 %>
+	<h2 style="padding: 1%; height: .5px;">Check out your departments here</h2>
+
 	<ul data-role="listview" data-inset="false" data-filter="true">
 				<li data-role="list-divider">
 					<table style="width: 100%">

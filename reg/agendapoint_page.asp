@@ -122,9 +122,9 @@ End If
 	<div id="page1" data-role="page">
 		<div data-role="header" data-id="header" data-position="fixed">
 			<%if request("action")="show" then%>
-			<h1>Saved department</h1>
+			<h1>Saved agendapoint</h1>
 			<%else%>
-			<h1>No saved department</h1>
+			<h1>No saved agendapoint</h1>
 			<%end if%>
 <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
 	</div>
@@ -133,39 +133,41 @@ End If
 </div>-->
 
 <%
-Dim sql, rs, id_afdeling
+
+Dim sql, rs, id_agendapoint
 
 ' Check if an id_company is provided in the query string
-If Len(Request.QueryString("id_afdeling")) > 0 Then
-    ' Get the company ID from the query string and validate it
-    id_afdeling = Trim(Request.QueryString("id_afdeling"))
+If Len(Request.QueryString("id_agendapoint")) > 0 Then
+    ' Get the ID from the query string and validate it
+    id_agendapoint = Trim(Request.QueryString("id_agendapoint"))
 
 
-    If IsNumeric(id_afdeling) Then
-        ' SQL to get company details by id_company
-        sql = "SELECT * FROM tbl_afdeling_2nd WHERE id_afdeling = " & id_afdeling
+    If IsNumeric(id_agendapoint) Then
+        ' SQL to get details by id_agendapoint
+        sql = "SELECT * FROM tbl_agendapoints WHERE id_agendapoint = " & id_agendapoint
         Set rs = Conn.Execute(sql)
 
         If Not rs.EOF Then
-            id_afdeling = rs("id_afdeling")
-			afdeling = rs("afdeling")
+            id_agendapoint = rs("id_agendapoint")
+			point_name = rs("point_name")
         End If
 
         rs.Close
         Set rs = Nothing
     Else
-        Response.Write("Invalid  ID for departments.")
+        Response.Write("Invalid  ID for agendapoint.")
     End If
 Else
     ' If there is no id in the query string, I'm creating a new one
-    ' Initialize afdeling to an  empty string
-    id_afdeling = ""
-	afdeling = ""
+    ' Initialize it to an  empty string
+    id_agendapoint = ""
+	point_name = ""
 End If
 %>
 
-<!--#include file="../reg/afdeling_form.asp"-->			
-<!--#include file="../shared/footer.asp"--></div>
+<!--#include file="../reg/agendapoint_form.asp"-->			
+<!--#include file="../shared/footer.asp"-->
+</div>
 
 </body>
 </html>

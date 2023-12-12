@@ -61,11 +61,10 @@
 
 <%if session("administrator")=true then%>				
 <li><a data-ajax="false" href="bruger/">User list</a></li>
-<li><a data-ajax="false" href="bruger/bruger.asp?action=opret">New user</a></li>
 <li><a data-ajax="false" href="reg_list/meetingtype_list.asp">Meetingtypes</a></li>
-<li><a data-ajax="false" href="reg/meetingtype_page.asp?action=create">Add a meetingtype </a></li>
 <li><a data-ajax="false" href="reg_list/afdeling_list.asp">Departments</a></li>
-<li><a data-ajax="false" href="reg/afdeling_page.asp?action=create">Add a department </a></li>
+<li><a data-ajax="false" href="reg/nextstep_agenda_dropdown_page.asp">Agenda points</a></li>
+
 <!--<li><a data-ajax="false" href="reg_list/company_list.asp">Company list</a></li>
 <li><a data-ajax="false" href="reg/company_page.asp?action=create">Add a company </a></li>-->
 
