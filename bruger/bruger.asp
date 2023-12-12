@@ -55,9 +55,9 @@ span.error {
 			<div data-role="header" data-id="header" data-position="fixed">
 					<%if request("action")="ret" then%>
 					<!--#include file="alle_felter.asp"-->
-					<h1>Ret bruger</h1>
+					<h1>Update user</h1>
 					<%else%>
-					<h1>Opret bruger</h1>
+					<h1>Create user</h1>
 					<%end if%>
 				<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">
 					Home
@@ -84,7 +84,7 @@ span.error {
 								<!-- Fornavn -->
 					<tr>
 						<td style="text-align: center">
-							Fornavn
+							Firstname
 						</td>
 					</tr>
 					<tr>
@@ -98,7 +98,7 @@ span.error {
 								<!-- Efternavn -->
 					<tr>
 						<td style="text-align: center">
-							Efternavn
+							Lastname
 						</td>
 					</tr>
 					<tr>
@@ -222,7 +222,7 @@ span.error {
 								<!-- save btn -->
 						<tr>
 							<td style="text-align: center">
-								<input name="Submit1" type="submit" value="Gem" data-theme="a" data-icon="check">
+								<input name="Submit1" type="submit" value="Create user" data-theme="a" data-icon="check">
 								<%if request("action")="ret" and Session("administrator") then%>
 								<input type="hidden" name="id_login" value="<%=id_login%>">
 								<input type="hidden" name="action" value="delete">

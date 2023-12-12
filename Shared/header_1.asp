@@ -1,5 +1,5 @@
 
-<title>OneTimer</title>
+<title>MoM</title>
 
 <div data-role="header" data-id="header" data-position="fixed">
 <h1>MoM</h1>

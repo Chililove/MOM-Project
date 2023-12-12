@@ -43,7 +43,7 @@
 </style>
 <body>
 	<div data-role="header" data-id="header" data-position="fixed">
-		<h1>Afdelinger</h1>
+		<h1>Departments</h1>
 			<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">
 				Home
 			</a>
@@ -53,16 +53,18 @@ sql="select * from tbl_afdeling_2nd where id_company =  " & session("id_company"
 set rs=conn.execute(sql)
 %>
 	<ul data-role="listview" data-inset="false" data-filter="true">
+		<h2 style="padding: 1%; height: .5px;">Existing departments</h2>
+
 				<div class="small-button-container">
 <!--<h2>Check out your meetingtypes here</h2>-->
     <a class="small-button" data-ajax="false" href="../reg/afdeling_page.asp?action=create">
-      <span class="plus-sign"></span> Add a department
+      <span class="plus-sign"></span> Add a new department
     </a>
   </div>
 				<li data-role="list-divider">
 					<table style="width: 100%">
 						<tr style="text-align: left">
-							<th style="width: 25%">Afdeling</th>
+							<th style="width: 25%">Department</th>
 						</tr>
 					</table>
 				</li>

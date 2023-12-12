@@ -61,11 +61,11 @@ sql="select * from tblmeeting_type where id_company =  " & session("id_company")
 set rs=conn.execute(sql)
 %>
 	<ul data-role="listview" data-inset="false" data-filter="true">
+<h2 style="padding: 1%; height: .5px;">Existing meetingtypes</h2>
 
 <div class="small-button-container">
-<!--<h2>Check out your meetingtypes here</h2>-->
     <a class="small-button" data-ajax="false" href="../reg/meetingtype_page.asp?action=create">
-      <span class="plus-sign"></span> Add a meetingtype
+      <span class="plus-sign"></span> Add a new meetingtype
     </a>
   </div>
 				<li data-role="list-divider">

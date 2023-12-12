@@ -52,7 +52,7 @@
   </style>
 <body>
 	<div data-role="header" data-id="header" data-position="fixed">
-		<h1>Brugere</h1>
+		<h1>Users</h1>
 			<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">
 				Home
 			</a>
@@ -73,7 +73,7 @@ response.redirect("/default.asp") %>
 	<div class="small-button-container">
 <!--<h2>Check out your meetingtypes here</h2>-->
     <a class="small-button" data-ajax="false" href="../bruger/bruger.asp?action=opret">
-      <span class="plus-sign"></span> Add a user
+      <span class="plus-sign"></span> Add a new user
     </a>
   </div>
 				<li data-role="list-divider">
