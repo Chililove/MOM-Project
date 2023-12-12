@@ -5,7 +5,7 @@
 <% else %>
 <% id_agenda = session("id_agenda")%>
 <% end if %>
-
+<% id_agendapoint = request.QueryString("id_agendapoint")%>
 <!DOCTYPE>
 <html>
 
@@ -64,12 +64,14 @@ a {
         Do While Not rs.EOF
     %>
     <li>
-        <a data-ajax="false" href='save_agendapoints.asp?action=edit&amp;id_agendapoint=<%=rs("id_agendapoint")%>'>
+        <a data-ajax="false" href='agendapoint_page.asp?action=show&id_agendapoint=<%=rs("id_agendapoint")%>'>
+
 
             <table style="width: 100%">  
                 <tr>
                     <td style="width: 25%"><%=rs("point_name")%></td>
                     <td style="width: 25%"><%=rs("dato")%></td>
+                    <td style="width: 25%"><%=rs("id_login")%></td>
                 </tr>
             </table>
         </a>

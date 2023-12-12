@@ -7,12 +7,47 @@
 <script src="../jquery/jquery-1.8.2.min.js"></script>
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
 </head>
+
+<style>
+   /* Style for the smaller button */
+  .small-button-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1% 1%;
+  }
+
+  .small-button {
+    padding: .6% 2%; /* Adjust padding to control button size */
+    background-color: #E9E9E9; 
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none;
+    margin-bottom: .5%;
+  }
+
+  /* Hover effect for the smaller button */
+  .small-button:hover {
+    background-color: transparent;
+    text-decoration: none;
+	  box-shadow: 0px 4px 6px rgba(0, 0, 0.2, 0.2);
+
+  }
+
+  /* Style for the plus sign */
+  .plus-sign::before {
+    content: "+"; /* Content is a plus sign */
+    font-weight: bold;
+    margin-right: 5px; /* Add spacing between plus sign and text */
+  }
+</style>
+
 <body>
 <div data-role="header" data-id="header" data-position="fixed">
-    <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">
-        Home
-    </a>
-</div>
+		<h1>Agenda points</h1>
+			<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">
+				Home
+			</a>
+	</div>
 
 <div style="display:flex; justify-content:center; align-items: center; margin-top: 3.5%; margin-left: 1%; margin-right: 1%; ">
     <select id="id_agenda" required onchange="updateAgendaTitle(); filterAgendaPoints();">
@@ -35,11 +70,15 @@
         Set objRS3 = Nothing
         %>
     </select>
-        <button onclick="redirectToNextPage()">Add new agenda point</button>
 
 </div>
-
 <div id="agendaPointsContainer">
+ <div class="small-button-container">
+<!--<h2>Add your agendapoints here</h2>-->
+    <a class="small-button" data-ajax="false" onclick="redirectToNextPage()">
+      <span class="plus-sign"></span> Add an agenda point
+    </a>
+  </div>
     <h3 id="agendaTitle" style="margin-left: .4%;">Existing agendapoints<span id="selectedAgendaName" style="font-size: 16px !important;"></span></h3>
     <table class="agenda-table" style="width: 100%; background-color: #E9E9E9; padding: .5%;" >
         <tr style="text-align: left;">
@@ -58,6 +97,7 @@
         Set cmd.ActiveConnection = conn
         cmd.CommandText = SQL
         ' Create a Recordset object and open it using the Command object
+        'response.write SQL
         Set rs = cmd.Execute
 
         ' Check if the recordset is not empty before entering the loop
@@ -66,7 +106,7 @@
             Do While Not rs.EOF
         %>
         <li data-agenda-id="<%=rs("id_agenda")%>">
-            <a data-ajax="false" href='save_agendapoints.asp?action=edit&amp;id_agendapoint=<%=rs("id_agendapoint")%>'>
+            <a data-ajax="false" href='agendapoint_page.asp?action=show&amp;id_agendapoint=<%=rs("id_agendapoint")%>'>
                 <table style="width: 100%">  
                     <tr>
                         <td style="width: 25%"><%=rs("point_name")%></td>

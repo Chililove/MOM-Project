@@ -308,7 +308,17 @@
 			response.write("Converted time: " & moede_tidspunkt & "<br>")
 			response.write("Companyid: " & id_company & "<br>")
 
+			'sql = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=" & id_agenda
+			Dim assignedEmployees
+			'Set assignedEmployees = CreateObject("Scripting.Dictionary")
+			'Set rs = Conn.Execute(sql)
+			participants = Split(rs("participants"), ",")
 			
+			response.write rs("participants")
+			' While Not rs.EOF
+			' 	assignedEmployees.Add CStr(rs("id_login")), True
+			' 	rs.MoveNext
+			' Wend 
 		%>
 	<%else%>
 			<%= "no data" %>
@@ -488,35 +498,33 @@
 								<!-- Populating user list -->
 							<div class="user-list-container">
 								<div class="user-list">
-									<%
-										SQL3 = "SELECT * FROM tbllogin WHERE id_company = '" & session("id_company") & "' ORDER BY id_login"
-										Set objRS3 = conn.Execute(SQL3)
-
-										While Not objRS3.EOF
-											participants = Split(rs("participants"), ",")
-											checked = "" 
-
-											If Request("action") = "show" Then
-												For Each participant In participants
-													If Trim(CStr(participant)) = Trim(CStr(objRS3("id_login"))) Then
-														checked = "checked"
-														Exit For ' exit the loop if a match is found
-													End If
-												Next
-											End If
-										%>
-											<div class="label-container">
-												<label class="user-item">
-													<input type="checkbox" name="id_login" class="checkuser" value="<%=objRS3("id_login")%>" <%=checked%>>
-													<%=objRS3("login")%><br>
-													<%=objRS3("fornavn")%>&nbsp;<%=objRS3("efternavn")%>
-												</label>
-											</div>
-										<%
-											objRS3.MoveNext
-										Wend
-										objRS3.Close
-										%>
+									<%  SQL3="Select * from tbllogin where id_company =  '" & session("id_company") & "' order by id_login"
+										set objRS3 = conn.Execute(SQL3)
+										while not objRS3.EOF %>
+											
+											
+										<div class="label-container">
+											<label class="user-item">
+												<input type="checkbox" name="id_login" class="checkuser" value="<%=objRS3("id_login")%>"
+												<%If request("action")="show" Then%>
+													<%'If assignedEmployees.Exists(CStr(objRS3("id_login"))) Then%>
+													<%
+													For Each participant in participants
+														if CStr(participant) = CStr(objRS3("id_login")) Then%>
+														checked="checked"
+														Exit For
+														<% Else %>
+														checked = ""												
+														<%end if
+													Next%>
+												<%End If%>>
+												<%=objRS3("login")%>
+												<br>
+												<%=objRS3("fornavn")%>&nbsp;<%=objRS3("efternavn")%>
+											</label>
+										</div>
+									<% objRS3.MoveNext
+									Wend %>
 								</div>
 								</div>
 							</div>

@@ -267,6 +267,33 @@
 	action='save_agendapoints.asp?action=<%=request.QueryString("action")%>'  
 	<% end if %>
 	style="position: relative;">
+
+    <% if request("action")="show" then %>
+        <% sql="Select * from tbl_agendapoints where id_agendapoint = '"& request.QueryString("id_agendapoint") &"'"
+            'response.write sql
+            set rs = Conn.execute(sql)
+            datoOG=rs("dato")
+            dato=ConvertDateFormat(rs("dato"))
+            point_name=rs("point_name")
+            short_desc=rs("short_desc")
+            long_desc=rs("long_desc")
+            id_login=rs("id_login")
+            id_agenda=rs("id_agenda")
+            id_company=rs("id_company")
+        
+            response.write("Companyid: " & id_company & "<br>")
+
+            ' sql = "SELECT id_login FROM tblassign_agendapoints WHERE id_agendapoint=" & id_agendapoint
+            ' Dim assignedPointEmployees
+            ' Set assignedPointEmployees = CreateObject("Scripting.Dictionary")
+            ' Set rs = Conn.Execute(sql)
+            ' While Not rs.EOF
+            '         assignedPointEmployees.Add CStr(rs("id_login")), True
+            '         rs.MoveNext
+            '     Wend
+            ' else
+            ' response.write "no data"
+            end if%>
 			<table align="center" style="width: 50%">
 			<!-- Møde dato og tid-->
 				<tr>
@@ -276,8 +303,8 @@
 								<div class="input-wrapper">
 								<input type="date" name="date"
 						<% if  request("action")="show" then %>
-							<% if  NOT IsNull(rs("date")) then %>
-									value="<%=rs("date")%>"
+							<% if  NOT IsNull(rs("dato"))=true then %>
+									value="<%=rs("dato")%>"
 							<% else %>
 								value=""
 							<% end if %>
@@ -292,55 +319,28 @@
 				<tr>
 					<th style="text-align: center">Name of agendapoint</th>
 
-				<%
-				Function ConvertDateFormat(inputDate)
-					Dim dateParts
-					dateParts = Split(inputDate, "-")
-						If UBound(dateParts) = 2 Then
-							ConvertDateFormat = dateParts(2) & "-" & dateParts(1) & "-" & dateParts(0)
-						Else
-							ConvertDateFormat = inputDate ' return original if format is unexpected
-						End If
-				End Function %>
+                    <% Function ConvertDateFormat(inputDate)
+                        Dim dateParts
+                        dateParts = Split(inputDate, "-")
+                            If UBound(dateParts) = 2 Then
+                                ConvertDateFormat = dateParts(2) & "-" & dateParts(1) & "-" & dateParts(0)
+                            Else
+                                ConvertDateFormat = inputDate ' return original if format is unexpected
+                            End If
+                    End Function %>
 
-				<%
-				Function ExtractHoursMinutes(timeStamp)
-				Dim timeParts, timeString
-				timeParts = Split(timeStamp, " ") ' Split date from time
-					If UBound(timeParts) >= 1 Then
-						timeString = timeParts(1) ' This should be HH:mm:ss
-						ExtractHoursMinutes = Left(timeString, 5) ' This will return HH:mm
-					Else
-						ExtractHoursMinutes = ""
-					End If
-				End Function
-				%>
-				<% if request("action")="show" then %>
-					<% sql="Select * from tbl_agendapoints where id_agendapoint = '"& request.QueryString("id_agendapoint") &"'"
-						'response.write sql
-						set rs = Conn.execute(sql)
-						dato=ConvertDateFormat(rs("dato"))
-						point_name=rs("point_name")
-						short_desc=rs("short_desc")
-						long_desc=rs("long_desc")
-                        id_login=rs("id_login")
-						id_agenda=rs("id_agenda")
-						id_company=rs("id_company")
-					
-                response.write("Companyid: " & id_company & "<br>")
+                    <% Function ExtractHoursMinutes(timeStamp)
+                        Dim timeParts, timeString
+                        timeParts = Split(timeStamp, " ") ' Split date from time
+                            If UBound(timeParts) >= 1 Then
+                                timeString = timeParts(1) ' This should be HH:mm:ss
+                                ExtractHoursMinutes = Left(timeString, 5) ' This will return HH:mm
+                            Else
+                                ExtractHoursMinutes = ""
+                            End If
+                    End Function %>
 
-		
-						sql = "SELECT id_login FROM tblassign_agendapoints WHERE id_agendapoint=" & id_agendapoint
-					Dim assignedPointEmployees
-					Set assignedPointEmployees = CreateObject("Scripting.Dictionary")
-					Set rs = Conn.Execute(sql)
-					While Not rs.EOF
-							assignedPointEmployees.Add CStr(rs("id_login")), True
-							rs.MoveNext
-						Wend
-					else
-						response.write "no data"
-				end if%>
+				
 				<td>
 					<input type="hidden" name="id_agendapoint" value="<%=id_agendapoint1%>"></td>	
 				</tr>
@@ -381,7 +381,7 @@
 				<tr>
 					<td style="text-align: center">
 						<div class="input-wrapper">
-                            <input type="text" name="long_desc">
+                            <input type="text" name="long_desc" value="<%=long_desc%>">
                         </div>
 			        </td>
 				</tr>
@@ -406,28 +406,35 @@
 			<div class="user-list-container">
                 <div class="user-list">
              
-                    <% 
-                    
-                     SQL3="Select * from tbllogin where id_company =  '" & session("id_company") & "' order by id_login"
-                        set objRS3 = conn.Execute(SQL3)
-                        while not objRS3.EOF 
-                    %>
-                        <div class="label-container">
-                            <label class="user-item">
-                                <input type="checkbox" name="id_login" class="checkuser" value="<%=objRS3("id_login")%>"
-                                <%If request("action")="show" Then%>
-                                <%If assignedEmployees.Exists(CStr(objRS3("id_login"))) Then%>
-                                checked="checked"
-                                <%else%>
-                                <%end if%>
-                                <%End If%>>
-                                 <%=objRS3("login")%>
-								 <br>
-								 <%=objRS3("fornavn")%>&nbsp;<%=objRS3("efternavn")%>
-                            </label>
-                        </div>
-                    <% objRS3.MoveNext
-                    Wend %>
+                    <%
+                        SQL3 = "SELECT * FROM tbllogin WHERE id_company = '" & session("id_company") & "' ORDER BY id_login"
+                        Set objRS3 = conn.Execute(SQL3)
+
+                        While Not objRS3.EOF
+
+                            If Request("action") = "show" Then
+                            participants = Split(rs("id_login"), ",")
+                            checked = "" 
+                                For Each participant In participants
+                                    If Trim(CStr(participant)) = Trim(CStr(objRS3("id_login"))) Then
+                                        checked = "checked"
+                                        Exit For ' exit the loop if a match is found
+                                    End If
+                                Next
+                            End If
+                        %>
+                            <div class="label-container">
+                                <label class="user-item">
+                                    <input type="checkbox" name="id_login" class="checkuser" value="<%=objRS3("id_login")%>" <%=checked%>>
+                                    <%=objRS3("login")%><br>
+                                    <%=objRS3("fornavn")%>&nbsp;<%=objRS3("efternavn")%>
+                                </label>
+                            </div>
+                        <%
+                            objRS3.MoveNext
+                        Wend
+                        objRS3.Close
+                        %>
                 </div>
 				</div>
             </div>
@@ -473,10 +480,11 @@ document.addEventListener("DOMContentLoaded", function() {
 					<td style="text-align: center">
 						<input type="hidden" name="id_company" value='<%=session("id_company")%>'>
                         <input type="hidden" name="id_agenda" value='<% if LEN(request.QueryString("id_agenda"))>0 then %><%=request.QueryString("id_agenda")%><% else %><%=session("id_agenda")%><% end if %>'>
-						<input name="Submit2" type="submit" value="newpoint" data-theme="a" data-icon="check">
-						
+                        <input name="Submit2" type="submit" value="newpoint" data-theme="a" data-icon="check">
+                  
+
 						<!--This is how I can save multiple users to an agenda - There is for sure a better way to do this.. I just don't-->
-						<%If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
+					<%If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
 							Dim selectedUsersPoints
 							selectedUsersPoints = Request.Form("id_login")
 							If IsArray(selectedUsersPoints) Then

@@ -5,6 +5,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </HEAD>
 <BODY>
+
+<% If request("action") = "edit" Then %>
+<% id_agendapoint=request.querystring("id_agendapoint") %>
+<% else %>
+<% id_agendapoint=request("id_agendapoint") %>
+<% end if %>
 <%
 'save to registration
 '*******************skriv til databasen     
@@ -13,7 +19,6 @@
 'response.write "ID company: " & request("id_company") & "<br/>"
 
 
-id_agendapoint=request("id_agendapoint")
 'existing_id_registrering=request("existing_id_registrering")
 'oprettetaf=request("oprettetaf")
 point_name=request("point_name")
@@ -50,52 +55,52 @@ If request("action") = "newpoint" Then
     ' sql2 = "VALUES (?, ?, ?, ?, ?, ?, ?)"
     sql = sql1 & sql2
     
-'     rs.CommandText = sql
-'     rs.Parameters.Append rs.CreateParameter("@point_name", 202, 1, 255, point_name)
-'     rs.Parameters.Append rs.CreateParameter("@short_desc", 202, 1, 255, short_desc)
-' 	rs.Parameters.Append rs.CreateParameter("@long_desc", 203, 1, -1, long_desc)
-' 	rs.Parameters.Append rs.CreateParameter("@id_agenda", 3, 1, , id_agenda)
-' 	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , id_login)
-'     rs.Parameters.Append rs.CreateParameter("@dato", 7, 1, , dato)
-'     rs.Parameters.Append rs.CreateParameter("@id_company", 3, 1, , id_company)
+    '     rs.CommandText = sql
+    '     rs.Parameters.Append rs.CreateParameter("@point_name", 202, 1, 255, point_name)
+    '     rs.Parameters.Append rs.CreateParameter("@short_desc", 202, 1, 255, short_desc)
+    ' 	rs.Parameters.Append rs.CreateParameter("@long_desc", 203, 1, -1, long_desc)
+    ' 	rs.Parameters.Append rs.CreateParameter("@id_agenda", 3, 1, , id_agenda)
+    ' 	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , id_login)
+    '     rs.Parameters.Append rs.CreateParameter("@dato", 7, 1, , dato)
+    '     rs.Parameters.Append rs.CreateParameter("@id_company", 3, 1, , id_company)
 
-' ' Set the parameter values
-' rs.Parameters("@point_name").Value = point_name
-' rs.Parameters("@short_desc").Value = short_desc
-' rs.Parameters("@long_desc").Value = long_desc
-' rs.Parameters("@id_agenda").Value = id_agenda
-' rs.Parameters("@id_login").Value = id_login
-' rs.Parameters("@dato").Value = dato
-' rs.Parameters("@id_company").Value = id_company
+    ' ' Set the parameter values
+    ' rs.Parameters("@point_name").Value = point_name
+    ' rs.Parameters("@short_desc").Value = short_desc
+    ' rs.Parameters("@long_desc").Value = long_desc
+    ' rs.Parameters("@id_agenda").Value = id_agenda
+    ' rs.Parameters("@id_login").Value = id_login
+    ' rs.Parameters("@dato").Value = dato
+    ' rs.Parameters("@id_company").Value = id_company
 
-	sql = sql1 + sql2
-	response.write sql
-    set rs = Conn.Execute(sql)
-    'Response.Write("Session savec33ompany_id: " & Session("id_company"))
+        sql = sql1 + sql2
+        response.write sql
+        set rs = Conn.Execute(sql)
+        'Response.Write("Session savec33ompany_id: " & Session("id_company"))
 
-	'  Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agendapoint")
-    ' new_id_agendapoint = rs(0).Value
-    ' selectedLogins = Split(Request.Form("id_login"), ",")
-    ' For Each id_login In selectedLogins
-    '     sql = "INSERT INTO tblassign_agendapoints (id_agendapoint, id_login) VALUES (?, ?); SELECT SCOPE_IDENTITY();"
+        '  Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agendapoint")
+        ' new_id_agendapoint = rs(0).Value
+        ' selectedLogins = Split(Request.Form("id_login"), ",")
+        ' For Each id_login In selectedLogins
+        '     sql = "INSERT INTO tblassign_agendapoints (id_agendapoint, id_login) VALUES (?, ?); SELECT SCOPE_IDENTITY();"
 
-	'  Set rs = Server.CreateObject("ADODB.Command")
-	' rs.ActiveConnection = Conn
-	' 	rs.CommandText = sql
-	' 	rs.Parameters.Append rs.CreateParameter("@id_agendapoint", 3, 1, , new_id_agendapoint)
-    ' 	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , CInt(id_login))
-    '     rs.Parameters("@id_agendapoint").Value = id_agendapoint
-    '     rs.Parameters("@id_login").Value = id_login
+        '  Set rs = Server.CreateObject("ADODB.Command")
+        ' rs.ActiveConnection = Conn
+        ' 	rs.CommandText = sql
+        ' 	rs.Parameters.Append rs.CreateParameter("@id_agendapoint", 3, 1, , new_id_agendapoint)
+        ' 	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , CInt(id_login))
+        '     rs.Parameters("@id_agendapoint").Value = id_agendapoint
+        '     rs.Parameters("@id_login").Value = id_login
 
-	' 	rs.Execute
-    ' Next
-'Response.Write("Session savecompany_id: " & Session("id_company"))
-'response.redirect "reusableform.asp?id_agenda=" & id_agenda
-response.redirect "nextstep.asp?id_agenda=" & id_agenda
+        ' 	rs.Execute
+        ' Next
+    'Response.Write("Session savecompany_id: " & Session("id_company"))
+    'response.redirect "reusableform.asp?id_agenda=" & id_agenda
+    response.redirect "nextstep.asp?id_agenda=" & id_agenda
 
-'WHAT IF I AM ON THE ADD AGENDAPOINT PAGE FROM THE DROPDOWN PAGE; WHERE WILL IT SENT ME?
+    'WHAT IF I AM ON THE ADD AGENDAPOINT PAGE FROM THE DROPDOWN PAGE; WHERE WILL IT SENT ME?
 
-	'response.redirect "../default.asp"
+        'response.redirect "../default.asp"
 end if	
 
 if request("action")="show" then
