@@ -100,7 +100,6 @@ End If
 
     <% End If %>    <!-- External "Delete" button with event listener -->
 </form>
-<!-- The rest of your code remains the same -->
 
 <script>
     document.getElementById("deleteButton").addEventListener("click", function() {

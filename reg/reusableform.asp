@@ -577,7 +577,7 @@
 						<input type="hidden" name="id_company" value='<%=session("id_company")%>'>
 						<input name="Submit1" type="submit" value="Start meeting" data-theme="a" data-icon="check">
 						
-						<!--This is how I can save multiple users to an agenda - There is for sure a better way to do this.. I just don't-->
+			<!--This is how I can save multiple users to an agenda-->
 						<%If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
 							Dim selectedUsers
 							selectedUsers = Request.Form("id_login")
@@ -609,7 +609,7 @@ $(document).ready(function() {
         return inputDate >= currentDate;
 		<%end if%>
         
-    }, "Venligst vælg en dato i fremtiden.");
+    }, "Please choose a date in the future.");
 
     $('form').validate({
         rules: {
@@ -641,33 +641,28 @@ $(document).ready(function() {
             }
         },
         messages: {
-            moede_dato: {
-                required: "Dato er påkrævet.",
-                dateISO: "Dette er ikke en dato.",
-                dateGreaterThanOrEqualToday: "Vælg dagens dato eller en dato i fremtiden."
+            dato: {
+                required: "Date is required.",
+                dateISO: "This is not a valid date",
+                dateGreaterThanOrEqualToday: "Choose todays date or a date in the future."
             },
-            moede_tidspunkt: {
-                required: "Møde tidspunkt er påkrævet."
+            point_name: {
+                required: "Agendapoint title is required.",
+                minlength: "Agendapoint title must be more than 2 characters."
             },
-            moede_navn: {
-                required: "Møde navn er påkrævet.",
-                minlength: "Møde navn skal være mindst 2 tegn."
+            id_login: {
+                required: "Login is requiered."
             },
-            id_meetingtype: {
-                required: "Type af møde er påkrævet."
+            short_desc: {
+                required: "Description is required.",
+                minlength: "Description must be more than 2 characters."
             },
-            emne: {
-                required: "Emne er påkrævet.",
-                minlength: "Emne skal være mindst 2 tegn."
-            },
-            beskrivelse: {
-                required: "Beskrivelse er påkrævet.",
-                minlength: "Beskrivelse skal være mindst 5 tegn."
-            },
-            id_afdeling: {
-                required: "Valg af afdeling er påkrævet."
+            long_desc: {
+                required: "Logner description is required.",
+                minlength: "Description must be atleast 5 characters."
             }
         },
+		
 	 	
 		errorElement: 'span',
 errorPlacement: function (error, element) {
