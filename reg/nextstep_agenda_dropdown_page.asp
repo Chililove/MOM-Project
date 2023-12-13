@@ -6,6 +6,31 @@
 <link rel="stylesheet" href="../jquery/jquery.mobile-1.4.5.css">
 <script src="../jquery/jquery-1.8.2.min.js"></script>
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
+<script>
+    function del(id) { 
+        var idValue = id
+        
+        if (idValue !== null) {
+            var firstConfirm = window.confirm("Are you sure you want to delete this user?");
+            
+            if (firstConfirm) {
+            var secondConfirm = window.confirm("This action is irreversible. Are you absolutely sure?");
+            
+            if (secondConfirm) {
+                var deleteUrl = 'delete.asp?id=' + encodeURIComponent(id);
+                window.location.href = deleteUrl;
+            } else {
+            // Nothing
+            }
+            } else {
+            // Nothing
+            }
+        } else {
+            alert("No 'id' parameter found in the URL.");
+        }
+    }
+
+</script>
 </head>
 
 <style>
@@ -114,7 +139,7 @@
                     </tr>
                       <!-- Delete button for each agenda -->
                <% If session("administrator") = True Then %>
-<button class="delete-button" data-id="<%=rs("id_agendapoint")%>">Delete</button>
+            <button onclick='del("<%=rs("id_agendapoint")%>")' class="delete-button" >Delete</button>
 <%end if%>
                 </table>
             </a>
@@ -136,12 +161,12 @@
         Set rs = Nothing
         %>
     </ul>
-    <div id="delete-confirmation" title="Confirm Delete" style="background-color:#f9f9f9; color:#333;">
+    <!--<div id="delete-confirmation" title="Confirm Delete" style="background-color:#f9f9f9; color:#333;">
  
         Are you sure you want to delete this agenda?
 
 
-</div>
+</div>-->
 
 <script>
 $(document).ready(function() {
