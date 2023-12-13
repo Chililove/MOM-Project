@@ -308,7 +308,7 @@
 							<% else %>
 								value=""
 							<% end if %>
-							readonly
+							
 						<% else %>
 								value=""
 						<% end if %> style="min-width: 360px;" >
@@ -342,7 +342,9 @@
 
 				
 				<td>
-					<input type="hidden" name="id_agendapoint" value="<%=id_agendapoint1%>"></td>	
+					<input type="hidden" name="id_agendapoint" value="<%=id_agendapoint1%>">
+					
+                    </td>	
 				</tr>
 
 				<tr>			

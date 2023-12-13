@@ -99,19 +99,19 @@ End If
   vertical-align: top;
   width: 200px; 
   }
-.user-list {
-  display: flex;
-  flex-wrap: wrap;
-}
+	.user-list {
+	display: flex;
+	flex-wrap: wrap;
+	}
 
-.user-item{
-	width: 80px;
-}
+	.user-item{
+		width: 80px;
+	}
 
 
-.checkuser{
-	width: 50%;
-}
+	.checkuser{
+		width: 50%;
+	}
 
 
 </style>
@@ -126,7 +126,7 @@ End If
 			<%else%>
 			<h1>No saved agendapoint</h1>
 			<%end if%>
-<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
+		<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
 	</div>
 	<!--<div id='fpimg'>
         <img src="..\Login\Game-On.png"/>

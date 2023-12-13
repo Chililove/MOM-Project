@@ -50,11 +50,14 @@ sluttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 'Response.Write("Session save2company_id: " & Session("id_company"))
 
 If request("action") = "newpoint" Then
+    id_agenda=request("id_agenda")
     sql1 = "INSERT INTO tbl_agendapoints (point_name, short_desc, long_desc, id_agenda, id_login, dato, id_company) "
     sql2 = "VALUES ('"& point_name &"', '"& short_desc &"', '"& long_desc &"', "& id_agenda &", '"& logins &"', '"& dato & "', "& id_company &")"
     ' sql2 = "VALUES (?, ?, ?, ?, ?, ?, ?)"
     sql = sql1 & sql2
     
+        response.write sql
+        set rs = Conn.Execute(sql)
     '     rs.CommandText = sql
     '     rs.Parameters.Append rs.CreateParameter("@point_name", 202, 1, 255, point_name)
     '     rs.Parameters.Append rs.CreateParameter("@short_desc", 202, 1, 255, short_desc)
@@ -73,9 +76,6 @@ If request("action") = "newpoint" Then
     ' rs.Parameters("@dato").Value = dato
     ' rs.Parameters("@id_company").Value = id_company
 
-        sql = sql1 + sql2
-        response.write sql
-        set rs = Conn.Execute(sql)
         'Response.Write("Session savec33ompany_id: " & Session("id_company"))
 
         '  Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agendapoint")
@@ -142,10 +142,10 @@ If request("action") = "edit" Then
         "long_desc = ?, " & _
         "dato = ?, " & _
         "id_login = ?, " & _
-        "id_agenda = ?, " & _
         "id_company = ? " & _
         "WHERE id_agendapoint = ?"
-    
+    response.write sql
+    response.write logins
     ' Create a command object and set its properties
     Set cmd = Server.CreateObject("ADODB.Command")
     Set cmd.ActiveConnection = Conn
@@ -155,9 +155,8 @@ If request("action") = "edit" Then
     cmd.Parameters.Append cmd.CreateParameter("@point_name", 202, 1, 255, point_name)
     cmd.Parameters.Append cmd.CreateParameter("@short_desc", 202, 1, 255, short_desc)
 	cmd.Parameters.Append cmd.CreateParameter("@long_desc", 202, 1, -1, long_desc)
-	cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda)
-	cmd.Parameters.Append cmd.CreateParameter("@id_login", 3, 1, , id_login)
     cmd.Parameters.Append cmd.CreateParameter("@dato", 7, 1, , dato)
+	cmd.Parameters.Append cmd.CreateParameter("@id_login", 202, 1, 255, logins)
     cmd.Parameters.Append cmd.CreateParameter("@id_company", 3, 1, , id_company)
     cmd.Parameters.Append cmd.CreateParameter("@id_agendapoint", 3, 1, , id_agendapoint)
     
@@ -169,8 +168,8 @@ If request("action") = "edit" Then
 
     
 	'this redirect to the default page -v-
-    'response.redirect "../default.asp"
 	response.write "Edit action executed successfully."
+    response.redirect "./nextstep_agenda_dropdown_page.asp"
 
 End If
 
