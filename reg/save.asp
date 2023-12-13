@@ -125,20 +125,19 @@ if request("action")="show" then
         moede_dato = rs("moede_dato")
         moede_tidspunkt = rs("moede_tidspunkt")
         id_company = rs("id_company")
+        participants = rs("participants")
 
-        ' Preparing the SQL command for the next query
-        Set cmd = CreateObject("ADODB.Command")
-        cmd.ActiveConnection = Conn
-        cmd.CommandText = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=?"
-        cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda) ' 3 is adInteger
+      set rs = Conn.Execute("SELECT @@IDENTITY AS id_agenda1")
+ id_agenda1 = rs(0).Value
+ session("id_agenda") = id_agenda1
+sql= "SELECT participants FROM tbl_agenda WHERE id_agenda = "& id_agenda1 &""
+response.write sql & "<br>"
+set RS = Conn.Execute(sql)
 
-        ' Execute the command
-        Set rs = cmd.Execute
-
-        While Not rs.EOF
-            assignedEmployees.Add CStr(rs("id_login")), True
-            rs.MoveNext
-        Wend
+participants = Split(RS("participants"), ",")
+For Each participant In participants
+    response.write participant & "<br />"
+Next
     else
         response.write "no data"
         'response.redirect "../default.asp"

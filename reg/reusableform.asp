@@ -493,7 +493,7 @@
 										Set objRS3 = conn.Execute(SQL3)
 
 										While Not objRS3.EOF
-											participants = Split(rs("participants"), ",")
+											participants = Split(("participants"), ",")
 											checked = "" 
 
 											If Request("action") = "show" Then
@@ -518,7 +518,7 @@
 										objRS3.Close
 										%>
 								</div>
-								</div>
+							</div>
 							</div>
 						</div>
 					</td>
