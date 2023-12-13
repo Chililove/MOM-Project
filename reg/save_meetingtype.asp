@@ -19,7 +19,6 @@ receivedIdMeetingType = Request.QueryString("id_meetingtype")
 Response.Write("Received id_meetingtype: " & receivedIdMeetingType & "<br>")
 %>
 <%
-<%
 ' Define variables for CRUD operations
 Dim action, cmd, sql, company_id, afdeling, id_afdeling, ErrMsg
 

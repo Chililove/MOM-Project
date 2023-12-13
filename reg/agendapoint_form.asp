@@ -504,7 +504,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (response.ok) {
                     alert("Agenda point deleted successfully.");
                     // Redirecting to the list page or I could do another action?'
-                   ' window.location.href = "/reg/nextstep_agenda_dropdown_page.asp";
+                    window.location.href = "/reg/nextstep_agenda_dropdown_page.asp";
                 } else {
                     alert("An error occurred during agenda point deletion.");
                 }
