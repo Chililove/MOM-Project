@@ -122,23 +122,12 @@ if request("action")="show" then
         short_desc = rs("short_desc")
         long_desc = rs("long_desc")
         id_agenda = rs("id_agenda")
-        id_login = rs("id_login")
+        logins = rs("id_login")
         dato = rs("dato")
         id_company = rs("id_company")
+        
 
-        ' Preparing the SQL command for the next query
-        Set cmd = CreateObject("ADODB.Command")
-        cmd.ActiveConnection = Conn
-        cmd.CommandText = "SELECT id_login FROM tblassign_agendapoints WHERE id_agendapoint=?"
-        cmd.Parameters.Append cmd.CreateParameter("@id_agendapoint", 3, 1, , id_agendapoint) ' 3 is adInteger
 
-        ' Executing
-        Set rs = cmd.Execute
-
-        While Not rs.EOF
-            assignedEmployees.Add CStr(rs("id_login")), True
-            rs.MoveNext
-        Wend
     else
         response.write "no data"
         'response.redirect "../default.asp"
@@ -178,37 +167,7 @@ If request("action") = "edit" Then
     ' Releasing command object
     Set cmd = Nothing
 
-    ' Dictionary for currently assigned users
-    Set assignedEmployees = CreateObject("Scripting.Dictionary")
-    sql = "SELECT id_login FROM tblassign_agendapoints WHERE id_agendapoint=" & id_agendapoint
-    Set rs = Conn.Execute(sql)
-    While Not rs.EOF
-        assignedEmployees.Add CStr(rs("id_login")), True
-        rs.MoveNext
-    Wend
-
-    ' Dictionary for submitted user assignments from the form
-    Set submittedEmployees = CreateObject("Scripting.Dictionary")
-    selectedLogins = Split(Request.Form("id_login"), ",")
-    For Each id_login In selectedLogins
-        submittedEmployees.Add CStr(id_login), True
-    Next
-
-    ' Determine which users to remove
-    For Each id_login In assignedEmployees.Keys
-        If Not submittedEmployees.Exists(id_login) Then
-            sql = "DELETE FROM tblassign_agendapoints WHERE id_agendapoint = " & id_agendapoint & " AND id_login = " & id_login
-            Conn.Execute(sql)
-        End If
-    Next
-
-    ' Determine which users to add
-    For Each id_login In submittedEmployees.Keys
-        If Not assignedEmployees.Exists(id_login) Then
-            sql = "INSERT INTO tblassign_agendapoints (id_agendapoint, id_login) VALUES (" & id_agendapoint & ", " & id_login & ")"
-            Conn.Execute(sql)
-        End If
-    Next
+    
 	'this redirect to the default page -v-
     response.redirect "../default.asp"
 	response.write "Edit action executed successfully."
