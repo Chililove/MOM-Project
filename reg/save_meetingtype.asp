@@ -110,9 +110,9 @@ response.Write("Delete action triggered<br>")
         On Error Resume Next
         cmd.Execute
         If Err.Number <> 0 Then
-            ErrMsg = "An error occurred during meeting type creation: " & Err.Description
+            ErrMsg = "An error occurred during meeting type deletion: " & Err.Description
         Else
-            ErrMsg = "Meeting type created successfully."
+            ErrMsg = "Meeting type deleted successfully."
         End If
         On Error GoTo 0
         Set cmd = Nothing

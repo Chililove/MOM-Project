@@ -98,7 +98,6 @@ If request("action") = "newpoint" Then
     'response.redirect "reusableform.asp?id_agenda=" & id_agenda
     response.redirect "nextstep.asp?id_agenda=" & id_agenda
 
-    'WHAT IF I AM ON THE ADD AGENDAPOINT PAGE FROM THE DROPDOWN PAGE; WHERE WILL IT SENT ME?
 
         'response.redirect "../default.asp"
 end if	
