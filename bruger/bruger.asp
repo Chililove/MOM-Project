@@ -226,7 +226,7 @@ span.error {
 								<%if request("action")="ret" and Session("administrator") then%>
 								<input type="hidden" name="id_login" value="<%=id_login%>">
 								<input type="hidden" name="action" value="delete">
-                        <input type="button" value="Slet bruger" onclick="confirmDelete('<%=id_login%>');" data-theme="a" data-icon="delete">
+                        <input type="button" value="Delete user" onclick="confirmDelete('<%=id_login%>');" data-theme="a" data-icon="delete">
                     <%end if%>
 							</td>
 						</tr>
@@ -262,7 +262,7 @@ span.error {
 $(document).ready(function() {
 	$.validator.addMethod("patternEmail", function(value, element) {
     return this.optional(element) || /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/.test(value);
-}, "Dette er ikke en gyldig email.");
+}, "This is not a valid email");
 
     $('form').validate({
         rules: {
@@ -298,32 +298,32 @@ $(document).ready(function() {
         },
         messages: {
             login: {
-                required: "Login navn er påkrævet.",
-                minlength: "Login skal være mindst 2 tegn."
+                required: "Login name required.",
+                minlength: "Login must be atleast 2 characters."
             },
             fornavn: {
-                required: "Fornavn er påkrævet.",
-                minlength: "Fornavn skal være mindst 2 tegn."
+                required: "Firstname is required.",
+                minlength: "Firstname must be atleast 2 characters."
             },
             efternavn: {
-                required: "Efternavn er påkrævet.",
-                minlength: "Efternavn skal være mindst 2 tegn."
+                required: "Lastname is required.",
+                minlength: "Lastname must be atleast 2 characters"
             },
 			 mailadresse: {
-                required: "Email er påkrævet.",
-                minlength: "Email skal være mindst 2 tegn.",
-				email: "Dette er ikke en gyldig email.",
-				patternEmail: "Dette er ikke en gyldig email."
+                required: "Email is required.",
+                minlength: "Email must be atleast 2 characters.",
+				email: "This is not a valid email.",
+				patternEmail: "This is not a valid email format."
             },
             password1: {
-                required: "Password er påkrævet.",
-                minlength: "Password skal være mindst 2 tegn."
+                required: "Password is required.",
+                minlength: "Password must be atleast 2 characters."
             },
             id_logintype: {
-                required: "Type af login er påkrævet."
+                required: "Type of login is required."
             },
 			 id_company: {
-                required: "Virksomheds-id er påkrævet."
+                required: "Company id is required."
             }
         },
 		 errorElement: 'span',  // Specify the element for the error text
@@ -333,7 +333,7 @@ $(document).ready(function() {
         element.wrap(tooltipWrapper);
         error.insertAfter(element);
     } else {
-        error.insertAfter(element); // Just place the error after the select without wrapping it.
+        error.insertAfter(element); 
     }
 }
     });

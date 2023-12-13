@@ -119,12 +119,12 @@ $(document).ready(function() {
         },
         messages: {
             login: {
-                required: "Login er påkrævet.",
-                minlength: "Login skal have mindst 2 tegn"
+                required: "Login is required.",
+                minlength: "Login must be atleast 2 characters"
             },
             password: {
-                required: "Password er påkrævet.",
-                minlength: "Password skal have mindst 2 tegn"
+                required: "Password is required.",
+                minlength: "Password must be atleast 2 characters"
             }
         },
 	 	
