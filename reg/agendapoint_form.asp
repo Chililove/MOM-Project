@@ -480,7 +480,41 @@ document.addEventListener("DOMContentLoaded", function() {
 					<td style="text-align: center">
 						<input type="hidden" name="id_company" value='<%=session("id_company")%>'>
                         <input type="hidden" name="id_agenda" value='<% if LEN(request.QueryString("id_agenda"))>0 then %><%=request.QueryString("id_agenda")%><% else %><%=session("id_agenda")%><% end if %>'>
-                        <input name="Submit2" type="submit" value="newpoint" data-theme="a" data-icon="check">
+                            <% If Request.QueryString("action") = "show" Then %>
+                        <input name="Submit2" type="submit" value="Update agenda point" data-theme="a" data-icon="check">
+                        <button type="button" id="deleteButton" value="Delete agenda point" data-theme="a" data-icon="delete">Delete agenda point</button>
+                        <% else %>
+                        <input name="Submit2" type="submit" value="Create new agenda point" data-theme="a" data-icon="check">
+                        <%end if %>
+
+<script>
+    document.getElementById("deleteButton").addEventListener("click", function() {
+            console.log("Delete button clicked");
+
+        var r = confirm("Are you sure you want to delete this agenda point?");
+        if (r == true) {
+            var formData = new FormData();
+            formData.append("action", "delete");
+
+            fetch("/reg/save_agendapoints.asp?action=delete&id_agendapoint=<%=id_agendapoint%>", {
+                method: "POST",
+                body: formData
+            })
+            .then(function(response) {
+                if (response.ok) {
+                    alert("Agenda point deleted successfully.");
+                    // Redirecting to the list page or I could do another action?'
+                   ' window.location.href = "/reg/nextstep_agenda_dropdown_page.asp";
+                } else {
+                    alert("An error occurred during agenda point deletion.");
+                }
+            })
+            .catch(function(error) {
+                console.error("Error:", error);
+            });
+        }
+    });
+</script>
                   
 
 						<!--This is how I can save multiple users to an agenda - There is for sure a better way to do this.. I just don't-->
@@ -514,7 +548,7 @@ $(document).ready(function() {
         return inputDate >= currentDate;
 		<%end if%>
         
-    }, "Venligst vælg en dato i fremtiden.");
+    }, "Please choose a date in the future.");
 
     $('form').validate({
         rules: {
@@ -541,24 +575,24 @@ $(document).ready(function() {
         },
         messages: {
             dato: {
-                required: "Dato er påkrævet.",
-                dateISO: "Dette er ikke en dato.",
-                dateGreaterThanOrEqualToday: "Vælg dagens dato eller en dato i fremtiden."
+                required: "Date is required.",
+                dateISO: "This is not a valid date.",
+                dateGreaterThanOrEqualToday: "Choose todays date or a date in the future."
             },
             point_name: {
-                required: "Agendapoint title er påkrævet.",
-                minlength: "Agendapoint title skal være mindst 2 tegn."
+                required: "Agendapoint title is required",
+                minlength: "Agendapoint title must be atleast 2 characters."
             },
             id_login: {
-                required: "Login er påkrævet."
+                required: "Login is required."
             },
             short_desc: {
-                required: "Beskrivelse er påkrævet.",
-                minlength: "Beskrivelse skal være mindst 2 tegn."
+                required: "Description is required.",
+                minlength: "Description must be atleast 2 characters."
             },
             long_desc: {
-                required: "Beskrivelse er påkrævet.",
-                minlength: "Beskrivelse skal være mindst 5 tegn."
+                required: "Longer description is required.",
+                minlength: "Description must be atleast 5 characters."
             }
         },
 	 	
