@@ -44,56 +44,49 @@ minutter=datepart("n",now())
 starttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 sluttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 
-'Set rs = Server.CreateObject("ADODB.Command")
-'rs.ActiveConnection = Conn
-'id_company = Session("id_company")
-'Response.Write("Session save2company_id: " & Session("id_company"))
+Set cmd = Server.CreateObject("ADODB.Command")
+cmd.ActiveConnection = Conn
+
+
+id_company = Session("id_company")
+Response.Write("Session save2company_id: " & Session("id_company"))
 
 If request("action") = "newpoint" Then
     id_agenda=request("id_agenda")
-    sql1 = "INSERT INTO tbl_agendapoints (point_name, short_desc, long_desc, id_agenda, id_login, dato, id_company) "
-    sql2 = "VALUES ('"& point_name &"', '"& short_desc &"', '"& long_desc &"', "& id_agenda &", '"& logins &"', '"& dato & "', "& id_company &")"
-    ' sql2 = "VALUES (?, ?, ?, ?, ?, ?, ?)"
+     sql1 = "INSERT INTO tbl_agendapoints (point_name, short_desc, long_desc, id_agenda, dato, id_company)"
+    sql2 = "VALUES (?, ?, ?, ?, ?, ?)"
     sql = sql1 & sql2
-    
         response.write sql
-        set rs = Conn.Execute(sql)
-    '     rs.CommandText = sql
-    '     rs.Parameters.Append rs.CreateParameter("@point_name", 202, 1, 255, point_name)
-    '     rs.Parameters.Append rs.CreateParameter("@short_desc", 202, 1, 255, short_desc)
-    ' 	rs.Parameters.Append rs.CreateParameter("@long_desc", 203, 1, -1, long_desc)
-    ' 	rs.Parameters.Append rs.CreateParameter("@id_agenda", 3, 1, , id_agenda)
-    ' 	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , id_login)
-    '     rs.Parameters.Append rs.CreateParameter("@dato", 7, 1, , dato)
-    '     rs.Parameters.Append rs.CreateParameter("@id_company", 3, 1, , id_company)
+        cmd.CommandText = sql
+         cmd.Parameters.Append cmd.CreateParameter("@point_name", 202, 1, 255, point_name)
+         cmd.Parameters.Append cmd.CreateParameter("@short_desc", 202, 1, 255, short_desc)
+    	 cmd.Parameters.Append cmd.CreateParameter("@long_desc", 203, 1, 255, long_desc)
+     	 cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda)
+         cmd.Parameters.Append cmd.CreateParameter("@dato", 7, 1, , dato)
+         cmd.Parameters.Append cmd.CreateParameter("@id_company", 3, 1, , id_company)
+ ' Split the logins string into individual user IDs
+    Dim loginArray
+    loginArray = Split(logins, ",")
+    
+    ' Insert each user ID separately
+    For Each login In loginArray
+        cmd.Parameters.Append cmd.CreateParameter("@id_login", 202, 1, 255, login)  
+        cmd.Parameters("@id_login").Value = logins
+
+        cmd.Execute
+    Next
 
     ' ' Set the parameter values
-    ' rs.Parameters("@point_name").Value = point_name
-    ' rs.Parameters("@short_desc").Value = short_desc
-    ' rs.Parameters("@long_desc").Value = long_desc
-    ' rs.Parameters("@id_agenda").Value = id_agenda
-    ' rs.Parameters("@id_login").Value = id_login
-    ' rs.Parameters("@dato").Value = dato
-    ' rs.Parameters("@id_company").Value = id_company
+     cmd.Parameters("@point_name").Value = point_name
+     cmd.Parameters("@short_desc").Value = short_desc
+     cmd.Parameters("@long_desc").Value = long_desc
+     cmd.Parameters("@id_agenda").Value = id_agenda
+     cmd.Parameters("@dato").Value = dato
+     cmd.Parameters("@id_company").Value = id_company
+        
+         	cmd.Execute
+ 
 
-        'Response.Write("Session savec33ompany_id: " & Session("id_company"))
-
-        '  Set rs = Conn.Execute("SELECT @@IDENTITY AS new_id_agendapoint")
-        ' new_id_agendapoint = rs(0).Value
-        ' selectedLogins = Split(Request.Form("id_login"), ",")
-        ' For Each id_login In selectedLogins
-        '     sql = "INSERT INTO tblassign_agendapoints (id_agendapoint, id_login) VALUES (?, ?); SELECT SCOPE_IDENTITY();"
-
-        '  Set rs = Server.CreateObject("ADODB.Command")
-        ' rs.ActiveConnection = Conn
-        ' 	rs.CommandText = sql
-        ' 	rs.Parameters.Append rs.CreateParameter("@id_agendapoint", 3, 1, , new_id_agendapoint)
-        ' 	rs.Parameters.Append rs.CreateParameter("@id_login", 3, 1, , CInt(id_login))
-        '     rs.Parameters("@id_agendapoint").Value = id_agendapoint
-        '     rs.Parameters("@id_login").Value = id_login
-
-        ' 	rs.Execute
-        ' Next
     'Response.Write("Session savecompany_id: " & Session("id_company"))
     'response.redirect "reusableform.asp?id_agenda=" & id_agenda
     response.redirect "nextstep.asp?id_agenda=" & id_agenda
@@ -104,8 +97,7 @@ end if
 
 if request("action")="show" then
 
-    Dim rs, cmd, assignedEmployees, id_agendapoint, checkboxState
-    Set assignedEmployees = CreateObject("Scripting.Dictionary")
+    Dim rs, cmd, id_agendapoint, checkboxState
 
     ' Preparing the SQL command
     Set cmd = CreateObject("ADODB.Command")
@@ -165,11 +157,10 @@ If request("action") = "edit" Then
 
     ' Releasing command object
     Set cmd = Nothing
+   
+    response.redirect "../reg/nextstep.asp?id_agenda=" & id_agenda
 
-    
-	'this redirect to the default page -v-
-	response.write "Edit action executed successfully."
-    response.redirect "./nextstep_agenda_dropdown_page.asp"
+
 
 End If
 
@@ -181,14 +172,6 @@ If request("action") = "delete" Then
     Conn.BeginTrans
     
     On Error Resume Next ' To handle any errors in execution
-    
-    ' Remove any associated user assignments from tblassign_agendapoints
-    sql = "DELETE FROM tblassign_agendapoints WHERE id_agendapoint = ?"
-    Set cmd = Server.CreateObject("ADODB.Command")
-    cmd.ActiveConnection = Conn
-    cmd.CommandText = sql
-    cmd.Parameters.Append cmd.CreateParameter("@id_agendapoint", 3, 1, , id_agendapoint)
-    cmd.Execute
     
     ' deleting main record from tbl_agendapoints
     sql = "DELETE FROM tbl_agendapoints WHERE id_agendapoint = ?"
@@ -212,7 +195,7 @@ If request("action") = "delete" Then
     End If
 
     ' Redirect after successful deletion
-   ' response.redirect "../default.asp"
+    'response.redirect "../default.asp"
    Response.End
 End If
 
