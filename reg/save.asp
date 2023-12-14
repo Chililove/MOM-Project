@@ -21,7 +21,9 @@ oprettetaf=request("oprettetaf")
 oprettetdato=date()
 moede_navn=request("moede_navn")
 emne=request("emne")
-beskrivelse=request("beskrivelse")
+'beskrivelse=request.form("summernoteContent")
+Dim summernoteContent
+summernoteContent = Request.Form("summernote")
 noter=request("noter")
 additionalinfo=request("additionalinfo")
 id_meetingtype=request("id_meetingtype")
@@ -62,7 +64,7 @@ If request("action") = "newday" Then
     rs.CommandText = sql1 & sql2
     rs.Parameters.Append rs.CreateParameter("@moede_navn", 202, 1, 255, moede_navn)
     rs.Parameters.Append rs.CreateParameter("@emne", 202, 1, 255, emne)
-	rs.Parameters.Append rs.CreateParameter("@beskrivelse", 202, 1, -1, beskrivelse)
+	rs.Parameters.Append rs.CreateParameter("@beskrivelse", 202, 1, -1, summernoteContent)
     rs.Parameters.Append rs.CreateParameter("@noter", 202, 1, -1, noter)
     rs.Parameters.Append rs.CreateParameter("@additionalinfo", 202, 1, -1, additionalinfo)
     rs.Parameters.Append rs.CreateParameter("@oprettetaf", 202, 1, 50, oprettetaf)
@@ -168,7 +170,7 @@ If request("action") = "edit" Then
     ' Add parameters to the command object
     cmd.Parameters.Append cmd.CreateParameter("@moede_navn", 202, 1, 255, moede_navn)
     cmd.Parameters.Append cmd.CreateParameter("@emne", 202, 1, 255, emne)
-    cmd.Parameters.Append cmd.CreateParameter("@beskrivelse", 203, 1, 255, beskrivelse)
+    cmd.Parameters.Append cmd.CreateParameter("@beskrivelse", 203, 1, -1, summernoteContent)
     cmd.Parameters.Append cmd.CreateParameter("@noter", 203, 1, -1, noter)
     cmd.Parameters.Append cmd.CreateParameter("@additionalinfo", 203, 1, 255, additionalinfo)
     cmd.Parameters.Append cmd.CreateParameter("@id_meetingtype", 3, 1, , id_meetingtype)
@@ -178,7 +180,8 @@ If request("action") = "edit" Then
     cmd.Parameters.Append cmd.CreateParameter("@participants", 202, 1, 255, logins)
     cmd.Parameters.Append cmd.CreateParameter("@id_company", 3, 1, , id_company)
     cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda)
-    
+
+
     ' Execute the command
     cmd.Execute
 

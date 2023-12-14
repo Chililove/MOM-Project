@@ -1,3 +1,4 @@
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>MoM</title>
@@ -10,8 +11,13 @@
 <link rel="stylesheet" href="../shared/global.css">
 <script src="../jquery/jquery-1.8.2.min.js"></script>
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>-->
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+<!-- include Summernote CSS and JS files -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+
+
+
 
 <style>
 	label.error {
@@ -420,6 +426,22 @@
 						</div>
 					</td>
 				</tr>
+					<!-- Møde beskrivelse -->
+					<tr>
+					<th style="text-align: center">
+						Description
+					</th>
+				</tr>
+				<tr>
+					<td style="text-align: center">
+						<div class="input-wrapper">
+						<input type="hidden" name="beskrivelse" id="beskrivelseInput" value="<%=beskrivelse%>">
+							<!-- Add a <div> for the Summernote editor -->
+							<div id="summernote"></div>
+						</div>
+					</td>
+				</tr>
+
 			<!-- Møde note -->
 				<tr>
 					<th style="text-align: center">
@@ -569,6 +591,17 @@
 						</div>
 					</td>
 				</tr>
+				<script>
+					document.querySelector('form').addEventListener('submit', function() {
+    // Get the Summernote editor content
+    var summernoteContent = $('#summernote').summernote('code');
+    
+    // Set the hidden field value with the HTML content
+    document.querySelector('#beskrivelseInput').value = summernoteContent;
+
+});
+
+				</script>
 			<!-- Møde submit btn -->
 				<tr>
 					<td style="text-align: center">
@@ -599,6 +632,7 @@
 					</td>
 				</tr>
 			</table>
+
 <script>
 $(document).ready(function() {
     // Custom method for validating dates If they are in the past you cannot create an agenda in the past.
@@ -636,34 +670,35 @@ $(document).ready(function() {
                 required: true,
                 minlength: 2
             },
-            beskrivelse: {
-                required: true,
-                minlength: 5
+            beskrivelseInput: {
+                required: true
             },
             id_afdeling: {
                 required: true
             }
         },
         messages: {
-            dato: {
+            moede_dato: {
                 required: "Date is required.",
                 dateISO: "This is not a valid date",
                 dateGreaterThanOrEqualToday: "Choose todays date or a date in the future."
             },
-            point_name: {
-                required: "Agendapoint title is required.",
-                minlength: "Agendapoint title must be more than 2 characters."
+			
+			moede_tidspunkt: {
+                required: "Meeting time is requiered."
             },
-            id_login: {
-                required: "Login is requiered."
+
+            moede_navn: {
+                required: "Meeting name is required.",
+                minlength: "Meeting name must be more than 2 characters."
             },
-            short_desc: {
+           
+            emne: {
+                required: "Subject is required.",
+                minlength: "Subject must be more than 2 characters."
+            },
+            beskrivelseInput: {
                 required: "Description is required.",
-                minlength: "Description must be more than 2 characters."
-            },
-            long_desc: {
-                required: "Logner description is required.",
-                minlength: "Description must be atleast 5 characters."
             }
         },
 		

@@ -131,7 +131,7 @@
             Do While Not rs.EOF
         %>
         <li data-agenda-id="<%=rs("id_agenda")%>">
-            <a data-ajax="false" href='agendapoint_page.asp?action=show&amp;id_agendapoint=<%=rs("id_agendapoint")%>'>
+            <a data-ajax="false" href='agendapoint_page.asp?action=show&amp;id_agendapoint=<%=rs("id_agendapoint")%>&source=page1'>
                 <table style="width: 100%">  
                     <tr>
                         <td style="width: 25%"><%=rs("point_name")%></td>
