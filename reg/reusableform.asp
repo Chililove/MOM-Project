@@ -575,7 +575,11 @@
 						<input name="existing_id_registrering" type="hidden" value="<%=existing_id_registrering%>">
 						<input type="hidden" name="oprettetaf" value='<%=session("id_login")%>'>
 						<input type="hidden" name="id_company" value='<%=session("id_company")%>'>
+						<% if request("action")="newday" then%>
 						<input name="Submit1" type="submit" value="Start meeting" data-theme="a" data-icon="check">
+						<%else%>
+						<input name="Submit1" type="submit" value="Update meeting" data-theme="a" data-icon="check">
+						<%end if%>
 						
 			<!--This is how I can save multiple users to an agenda-->
 						<%If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
