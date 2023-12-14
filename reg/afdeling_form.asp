@@ -13,12 +13,11 @@ $(document).ready(function() {
     // Client-side validation logic here
     $('#afdelingForm').submit(function(e) {
         var afdeling = $('#afdeling').val();
-        // Example validation: check if name is not empty and cvr is numeric
+        // Example validation: check if name is not empty
         if(afdeling.trim() === '' ) {
             alert('Please enter a valid department id.');
             e.preventDefault(); // Prevent form submission if validation fails
         }
-        // Add more validation rules if needed
     });
 });
 
@@ -87,7 +86,6 @@ End If
 <%else%>
     <label for="afdeling">Please fill out this form to create a new department:</label>
 <%end if%>
-    <!-- Why do i get the name of the field back instead of the id?? -->
     <input type="text" id="afdeling" name="afdeling" value="<%=afdeling%>" required>
         <input type="hidden" name="id_afdeling" value="<%=id_afdeling%>">
 
@@ -104,7 +102,6 @@ End If
 
     <% End If %>    <!-- External "Delete" button with event listener -->
 </form>
-<!-- The rest of your code remains the same -->
 
 <script>
     document.getElementById("deleteButton").addEventListener("click", function() {

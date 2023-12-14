@@ -19,7 +19,6 @@
 'response.write "ID company: " & request("id_company") & "<br/>"
 
 
-'existing_id_registrering=request("existing_id_registrering")
 'oprettetaf=request("oprettetaf")
 point_name=request("point_name")
 short_desc=request("short_desc")
@@ -28,8 +27,6 @@ id_agenda=request("id_agenda")
 logins=request("id_login")
 dato=request("date")
 id_company = Session("id_company")
-'id_agenda = request("id_agenda")
-'Response.Write "agenda id =" & id_agenda
 aar=datepart("yyyy",oprettetdato)
 maaned=datepart("m",oprettetdato)
 dag=datepart("d",oprettetdato)
@@ -47,9 +44,7 @@ sluttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 Set cmd = Server.CreateObject("ADODB.Command")
 cmd.ActiveConnection = Conn
 
-
 id_company = Session("id_company")
-Response.Write("Session save2company_id: " & Session("id_company"))
 
 If request("action") = "newpoint" Then
     id_agenda=request("id_agenda")
@@ -64,11 +59,11 @@ If request("action") = "newpoint" Then
      	 cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda)
          cmd.Parameters.Append cmd.CreateParameter("@dato", 7, 1, , dato)
          cmd.Parameters.Append cmd.CreateParameter("@id_company", 3, 1, , id_company)
- ' Split the logins string into individual user IDs
+ ' Split the logins string into individual user ids
     Dim loginArray
     loginArray = Split(logins, ",")
     
-    ' Insert each user ID separately
+    ' Insert each user Iid separately
     For Each login In loginArray
         cmd.Parameters.Append cmd.CreateParameter("@id_login", 202, 1, 255, login)  
         cmd.Parameters("@id_login").Value = logins

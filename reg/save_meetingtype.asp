@@ -107,7 +107,6 @@ response.Write("Delete action triggered<br>")
         cmd.CommandText = sql
         cmd.CommandType = 1 'adCmdText
         cmd.Parameters.Append cmd.CreateParameter("@id_meetingtype", 3, 1, , id_meetingtype)
-      '  cmd.Parameters.Append cmd.CreateParameter("@id_company", 3, 1, , company_id)
 
         ' Execute the DELETE command
         cmd.Execute
@@ -124,7 +123,7 @@ End If
 If Len(ErrMsg) > 0 Then
     Response.Write("<script>alert('" & ErrMsg & "');  window.location.href='/reg_list/meetingtype_list.asp' </script>")
 Else
-    Response.Redirect "/reg_list/afdeling_list.asp?" ' Redirect to afdeling list
+    Response.Redirect "/reg_list/meetingtype_list.asp?" ' Redirect to afdeling list
 End If
 
 %>
