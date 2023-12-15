@@ -21,9 +21,10 @@ oprettetaf=request("oprettetaf")
 oprettetdato=date()
 moede_navn=request("moede_navn")
 emne=request("emne")
-'beskrivelse=request.form("summernoteContent")
-Dim summernoteContent
-summernoteContent = Request.Form("summernote")
+beskrivelse=request.form("beskrivelse")
+
+' Dim summernoteContent
+' summernoteContent = Request.Form("summernote")
 noter=request("noter")
 additionalinfo=request("additionalinfo")
 id_meetingtype=request("id_meetingtype")
@@ -170,7 +171,7 @@ If request("action") = "edit" Then
     ' Add parameters to the command object
     cmd.Parameters.Append cmd.CreateParameter("@moede_navn", 202, 1, 255, moede_navn)
     cmd.Parameters.Append cmd.CreateParameter("@emne", 202, 1, 255, emne)
-    cmd.Parameters.Append cmd.CreateParameter("@beskrivelse", 203, 1, -1, summernoteContent)
+    cmd.Parameters.Append cmd.CreateParameter("@beskrivelse", 202, 1, 255, beskrivelse)
     cmd.Parameters.Append cmd.CreateParameter("@noter", 203, 1, -1, noter)
     cmd.Parameters.Append cmd.CreateParameter("@additionalinfo", 203, 1, 255, additionalinfo)
     cmd.Parameters.Append cmd.CreateParameter("@id_meetingtype", 3, 1, , id_meetingtype)
