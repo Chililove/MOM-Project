@@ -264,7 +264,10 @@
 	<% if request.QueryString("action")="show" then %>
 	action='save_agendapoints.asp?action=edit&id_agendapoint=<%=request.QueryString("id_agendapoint")%>'  
 	<% else %>
-	action='save_agendapoints.asp?action=<%=request.QueryString("action")%>'  
+    <%
+	'action='save_agendapoints.asp?action=<%='request.QueryString("action")%>' 
+    action='save_agendapoints.asp?action=<%=request.QueryString("action")%>&id_agenda=<%=request.QueryString("id")%>'  
+    %>
 	<% end if %>
 	style="position: relative;">
 
@@ -283,17 +286,7 @@
         
             response.write("Companyid: " & id_company & "<br>")
 
-            ' sql = "SELECT id_login FROM tblassign_agendapoints WHERE id_agendapoint=" & id_agendapoint
-            ' Dim assignedPointEmployees
-            ' Set assignedPointEmployees = CreateObject("Scripting.Dictionary")
-            ' Set rs = Conn.Execute(sql)
-            ' While Not rs.EOF
-            '         assignedPointEmployees.Add CStr(rs("id_login")), True
-            '         rs.MoveNext
-            '     Wend
-            ' else
-            ' response.write "no data"
-            end if%>
+         %>
 			<table align="center" style="width: 50%">
 			<!-- Møde dato og tid-->
 				<tr>
