@@ -17,7 +17,7 @@
             var secondConfirm = window.confirm("This action is irreversible. Are you absolutely sure?");
             
             if (secondConfirm) {
-                var deleteUrl = 'delete.asp?id=' + encodeURIComponent(id);
+                var deleteUrl = 'delete.asp?action=aptype&id=' + encodeURIComponent(id);
                 window.location.href = deleteUrl;
             } else {
             // Nothing
