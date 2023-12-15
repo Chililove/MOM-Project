@@ -23,6 +23,30 @@ a {
   margin-bottom: 1%;
   margin-top: 2%;
 }
+@keyframes glow {
+    0% {color:black;}
+    10% {color:orange;}
+    90% {color:orange;}
+    100% {color:black;}
+}
+.glow { 
+    animation: glow 5s infinite;
+}
+.spin {
+        transition: transform 0.3s ease;
+    }
+    
+    .spin:hover {
+        animation: spin 0.5s linear; 
+    }
+    @keyframes spin {
+        0% {
+        transform: rotate(0deg);
+        }
+        100% {
+        transform: rotate(360deg);
+        }
+    }
 </style>
 <body>
     <div data-role="header" data-id="header" data-position="fixed">
@@ -33,9 +57,16 @@ a {
     </div>
     
     <div style="display:flex; justify-content:center; align-items: center;">
-        <a href="../default.asp"><button>Save agenda and go back to default homepage</button></a>
-        <a href="../default.asp"><button>Go back to agenda?</button></a>
-        <a href="agendapoint_page.asp?id=<%=id_agenda%>&action=newpoint&source=page2" data-ajax="false"><button>Add agendapoints to this meeting</button></a>
+        <a href="../default.asp"><button>Save agenda and go back <br> to default homepage</button></a>
+        
+        <a href="./list_my.asp?action=show&id_agenda=<%=request.QueryString("id_agenda")%>" data-ajax="false">
+            <% sql="SELECT * FROM qry_agenda WHERE id_agenda= "& request.QueryString("id_agenda") &""
+            'response.write sql
+            set rs = conn.execute(sql) %>
+            <button>Edit to agenda <br><b class="glow"><%=rs("moede_navn")%></b></button>
+        </a>
+        
+        <a href="agendapoint_page.asp?id=<%=id_agenda%>&action=newpoint&source=page2" data-ajax="false"><button>Add agendapoints to <br> this meeting</button></a>
     </div>
 
 <ul data-role="listview" data-inset="false">
