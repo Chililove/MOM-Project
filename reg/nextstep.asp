@@ -59,8 +59,8 @@ a {
     <div style="display:flex; justify-content:center; align-items: center;">
         <a href="../default.asp"><button>Save agenda and go back <br> to default homepage</button></a>
         
-        <a href="./list_my.asp?action=show&id_agenda=<%=request.QueryString("id_agenda")%>" data-ajax="false">
-            <% sql="SELECT * FROM qry_agenda WHERE id_agenda= "& request.QueryString("id_agenda") &""
+        <a href="./list_my.asp?action=show&id_agenda=<%=id_agenda%>" data-ajax="false">
+            <% sql="SELECT * FROM qry_agenda WHERE id_agenda= "& id_agenda &" "
             'response.write sql
             set rs = conn.execute(sql) %>
             <button>Edit to agenda <br><b class="glow"><%=rs("moede_navn")%></b></button>

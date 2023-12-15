@@ -65,7 +65,7 @@ If request("action") = "newday" Then
     rs.CommandText = sql1 & sql2
     rs.Parameters.Append rs.CreateParameter("@moede_navn", 202, 1, 255, moede_navn)
     rs.Parameters.Append rs.CreateParameter("@emne", 202, 1, 255, emne)
-	rs.Parameters.Append rs.CreateParameter("@beskrivelse", 202, 1, -1, summernoteContent)
+	rs.Parameters.Append rs.CreateParameter("@beskrivelse", 202, 1, 255, beskrivelse)
     rs.Parameters.Append rs.CreateParameter("@noter", 202, 1, -1, noter)
     rs.Parameters.Append rs.CreateParameter("@additionalinfo", 202, 1, -1, additionalinfo)
     rs.Parameters.Append rs.CreateParameter("@oprettetaf", 202, 1, 50, oprettetaf)
