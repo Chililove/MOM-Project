@@ -25,7 +25,7 @@ Dim action, cmd, sql, company_id, afdeling, id_afdeling, ErrMsg
 ' Get the action parameter from the request
 action = Trim(Request("action"))
 company_id = Trim(Session("id_company"))
-id_meetingtype = Trim(Request("id_meetingtype"))   'NO request querystring, It gave me this value error for so long and this was the fix..
+id_meetingtype = Trim(Request.querystring("id_meetingtype"))   'NO request querystring, It gave me this value error for so long and this was the fix..
 meeting_type = Trim(Request.Form("meeting_type"))
 
 ' Protect against SQL injection by validating all inputs
