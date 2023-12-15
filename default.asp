@@ -43,6 +43,18 @@
 <!--#include file="bruger/user-profile.asp"-->
 
 
+<%
+' Check if the "accessDenied" query parameter is present
+If Request.QueryString("accessDenied") = "true" Then
+%>
+    <div class="error-message">
+        Sorry, you are not an admin and do not have access.
+    </div>
+<%
+End If
+%>
+
+
 <ul data-role="listview">
 				
 <%if done=1 then%>
