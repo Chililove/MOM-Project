@@ -507,6 +507,7 @@
 							<div class="user-list-container">
 								<div class="user-list">
 									<%
+									If Request("action")="show" Then
 										SQL3 = "SELECT * FROM tbllogin WHERE id_company = '" & session("id_company") & "' ORDER BY id_login"
 										Set objRS3 = conn.Execute(SQL3)
 
@@ -534,6 +535,7 @@
 											objRS3.MoveNext
 										Wend
 										objRS3.Close
+									End If
 										%>
 								</div>
 							</div>
