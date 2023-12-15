@@ -35,7 +35,7 @@ a {
     <div style="display:flex; justify-content:center; align-items: center;">
         <a href="../default.asp"><button>Save agenda and go back to default homepage</button></a>
         <a href="../default.asp"><button>Go back to agenda?</button></a>
-        <a href="agendapoint_page.asp?id=<%=id_agenda%>&action=newpoint" data-ajax="false"><button>Add agendapoints to this meeting</button></a>
+        <a href="agendapoint_page.asp?id=<%=id_agenda%>&action=newpoint&source=page2" data-ajax="false"><button>Add agendapoints to this meeting</button></a>
     </div>
 
 <ul data-role="listview" data-inset="false">

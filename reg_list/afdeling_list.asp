@@ -1,6 +1,13 @@
 <!--#include file="../login/protect.inc"-->
 <!--#include file="../opendb.asp"-->
 <!DOCTYPE>
+<%
+' Check if the user is an administrator
+If Not session("administrator") Then
+    ' If not an administrator, redirect them to an error page or some other action
+    Response.Redirect("../default.asp") ' Change "access_denied.asp" to the appropriate page
+End If
+%>
 <html>
 
 <head>
@@ -40,6 +47,26 @@
     font-weight: bold;
     margin-right: 5px; /* Add spacing between plus sign and text */
   }
+ a {
+            text-decoration: none;
+            color: blue;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .delete-button {
+           max-width: 100px;
+           float: right;
+        }
+
+        .confirm-dialog{
+
+            z-index: 1000;
+        }
+
+
 </style>
 <body>
 	<div data-role="header" data-id="header" data-position="fixed">
@@ -78,6 +105,9 @@ set rs=conn.execute(sql)
 								<tr>
 									<td style="width: 25%"><%=rs("afdeling")%></td>
 								</tr>
+								   <% If session("administrator") = True Then %>
+<button class="delete-button" data-id="<%=rs("id_afdeling")%>">Delete</button>
+<%end if%>
 						</table>
 					</a>
 				</li>

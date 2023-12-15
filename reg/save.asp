@@ -21,7 +21,10 @@ oprettetaf=request("oprettetaf")
 oprettetdato=date()
 moede_navn=request("moede_navn")
 emne=request("emne")
-beskrivelse=request("beskrivelse")
+beskrivelse=request.form("beskrivelse")
+
+' Dim summernoteContent
+' summernoteContent = Request.Form("summernote")
 noter=request("noter")
 additionalinfo=request("additionalinfo")
 id_meetingtype=request("id_meetingtype")
@@ -62,7 +65,7 @@ If request("action") = "newday" Then
     rs.CommandText = sql1 & sql2
     rs.Parameters.Append rs.CreateParameter("@moede_navn", 202, 1, 255, moede_navn)
     rs.Parameters.Append rs.CreateParameter("@emne", 202, 1, 255, emne)
-	rs.Parameters.Append rs.CreateParameter("@beskrivelse", 202, 1, -1, beskrivelse)
+	rs.Parameters.Append rs.CreateParameter("@beskrivelse", 202, 1, -1, summernoteContent)
     rs.Parameters.Append rs.CreateParameter("@noter", 202, 1, -1, noter)
     rs.Parameters.Append rs.CreateParameter("@additionalinfo", 202, 1, -1, additionalinfo)
     rs.Parameters.Append rs.CreateParameter("@oprettetaf", 202, 1, 50, oprettetaf)
@@ -125,20 +128,19 @@ if request("action")="show" then
         moede_dato = rs("moede_dato")
         moede_tidspunkt = rs("moede_tidspunkt")
         id_company = rs("id_company")
+        participants = rs("participants")
 
-        ' Preparing the SQL command for the next query
-        Set cmd = CreateObject("ADODB.Command")
-        cmd.ActiveConnection = Conn
-        cmd.CommandText = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=?"
-        cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda) ' 3 is adInteger
+      set rs = Conn.Execute("SELECT @@IDENTITY AS id_agenda1")
+ id_agenda1 = rs(0).Value
+ session("id_agenda") = id_agenda1
+sql= "SELECT participants FROM tbl_agenda WHERE id_agenda = "& id_agenda1 &""
+response.write sql & "<br>"
+set RS = Conn.Execute(sql)
 
-        ' Execute the command
-        Set rs = cmd.Execute
-
-        While Not rs.EOF
-            assignedEmployees.Add CStr(rs("id_login")), True
-            rs.MoveNext
-        Wend
+participants = Split(RS("participants"), ",")
+For Each participant In participants
+    response.write participant & "<br />"
+Next
     else
         response.write "no data"
         'response.redirect "../default.asp"
@@ -157,6 +159,7 @@ If request("action") = "edit" Then
         "id_afdeling = ?, " & _
         "moede_dato = ?, " & _
         "moede_tidspunkt = ?, " & _
+        "participants = ?, " & _
         "id_company = ? " & _
         "WHERE id_agenda = ?"
 
@@ -168,55 +171,27 @@ If request("action") = "edit" Then
     ' Add parameters to the command object
     cmd.Parameters.Append cmd.CreateParameter("@moede_navn", 202, 1, 255, moede_navn)
     cmd.Parameters.Append cmd.CreateParameter("@emne", 202, 1, 255, emne)
-    cmd.Parameters.Append cmd.CreateParameter("@beskrivelse", 203, 1, -1, beskrivelse)
+    cmd.Parameters.Append cmd.CreateParameter("@beskrivelse", 202, 1, 255, beskrivelse)
     cmd.Parameters.Append cmd.CreateParameter("@noter", 203, 1, -1, noter)
-    cmd.Parameters.Append cmd.CreateParameter("@additionalinfo", 203, 1, -1, additionalinfo)
+    cmd.Parameters.Append cmd.CreateParameter("@additionalinfo", 203, 1, 255, additionalinfo)
     cmd.Parameters.Append cmd.CreateParameter("@id_meetingtype", 3, 1, , id_meetingtype)
     cmd.Parameters.Append cmd.CreateParameter("@id_afdeling", 3, 1, , id_afdeling)
     cmd.Parameters.Append cmd.CreateParameter("@moede_dato", 7, 1, , moede_dato)
     cmd.Parameters.Append cmd.CreateParameter("@moede_tidspunkt", 135, 1, 255, moede_tidspunkt)
+    cmd.Parameters.Append cmd.CreateParameter("@participants", 202, 1, 255, logins)
     cmd.Parameters.Append cmd.CreateParameter("@id_company", 3, 1, , id_company)
     cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda)
-    
+
+
     ' Execute the command
     cmd.Execute
 
     ' Release the command object
     Set cmd = Nothing
 
-    ' Dictionary for currently assigned users
-    Set assignedEmployees = CreateObject("Scripting.Dictionary")
-    sql = "SELECT id_login FROM tblassign_users_to_agenda WHERE id_agenda=" & id_agenda
-    Set rs = Conn.Execute(sql)
-    While Not rs.EOF
-        assignedEmployees.Add CStr(rs("id_login")), True
-        rs.MoveNext
-    Wend
-
-    ' Dictionary for submitted user assignments from the form
-    Set submittedEmployees = CreateObject("Scripting.Dictionary")
-    selectedLogins = Split(Request.Form("id_login"), ",")
-    For Each id_login In selectedLogins
-        submittedEmployees.Add CStr(id_login), True
-    Next
-
-    ' Determine which users to remove
-    For Each id_login In assignedEmployees.Keys
-        If Not submittedEmployees.Exists(id_login) Then
-            sql = "DELETE FROM tblassign_users_to_agenda WHERE id_agenda = " & id_agenda & " AND id_login = " & id_login
-            Conn.Execute(sql)
-        End If
-    Next
-
-    ' Determine which users to add
-    For Each id_login In submittedEmployees.Keys
-        If Not assignedEmployees.Exists(id_login) Then
-            sql = "INSERT INTO tblassign_users_to_agenda (id_agenda, id_login) VALUES (" & id_agenda & ", " & id_login & ")"
-            Conn.Execute(sql)
-        End If
-    Next
+   
 	'this redirect to the default page -v-
-    response.redirect "../default.asp"
+    response.redirect "../reg_list/saved_meetings.asp"
 	response.write "Edit action executed successfully."
 
 End If
@@ -230,13 +205,6 @@ If request("action") = "delete" Then
     
     On Error Resume Next ' To handle any errors in execution
     
-    ' Remove any associated user assignments from tblassign_users_to_agenda
-    sql = "DELETE FROM tblassign_users_to_agenda WHERE id_agenda = ?"
-    Set cmd = Server.CreateObject("ADODB.Command")
-    cmd.ActiveConnection = Conn
-    cmd.CommandText = sql
-    cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda)
-    cmd.Execute
     
     ' Now, delete the main record from tbl_agenda
     sql = "DELETE FROM tbl_agenda WHERE id_agenda = ?"

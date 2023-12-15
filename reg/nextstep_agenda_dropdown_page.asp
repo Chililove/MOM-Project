@@ -6,6 +6,31 @@
 <link rel="stylesheet" href="../jquery/jquery.mobile-1.4.5.css">
 <script src="../jquery/jquery-1.8.2.min.js"></script>
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
+<script>
+    function del(id) { 
+        var idValue = id
+        
+        if (idValue !== null) {
+            var firstConfirm = window.confirm("Are you sure you want to delete this user?");
+            
+            if (firstConfirm) {
+            var secondConfirm = window.confirm("This action is irreversible. Are you absolutely sure?");
+            
+            if (secondConfirm) {
+                var deleteUrl = 'delete.asp?id=' + encodeURIComponent(id);
+                window.location.href = deleteUrl;
+            } else {
+            // Nothing
+            }
+            } else {
+            // Nothing
+            }
+        } else {
+            alert("No 'id' parameter found in the URL.");
+        }
+    }
+
+</script>
 </head>
 
 <style>
@@ -102,16 +127,20 @@
 
         ' Check if the recordset is not empty before entering the loop
         If Not rs.EOF Then
-            ' Recordset is not empty, enter the loop
+            ' if the Recordset is not empty, so enter the loop
             Do While Not rs.EOF
         %>
         <li data-agenda-id="<%=rs("id_agenda")%>">
-            <a data-ajax="false" href='agendapoint_page.asp?action=show&amp;id_agendapoint=<%=rs("id_agendapoint")%>'>
+            <a data-ajax="false" href='agendapoint_page.asp?action=show&amp;id_agendapoint=<%=rs("id_agendapoint")%>&source=page1'>
                 <table style="width: 100%">  
                     <tr>
                         <td style="width: 25%"><%=rs("point_name")%></td>
                         <td style="width: 25%"><%=rs("dato")%></td>
                     </tr>
+                      <!-- Delete button for each agenda -->
+               <% If session("administrator") = True Then %>
+            <button onclick='del("<%=rs("id_agendapoint")%>")' class="delete-button" >Delete</button>
+<%end if%>
                 </table>
             </a>
         </li>
@@ -132,6 +161,87 @@
         Set rs = Nothing
         %>
     </ul>
+    <!--<div id="delete-confirmation" title="Confirm Delete" style="background-color:#f9f9f9; color:#333;">
+ 
+        Are you sure you want to delete this agenda?
+
+
+</div>-->
+
+<script>
+$(document).ready(function() {
+    // Initialize the dialog
+    $("#delete-confirmation").dialog({
+        autoOpen: false,
+        modal: true,
+        close: function(event, ui) {
+            $(".message-content").html("Are you sure you want to delete this agenda point?");
+            $(this).dialog("option", "buttons", {
+                "Delete": deleteFunction,
+                "Cancel": function() {
+                    $(this).dialog("close");
+                }
+            });
+        },
+        buttons: {
+            "Delete": deleteFunction,
+            "Cancel": function() {
+                $(this).dialog("close");
+            }
+        }
+    });
+
+    // When a delete button is clicked using event delegation
+    $('ul[data-role="listview"]').on('click', '.delete-button', function(e) {
+        e.preventDefault();
+        var id_agenda = $(this).data('id');
+        // Store the id in the dialog's data and open the dialog
+        $("#delete-confirmation").data('id', id_agenda).dialog('open');
+    });
+
+    function deleteFunction() {
+        var id_agenda = $(this).data('id');
+        // Make AJAX request
+        $.ajax({
+            url: '../reg/save_agendapoints.asp',
+            method: 'POST',
+            data: {
+                'action': 'delete',
+                'id_agendapoint': id_agendapoint
+            },
+            success: function(response) {
+                if(response.trim() === "success") {
+                    $("#delete-confirmation .message-content").html("Agenda point deleted successfully.");
+                    $("#delete-confirmation").dialog("option", "buttons", {
+                        "OK": function() {
+                            $(this).dialog("close");
+                            location.reload(true);
+                        }
+                    });
+                } else {
+                    $("#delete-confirmation .message-content").html("There was an error deleting the agenda point.");
+                    $("#delete-confirmation").dialog("option", "buttons", {
+                        "OK": function() {
+                            $(this).dialog("close");
+                            location.reload(true);
+                        }
+                    });
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log('Error with AJAX request:', textStatus, errorThrown);
+                $("#delete-confirmation .message-content").html("An unexpected error occurred. Please try again.");
+                $("#delete-confirmation").dialog("option", "buttons", {
+                    "OK": function() {
+                        $(this).dialog("close");
+                        location.reload(true);
+                    }
+                });
+            }
+        });
+    }
+});
+</script>
 </div>
 <script>
 function redirectToNextPage() {

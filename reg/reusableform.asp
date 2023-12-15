@@ -1,3 +1,4 @@
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>MoM</title>
@@ -10,8 +11,13 @@
 <link rel="stylesheet" href="../shared/global.css">
 <script src="../jquery/jquery-1.8.2.min.js"></script>
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>-->
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+<!-- include Summernote CSS and JS files -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+
+
+
 
 <style>
 	label.error {
@@ -420,6 +426,22 @@
 						</div>
 					</td>
 				</tr>
+					<!-- Møde beskrivelse -->
+					<tr>
+					<th style="text-align: center">
+						Description
+					</th>
+				</tr>
+				<tr>
+					<td style="text-align: center">
+						<div class="input-wrapper">
+						<input type="hidden" name="beskrivelse" id="beskrivelseInput" value="<%=beskrivelse%>">
+							<!-- Add a <div> for the Summernote editor -->
+							<div id="summernote"></div>
+						</div>
+					</td>
+				</tr>
+
 			<!-- Møde note -->
 				<tr>
 					<th style="text-align: center">
@@ -493,7 +515,7 @@
 										Set objRS3 = conn.Execute(SQL3)
 
 										While Not objRS3.EOF
-											participants = Split(rs("participants"), ",")
+											participants = Split(("participants"), ",")
 											checked = "" 
 
 											If Request("action") = "show" Then
@@ -518,7 +540,7 @@
 										objRS3.Close
 										%>
 								</div>
-								</div>
+							</div>
 							</div>
 						</div>
 					</td>
@@ -569,15 +591,30 @@
 						</div>
 					</td>
 				</tr>
+				<script>
+					document.querySelector('form').addEventListener('submit', function() {
+    // Get the Summernote editor content
+    var summernoteContent = $('#summernote').summernote('code');
+    
+    // Set the hidden field value with the HTML content
+    document.querySelector('#beskrivelseInput').value = summernoteContent;
+
+});
+
+				</script>
 			<!-- Møde submit btn -->
 				<tr>
 					<td style="text-align: center">
 						<input name="existing_id_registrering" type="hidden" value="<%=existing_id_registrering%>">
 						<input type="hidden" name="oprettetaf" value='<%=session("id_login")%>'>
 						<input type="hidden" name="id_company" value='<%=session("id_company")%>'>
+						<% if request("action")="newday" then%>
 						<input name="Submit1" type="submit" value="Start meeting" data-theme="a" data-icon="check">
+						<%else%>
+						<input name="Submit1" type="submit" value="Update meeting" data-theme="a" data-icon="check">
+						<%end if%>
 						
-						<!--This is how I can save multiple users to an agenda - There is for sure a better way to do this.. I just don't-->
+			<!--This is how I can save multiple users to an agenda-->
 						<%If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
 							Dim selectedUsers
 							selectedUsers = Request.Form("id_login")
@@ -595,6 +632,7 @@
 					</td>
 				</tr>
 			</table>
+
 <script>
 $(document).ready(function() {
     // Custom method for validating dates If they are in the past you cannot create an agenda in the past.
@@ -609,7 +647,7 @@ $(document).ready(function() {
         return inputDate >= currentDate;
 		<%end if%>
         
-    }, "Venligst vælg en dato i fremtiden.");
+    }, "Please choose a date in the future.");
 
     $('form').validate({
         rules: {
@@ -632,9 +670,8 @@ $(document).ready(function() {
                 required: true,
                 minlength: 2
             },
-            beskrivelse: {
-                required: true,
-                minlength: 5
+            beskrivelseInput: {
+                required: true
             },
             id_afdeling: {
                 required: true
@@ -642,32 +679,29 @@ $(document).ready(function() {
         },
         messages: {
             moede_dato: {
-                required: "Dato er påkrævet.",
-                dateISO: "Dette er ikke en dato.",
-                dateGreaterThanOrEqualToday: "Vælg dagens dato eller en dato i fremtiden."
+                required: "Date is required.",
+                dateISO: "This is not a valid date",
+                dateGreaterThanOrEqualToday: "Choose todays date or a date in the future."
             },
-            moede_tidspunkt: {
-                required: "Møde tidspunkt er påkrævet."
+			
+			moede_tidspunkt: {
+                required: "Meeting time is requiered."
             },
+
             moede_navn: {
-                required: "Møde navn er påkrævet.",
-                minlength: "Møde navn skal være mindst 2 tegn."
+                required: "Meeting name is required.",
+                minlength: "Meeting name must be more than 2 characters."
             },
-            id_meetingtype: {
-                required: "Type af møde er påkrævet."
-            },
+           
             emne: {
-                required: "Emne er påkrævet.",
-                minlength: "Emne skal være mindst 2 tegn."
+                required: "Subject is required.",
+                minlength: "Subject must be more than 2 characters."
             },
-            beskrivelse: {
-                required: "Beskrivelse er påkrævet.",
-                minlength: "Beskrivelse skal være mindst 5 tegn."
-            },
-            id_afdeling: {
-                required: "Valg af afdeling er påkrævet."
+            beskrivelseInput: {
+                required: "Description is required.",
             }
         },
+		
 	 	
 		errorElement: 'span',
 errorPlacement: function (error, element) {

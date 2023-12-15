@@ -48,6 +48,25 @@ End If
     margin-right: 5px; /* Add spacing between plus sign and text */
   }
 
+   a {
+            text-decoration: none;
+            color: blue;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .delete-button {
+           max-width: 100px;
+           float: right;
+        }
+
+        .confirm-dialog{
+
+            z-index: 1000;
+        }
+
   </style>
 <body>
 	<div data-role="header" data-id="header" data-position="fixed">
@@ -85,6 +104,9 @@ set rs=conn.execute(sql)
 								<tr>
 									<td style="width: 25%"><%=rs("meeting_type")%></td>
 								</tr>
+                 <% If session("administrator") = True Then %>
+<button class="delete-button" data-id="<%=rs("id_meetingtype")%>">Delete</button>
+<%end if%>
 						</table>
 					</a>
 				</li>
@@ -93,6 +115,89 @@ set rs=conn.execute(sql)
 loop
 %> 			
 	</ul>
+  <!-- Delete confirmation dialog -->
+<div id="delete-confirmation" title="Confirm Delete" style="background-color:#f9f9f9; color:#333;">
+ 
+        Are you sure you want to delete this meeting type?
+
+
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initialize the dialog
+    $("#delete-confirmation").dialog({
+        autoOpen: false,
+        modal: true,
+        close: function(event, ui) {
+            $(".message-content").html("Are you sure you want to delete this meeting type?");
+            $(this).dialog("option", "buttons", {
+                "Delete": deleteFunction,
+                "Cancel": function() {
+                    $(this).dialog("close");
+                }
+            });
+        },
+        buttons: {
+            "Delete": deleteFunction,
+            "Cancel": function() {
+                $(this).dialog("close");
+            }
+        }
+    });
+
+    // When a delete button is clicked using event delegation
+    $('ul[data-role="listview"]').on('click', '.delete-button', function(e) {
+        e.preventDefault();
+        var id_meetingtype = $(this).data('id');
+        // Store the id in the dialog's data and open the dialog
+        $("#delete-confirmation").data('id', id_meetingtype).dialog('open');
+    });
+
+    function deleteFunction() {
+        var id_meetingtype = $(this).data('id');
+        // Make AJAX request
+        $.ajax({
+            url: '../reg/save_meetingtype.asp',
+            method: 'POST',
+            data: {
+                'action': 'delete',
+                'id_meetingtype': id_meetingtype
+            },
+            success: function(response) {
+                if(response.trim() === "success") {
+                    $("#delete-confirmation .message-content").html("Meeting type deleted successfully.");
+                    $("#delete-confirmation").dialog("option", "buttons", {
+                        "OK": function() {
+                            $(this).dialog("close");
+                            location.reload(true);
+                        }
+                    });
+                } else {
+                    $("#delete-confirmation .message-content").html("There was an error deleting the meeting type.");
+                    $("#delete-confirmation").dialog("option", "buttons", {
+                        "OK": function() {
+                            $(this).dialog("close");
+                            location.reload(true);
+                        }
+                    });
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log('Error with AJAX request:', textStatus, errorThrown);
+                $("#delete-confirmation .message-content").html("An unexpected error occurred. Please try again.");
+                $("#delete-confirmation").dialog("option", "buttons", {
+                    "OK": function() {
+                        $(this).dialog("close");
+                        location.reload(true);
+                    }
+                });
+            }
+        });
+    }
+});
+
+</script>
 <!--#include file="../shared/footer.asp"-->
 </body>
 <!--#include file="../closedb.asp"-->

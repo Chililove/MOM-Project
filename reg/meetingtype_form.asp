@@ -56,7 +56,8 @@ If Request.QueryString("action") = "update" And Not IsEmpty(Request.QueryString(
     sql = "SELECT * FROM tblmeeting_type WHERE id_company = " & company_id
     Set rs = Conn.Execute(sql)
     If Not rs.EOF Then
-        meetingtype = rs("meeting_type")
+        meeting_type = rs("meeting_type")
+        id_meetingtype = rs("id_meetingtype")
     End If
     rs.Close
 End If
@@ -100,7 +101,6 @@ End If
 
     <% End If %>    <!-- External "Delete" button with event listener -->
 </form>
-<!-- The rest of your code remains the same -->
 
 <script>
     document.getElementById("deleteButton").addEventListener("click", function() {
@@ -111,7 +111,7 @@ End If
             var formData = new FormData();
             formData.append("action", "delete");
 
-            fetch("/reg/save_meetingtype.asp?id_meetingtype=<%=id_meetingtype%>", {
+            fetch("../reg/save_meetingtype.asp?id_meetingtype=<%=id_meetingtype%>", {
                 method: "POST",
                 body: formData
             })
@@ -119,7 +119,7 @@ End If
                 if (response.ok) {
                     alert("Meeting type deleted successfully.");
                     // Redirecting to the list page or I could do another action?'
-                   ' window.location.href = "/reg_list/meetingtype_list.asp";
+                   window.location.href = "/reg_list/meetingtype_list.asp";
                 } else {
                     alert("An error occurred during meeting type deletion.");
                 }
