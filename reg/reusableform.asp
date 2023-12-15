@@ -378,37 +378,40 @@
 				</tr>
 			<!-- Møde subject meetingtype dropdown -->
 				<tr>
-					<td style="text-align: center;">
+					<td style="text-align: center">
 						<select name="id_meetingtype" required >
-								<% SQL3="Select * from tblmeeting_type  where id_company = "&session("id_company")&" order by id_meetingtype"
-								set objRS3 = conn.Execute(SQL3) %>
-							<% If NOT objRS3.EOF then %>
-								<% if  request("action")="show" then %>
-									<%if NOT IsNull(id_meetingtype) then %>
-										<% SQL4="Select * from tblmeeting_type WHERE id_meetingtype= "& id_meetingtype &""
-										'response.write objRS4
-										set objRS4 = conn.Execute(SQL4) %>
-										<% If NOT objRS4.EOF then %>
-											<% meetingtype=objRS4("meeting_type") %>
-											<option selected="" value="<%=objRS4("id_meetingtype")%>"><%=meetingtype%></option>
-											<% else %>
-											<option style="display:none;">Select</option>
-										<% end if %>
-									<% end if %>
-								<% else %>
-									<option selected="" value="">Select type of meeting</option>
-								<% end if 
-										while not objRS3.EOF %>
-											<option value='<%=objRS3("id_meetingtype")%>'>
-													<% if objRS3("id_meetingtype") = id_meetingtype then %> selected <% end if %>
-												<%=objRS3("meeting_type")%>
-											</option>
-										<% objRS3.MoveNext
-										Wend %>
-							<% else %>
-							<option>Fejl</option>
-							<% end if %>
-						</select>
+
+						<% SQL3 = "Select * from tblmeeting_type where id_company = "&session("id_company")&" order by id_meetingtype"
+						set objRS3 = conn.Execute(SQL3)
+
+						if request("action")="show" then
+							if NOT IsNull(id_meetingtype) then 
+								SQL4 = "Select * from tblmeeting_type WHERE id_company = "&session("id_company")&" order by id_meetingtype"
+								set objRS4 = conn.Execute(SQL4) 
+								meeting_type = objRS4("meeting_type") %>
+							<option selected="" value=""><%=meeting_type%></option>
+						<% else %>
+							<option selected="" value="">Select meeting type</option>
+						<% end if %>
+						<%  while not objRS3.EOF %>
+								<option value='<%=objRS3("id_meetingtype")%>' 
+									<% if objRS3("id_meetingtype") = id_meetingtype then %>selected
+									<% end if %>>
+									<%=objRS3("meeting_type")%>
+								</option>
+						<% objRS3.MoveNext
+								Wend 
+						else %>
+								<option selected="" value="">Select meeting type</option>
+							<% while not objRS3.EOF %>
+								<option value='<%=objRS3("id_meetingtype")%>'>
+									<%=objRS3("meeting_type")%>
+								</option>
+							<% objRS3.MoveNext %>
+						<%  Wend %>
+					<% end if %>
+					</select>
+	
 					</td>
 				</tr>
 			<!-- Møde emne -->
@@ -689,6 +692,10 @@ $(document).ready(function() {
                 required: "Meeting name is required.",
                 minlength: "Meeting name must be more than 2 characters."
             },
+
+			id_meetingtype: {
+                required: "Meeting type is required."
+            },
            
             emne: {
                 required: "Subject is required.",
@@ -696,6 +703,10 @@ $(document).ready(function() {
             },
             beskrivelseInput: {
                 required: "Description is required.",
+            },
+
+			 id_afdeling: {
+                required: "Department is required.",
             }
         },
 		
