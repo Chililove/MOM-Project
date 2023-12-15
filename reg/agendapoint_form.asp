@@ -628,30 +628,6 @@ highlight: function (element) {
 });
     });
 </script>
-
-
-<script>
-  document.querySelector('form').addEventListener('submit', function() {
-    document.querySelector('#longdescInput').value = quill.root.innerHTML;
-  });
-</script>
-
-	</form>
-	<script>
-	 var quill = new Quill('#editor', {
-    theme: 'snow',
-    modules: {
-      toolbar: [
-        [{ 'font': [] }],
-        [{ 'header': '1'}, {'header': '2'}, { 'header': '3' }, { 'header': '4' }, { 'header': '5' }, { 'header': '6' }, { 'header': 'false' }],
-        ['bold', 'italic', 'underline'],
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        ['link'],
-        ['clean']
-      ]
-    }
-  });
-  </script>
 		
 
 
