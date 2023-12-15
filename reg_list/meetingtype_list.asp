@@ -68,6 +68,31 @@ End If
         }
 
   </style>
+  <script>
+    function del(id) { 
+        var idValue = id
+        
+        if (idValue !== null) {
+            var firstConfirm = window.confirm("Are you sure you want to delete this user?");
+            
+            if (firstConfirm) {
+            var secondConfirm = window.confirm("This action is irreversible. Are you absolutely sure?");
+            
+            if (secondConfirm) {
+                var deleteUrl = '../reg/delete.asp?action=mtype&id=' + encodeURIComponent(id);
+                window.location.href = deleteUrl;
+            } else {
+            // Nothing
+            }
+            } else {
+            // Nothing
+            }
+        } else {
+            alert("No 'id' parameter found in the URL.");
+        }
+    }
+
+</script>
 <body>
 	<div data-role="header" data-id="header" data-position="fixed">
 		<h1>Meetingtypes</h1>
@@ -105,8 +130,9 @@ set rs=conn.execute(sql)
 									<td style="width: 25%"><%=rs("meeting_type")%></td>
 								</tr>
                  <% If session("administrator") = True Then %>
-<button class="delete-button" data-id="<%=rs("id_meetingtype")%>">Delete</button>
-<%end if%>
+                    <!-- <button class="delete-button" data-id="<%'=rs("id_meetingtype")%>">Delete</button> -->
+                    <button onclick='del("<%=rs("id_meetingtype")%>")' class="delete-button" >Delete</button>
+                <%end if%>
 						</table>
 					</a>
 				</li>
@@ -115,13 +141,13 @@ set rs=conn.execute(sql)
 loop
 %> 			
 	</ul>
-  <!-- Delete confirmation dialog -->
+  <!-- Delete confirmation dialog
 <div id="delete-confirmation" title="Confirm Delete" style="background-color:#f9f9f9; color:#333;">
  
         Are you sure you want to delete this meeting type?
 
 
-</div>
+</div> -->
 
 <script>
 $(document).ready(function() {

@@ -24,6 +24,31 @@ $(document).ready(function() {
 
 
 </script>
+<script>
+    function del(id) { 
+        var idValue = id
+        
+        if (idValue !== null) {
+            var firstConfirm = window.confirm("Are you sure you want to delete this user?");
+            
+            if (firstConfirm) {
+            var secondConfirm = window.confirm("This action is irreversible. Are you absolutely sure?");
+            
+            if (secondConfirm) {
+                var deleteUrl = 'delete.asp?action=mtype&id=' + encodeURIComponent(id);
+                window.location.href = deleteUrl;
+            } else {
+            // Nothing
+            }
+            } else {
+            // Nothing
+            }
+        } else {
+            alert("No 'id' parameter found in the URL.");
+        }
+    }
+
+</script>
 </head>
 <style>
 
@@ -93,7 +118,8 @@ End If
         <input type="hidden" name="id_meetingtype" value="<%=id_meetingtype%>">
 
      <button type="submit">Update meetingtype</button>
-<button type="button" id="deleteButton" value="Delete type" data-theme="a" data-icon="delete">Delete type</button>
+     <button type="button" onclick='del("<%=request.querystring("id_meetingtype")%>")' class="delete-button" >Delete</button>
+<!-- <button type="button" id="deleteButton" value="Delete type" data-theme="a" data-icon="delete">Delete type</button>-->
 
 
 <%Else%>
@@ -103,32 +129,32 @@ End If
 </form>
 
 <script>
-    document.getElementById("deleteButton").addEventListener("click", function() {
-            console.log("Delete button clicked");
+    // document.getElementById("deleteButton").addEventListener("click", function() {
+    //         console.log("Delete button clicked");
 
-        var r = confirm("Are you sure you want to delete this type?");
-        if (r == true) {
-            var formData = new FormData();
-            formData.append("action", "delete");
+    //     var r = confirm("Are you sure you want to delete this type?");
+    //     if (r == true) {
+    //         var formData = new FormData();
+    //         formData.append("action", "delete");
 
-            fetch("../reg/save_meetingtype.asp?id_meetingtype=<%=id_meetingtype%>", {
-                method: "POST",
-                body: formData
-            })
-            .then(function(response) {
-                if (response.ok) {
-                    alert("Meeting type deleted successfully.");
-                    // Redirecting to the list page or I could do another action?'
-                   window.location.href = "/reg_list/meetingtype_list.asp";
-                } else {
-                    alert("An error occurred during meeting type deletion.");
-                }
-            })
-            .catch(function(error) {
-                console.error("Error:", error);
-            });
-        }
-    });
+    //         fetch("../reg/save_meetingtype.asp?id_meetingtype=<%=id_meetingtype%>", {
+    //             method: "POST",
+    //             body: formData
+    //         })
+    //         .then(function(response) {
+    //             if (response.ok) {
+    //                 alert("Meeting type deleted successfully.");
+    //                 // Redirecting to the list page or I could do another action?'
+    //                window.location.href = "/reg_list/meetingtype_list.asp";
+    //             } else {
+    //                 alert("An error occurred during meeting type deletion.");
+    //             }
+    //         })
+    //         .catch(function(error) {
+    //             console.error("Error:", error);
+    //         });
+    //     }
+    // });
 </script>
 <%
 sql = "SELECT * FROM tblmeeting_type  where id_company =  " & session("id_company") & " ORDER BY meeting_type DESC"
