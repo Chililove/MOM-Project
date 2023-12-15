@@ -47,44 +47,46 @@ cmd.ActiveConnection = Conn
 id_company = Session("id_company")
 
 If request("action") = "newpoint" Then
-    id_agenda=request("id_agenda")
-     sql1 = "INSERT INTO tbl_agendapoints (point_name, short_desc, long_desc, id_agenda, dato, id_company)"
-    sql2 = "VALUES (?, ?, ?, ?, ?, ?)"
+id_agenda1=request.querystring("id_agenda")
+     sql1 = "INSERT INTO tbl_agendapoints (point_name, short_desc, long_desc, id_agenda, dato, id_company, id_login)"
+    sql2 = "VALUES (?, ?, ?, ?, ?, ?, ?)"
     sql = sql1 & sql2
         response.write sql
         cmd.CommandText = sql
          cmd.Parameters.Append cmd.CreateParameter("@point_name", 202, 1, 255, point_name)
          cmd.Parameters.Append cmd.CreateParameter("@short_desc", 202, 1, 255, short_desc)
     	 cmd.Parameters.Append cmd.CreateParameter("@long_desc", 203, 1, 255, long_desc)
-     	 cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda)
+     	 cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda1)
          cmd.Parameters.Append cmd.CreateParameter("@dato", 7, 1, , dato)
          cmd.Parameters.Append cmd.CreateParameter("@id_company", 3, 1, , id_company)
+        cmd.Parameters.Append cmd.CreateParameter("@id_login", 202, 1, 255, logins)  
  ' Split the logins string into individual user ids
-    Dim loginArray
-    loginArray = Split(logins, ",")
+    ' Dim loginArray
+    ' loginArray = Split(logins, ",")
     
     ' Insert each user Iid separately
-    For Each login In loginArray
-        cmd.Parameters.Append cmd.CreateParameter("@id_login", 202, 1, 255, login)  
-        cmd.Parameters("@id_login").Value = logins
+    ' For Each login In loginArray
+    '     cmd.Parameters.Append cmd.CreateParameter("@id_login", 202, 1, 255, login)  
+    '     cmd.Parameters("@id_login").Value = logins
 
-        cmd.Execute
-    Next
+    '     ' cmd.Execute
+    ' Next
 
     ' ' Set the parameter values
-     cmd.Parameters("@point_name").Value = point_name
-     cmd.Parameters("@short_desc").Value = short_desc
-     cmd.Parameters("@long_desc").Value = long_desc
-     cmd.Parameters("@id_agenda").Value = id_agenda
-     cmd.Parameters("@dato").Value = dato
-     cmd.Parameters("@id_company").Value = id_company
+    '  cmd.Parameters("@point_name").Value = point_name
+    '  cmd.Parameters("@short_desc").Value = short_desc
+    '  cmd.Parameters("@long_desc").Value = long_desc
+    '  cmd.Parameters("@id_agenda").Value = id_agenda1
+    '  cmd.Parameters("@dato").Value = dato
+    '  cmd.Parameters("@id_company").Value = id_company
+    ' cmd.Parameters("@id_login").Value = logins
         
-         	cmd.Execute
+    cmd.Execute
  
 
     'Response.Write("Session savecompany_id: " & Session("id_company"))
     'response.redirect "reusableform.asp?id_agenda=" & id_agenda
-    response.redirect "nextstep.asp?id_agenda=" & id_agenda
+    response.redirect "nextstep.asp?id_agenda=" & id_agenda1
 
 
         'response.redirect "../default.asp"
@@ -154,7 +156,28 @@ If request("action") = "edit" Then
 
 
     ' Releasing command object
-    Set cmd = Nothing
+    Set cmd1 = Nothing
+
+    ' Define the update statement with parameters
+    sql = "SELECT id_agenda FROM tbl_agendapoints " & _
+        "WHERE id_agendapoint = ?"
+    response.write sql
+    ' Create a command object and set its properties
+    Set cmd1 = Server.CreateObject("ADODB.Command")
+    Set cmd1.ActiveConnection = Conn
+    cmd1.CommandText = sql
+    cmd1.CommandType = 1 ' adCmd1Text
+    ' i'm adding parameters to the command object
+    cmd1.Parameters.Append cmd1.CreateParameter("@id_agendapoint", 3, 1, , id_agendapoint)
+    
+    ' Execute the command
+    set rs = cmd1.Execute
+
+    id_agenda = rs("id_agenda")
+
+
+    ' Releasing command object
+    Set cmd1 = Nothing
    
     response.redirect "../reg/nextstep.asp?id_agenda=" & id_agenda
 

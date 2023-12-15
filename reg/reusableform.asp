@@ -1,4 +1,5 @@
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>MoM</title>
@@ -6,17 +7,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 <link rel="stylesheet" href="jquery/jquery.mobile-1.4.5.css">
-<!--
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<link rel="stylesheet" href="../shared/global.css">
-<script src="../jquery/jquery-1.8.2.min.js"></script>
-<script src="../jquery/jquery.mobile-1.4.5.min.js"></script>-->
-
-<!-- include Summernote CSS and JS files -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
-
-
 
 
 <style>
@@ -313,6 +303,7 @@
 			response.write("Converted date: " & moede_dato & "<br>")
 			response.write("Converted time: " & moede_tidspunkt & "<br>")
 			response.write("Companyid: " & id_company & "<br>")
+			response.write("id_meetingtype: " & id_meetingtype & "<br>")
 
 			
 		%>
@@ -320,7 +311,7 @@
 			<%= "no data" %>
 	<% end if%>
 
-<form data-ajax="false" method="post"
+<form id="myForm"data-ajax="false" method="post"
 	<% if request("action")="show" then %>
 	action='save.asp?action=edit&id_agenda=<%=request.QueryString("id_agenda")%>'  
 	<% else %>
@@ -391,25 +382,32 @@
 						<select name="id_meetingtype" required >
 								<% SQL3="Select * from tblmeeting_type  where id_company = "&session("id_company")&" order by id_meetingtype"
 								set objRS3 = conn.Execute(SQL3) %>
-							<% if  request("action")="show" then %>
-								<%if NOT IsNull(id_meetingtype) then %>
-									<% SQL4="Select * from tblmeeting_type WHERE id_meetingtype= "& id_meetingtype &""
-									'response.write objRS4
-									set objRS4 = conn.Execute(SQL4) 
-									meetingtype=objRS4("meeting_type")
-									%>
-									<option selected="" value="<%=objRS4("id_meetingtype")%>"><%=meetingtype%></option>
-								<% end if %>
+							<% If NOT objRS3.EOF then %>
+								<% if  request("action")="show" then %>
+									<%if NOT IsNull(id_meetingtype) then %>
+										<% SQL4="Select * from tblmeeting_type WHERE id_meetingtype= "& id_meetingtype &""
+										'response.write objRS4
+										set objRS4 = conn.Execute(SQL4) %>
+										<% If NOT objRS4.EOF then %>
+											<% meetingtype=objRS4("meeting_type") %>
+											<option selected="" value="<%=objRS4("id_meetingtype")%>"><%=meetingtype%></option>
+											<% else %>
+											<option style="display:none;">Select</option>
+										<% end if %>
+									<% end if %>
+								<% else %>
+									<option selected="" value="">Select type of meeting</option>
+								<% end if 
+										while not objRS3.EOF %>
+											<option value='<%=objRS3("id_meetingtype")%>'>
+													<% if objRS3("id_meetingtype") = id_meetingtype then %> selected <% end if %>
+												<%=objRS3("meeting_type")%>
+											</option>
+										<% objRS3.MoveNext
+										Wend %>
 							<% else %>
-								<option selected="" value="">Select type of meeting</option>
-							<% end if 
-									while not objRS3.EOF %>
-										<option value='<%=objRS3("id_meetingtype")%>'>
-												<% if objRS3("id_meetingtype") = id_meetingtype then %> selected <% end if %>
-											<%=objRS3("meeting_type")%>
-										</option>
-									<% objRS3.MoveNext
-									Wend %>
+							<option>Fejl</option>
+							<% end if %>
 						</select>
 					</td>
 				</tr>
@@ -426,7 +424,7 @@
 						</div>
 					</td>
 				</tr>
-					<!-- Møde beskrivelse -->
+			<!-- Møde beskrivelse -->
 					<tr>
 					<th style="text-align: center">
 						Description
@@ -435,9 +433,7 @@
 				<tr>
 					<td style="text-align: center">
 						<div class="input-wrapper">
-						<input type="hidden" name="beskrivelse" id="beskrivelseInput" value="<%=beskrivelse%>">
-							<!-- Add a <div> for the Summernote editor -->
-							<div id="summernote"></div>
+						<input name="beskrivelse" id="beskrivelseInput" value="<%=beskrivelse%>">
 						</div>
 					</td>
 				</tr>
@@ -591,15 +587,15 @@
 						</div>
 					</td>
 				</tr>
-				<script>
-					document.querySelector('form').addEventListener('submit', function() {
-    // Get the Summernote editor content
-    var summernoteContent = $('#summernote').summernote('code');
+	<script>
+// 		document.querySelector('form').addEventListener('submit', function() {
+//     // Get the Summernote editor content
+//     var summernoteContent = $('#summernote').summernote('code');
     
-    // Set the hidden field value with the HTML content
-    document.querySelector('#beskrivelseInput').value = summernoteContent;
+//     // Set the hidden field value with the HTML content
+//     document.querySelector('#beskrivelseInput').value = summernoteContent;
 
-});
+// });
 
 				</script>
 			<!-- Møde submit btn -->
@@ -632,6 +628,7 @@
 					</td>
 				</tr>
 			</table>
+
 
 <script>
 $(document).ready(function() {
@@ -740,30 +737,11 @@ highlight: function (element) {
 });
     });
 </script>
-<input type="hidden" name="beskrivelse" id="beskrivelseInput" value="<%=beskrivelse%>">
 
-<script>
-  document.querySelector('form').addEventListener('submit', function() {
-    document.querySelector('#beskrivelseInput').value = quill.root.innerHTML;
-  });
-</script>
 
-	</form>
-	<script>
-	 var quill = new Quill('#editor', {
-    theme: 'snow',
-    modules: {
-      toolbar: [
-        [{ 'font': [] }],
-        [{ 'header': '1'}, {'header': '2'}, { 'header': '3' }, { 'header': '4' }, { 'header': '5' }, { 'header': '6' }, { 'header': 'false' }],
-        ['bold', 'italic', 'underline'],
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        ['link'],
-        ['clean']
-      ]
-    }
-  });
-  </script>
+
+</form>
+	
   <script>
 	document.getElementById('show-agendapoint-form').addEventListener('click', function () {
 		var agendapointsForm = document.getElementById('agendapoint-form');
@@ -778,4 +756,5 @@ highlight: function (element) {
 </script>
 		
 
+</html>
 
