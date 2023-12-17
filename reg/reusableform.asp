@@ -312,10 +312,13 @@
 	<% end if%>
 
 <form id="myForm"data-ajax="false" method="post"
-	<% if request("action")="show" then %>
+	<% if request("action")="show" AND NOT request.QueryString("id1")="1"  then %>
 	action='save.asp?action=edit&id_agenda=<%=request.QueryString("id_agenda")%>'  
+	<% else if request.QueryString("id1")="1" then %>
+	action='save.asp?action=edit&id1=1&id_agenda=<%=request.QueryString("id_agenda")%>'  
 	<% else %>
 	action='save.asp?action=<%=request("action")%>'  
+	<% end if %>
 	<% end if %>
 	style="position: relative;">
 			<table align="center" style="width: 50%">
@@ -511,13 +514,14 @@
 								<div class="user-list">
 									<%
 										SQL3 = "SELECT * FROM tbllogin WHERE id_company = '" & session("id_company") & "' ORDER BY id_login"
+										'response.write sql3
 										Set objRS3 = conn.Execute(SQL3)
 
 										While Not objRS3.EOF
-											participants = Split(("participants"), ",")
-											checked = "" 
 
 											If Request("action") = "show" Then
+											participants = Split(rs("participants"), ",")
+											checked = "" 
 												For Each participant In participants
 													If Trim(CStr(participant)) = Trim(CStr(objRS3("id_login"))) Then
 														checked = "checked"
@@ -648,6 +652,9 @@ $(document).ready(function() {
 		<%end if%>
         
     }, "Please choose a date in the future.");
+
+
+
 
     $('form').validate({
         rules: {

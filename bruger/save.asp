@@ -31,14 +31,14 @@ If request("action") = "delete" Then
     'dim id_login
   Conn.BeginTrans
     
-    ' Remove any associated user assignments from tbl_assign_users_to_agenda
-   sql = "DELETE FROM tblassign_users_to_agenda WHERE id_login = ?"
-    Set cmd = Server.CreateObject("ADODB.Command")
-    cmd.ActiveConnection = Conn
-    cmd.CommandText = sql
-    cmd.Parameters.Append cmd.CreateParameter("@id_login", 3, 1, , id_login)
-    cmd.Execute
-    Set cmd = Nothing
+   ' Remove any associated user assignments from tbl_assign_users_to_agenda
+  ' sql = "DELETE FROM tblassign_users_to_agenda WHERE id_login = ?"
+  '  Set cmd = Server.CreateObject("ADODB.Command")
+  '  cmd.ActiveConnection = Conn
+  '  cmd.CommandText = sql
+  '  cmd.Parameters.Append cmd.CreateParameter("@id_login", 3, 1, , id_login)
+   ' cmd.Execute
+   ' Set cmd = Nothing
 
     ' Now, delete the main record from tbllogin
     sql = "DELETE FROM tbllogin WHERE id_login = ?"
@@ -75,6 +75,9 @@ End If
 
 	'password1Hashed = HashPassword(password1)
 
+
+
+
 ' If creating a new user
 ' Validation pattern init
 	Function IsValidInput(str, pattern)
@@ -102,7 +105,7 @@ ElseIf Not IsValidInput(mailadresse, patternEmail) Then
     Response.Write("Invalid email")
 
 End If
-		Response.Write("Ugyldigt input fundet")
+		Response.Write("Found invalid input")
 		Response.End
 	End If
 

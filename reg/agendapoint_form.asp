@@ -260,17 +260,14 @@
 </style>
 
 </head>
-<form data-ajax="false" method="post"
+<form data-ajax="false" method="post" 
 	<% if request.QueryString("action")="show" then %>
-	action='save_agendapoints.asp?action=edit&id_agendapoint=<%=request.QueryString("id_agendapoint")%>'  
+	    action='save_agendapoints.asp?action=edit&id_agendapoint=<%=request.QueryString("id_agendapoint")%>'  
 	<% else %>
-    <%
-	'action='save_agendapoints.asp?action=<%='request.QueryString("action")%>' 
-    action='save_agendapoints.asp?action=<%=request.QueryString("action")%>&id_agenda=<%=request.QueryString("id")%>'  
-    %>
+        action='save_agendapoints.asp?action=<%=request.QueryString("action")%>&id_agenda=<%=request.QueryString("id_agenda")%>'  
 	<% end if %>
-	style="position: relative;">
-
+    >
+    
     <% if request("action")="show" then %>
         <% sql="Select * from tbl_agendapoints where id_agendapoint = '"& request.QueryString("id_agendapoint") &"'"
             'response.write sql
@@ -286,203 +283,209 @@
         
             response.write("Companyid: " & id_company & "<br>")
 
-         %>
-			<table align="center" style="width: 50%">
-			<!-- Møde dato og tid-->
-				<tr>
-					<td style="text-align: center">
-						<div style="display:flex;">
-							<div style="width:50%">Deadline date
-								<div class="input-wrapper">
-								<input type="date" name="date"
-						<% if  request("action")="show" then %>
-							<% if  NOT IsNull(rs("dato"))=true then %>
-									value="<%=rs("dato")%>"
-							<% else %>
-								value=""
-							<% end if %>
-							
-						<% else %>
-								value=""
-						<% end if %> style="min-width: 360px;" >
-							</div>
-							</div>
-	
-			<!-- Møde navn -->
-				<tr>
-					<th style="text-align: center">Name of agendapoint</th>
-
-                    <% Function ConvertDateFormat(inputDate)
-                        Dim dateParts
-                        dateParts = Split(inputDate, "-")
-                            If UBound(dateParts) = 2 Then
-                                ConvertDateFormat = dateParts(2) & "-" & dateParts(1) & "-" & dateParts(0)
-                            Else
-                                ConvertDateFormat = inputDate ' return original if format is unexpected
-                            End If
-                    End Function %>
-
-                    <% Function ExtractHoursMinutes(timeStamp)
-                        Dim timeParts, timeString
-                        timeParts = Split(timeStamp, " ") ' Split date from time
-                            If UBound(timeParts) >= 1 Then
-                                timeString = timeParts(1) ' This should be HH:mm:ss
-                                ExtractHoursMinutes = Left(timeString, 5) ' This will return HH:mm
-                            Else
-                                ExtractHoursMinutes = ""
-                            End If
-                    End Function %>
-
-				
-				<td>
-					<input type="hidden" name="id_agendapoint" value="<%=id_agendapoint1%>">
-					
-                    </td>	
-				</tr>
-
-				<tr>			
-					<td style="text-align: center">
-						<div class="input-wrapper">
-						<input name="point_name" type="text"
-					<% if  request("action")="show" AND NOT IsNull(point_name) then %>
-							value="<%=point_name%>"
-					<% else %>
-							value=""
-					<% end if %>
-							style="width: 720px">
-							</div>
-					</td>
-				</tr>
-			
-			<!-- Møde emne -->
-				<tr>
-					<th style="text-align: center">
-						Short description
-					</th>
-				</tr>
-				<tr>
-					<td style="text-align: center">
-						<div class="input-wrapper">
-						<input name="short_desc" type="text" value="<%=short_desc%>" style="width: 720px">
-						</div>
-					</td>
-				</tr>
-			<!-- Møde beskrivelse -->
-				<tr>
-					<th style="text-align: center">
-						Long description
-					</th>
-				</tr>
-				<tr>
-					<td style="text-align: center">
-						<div class="input-wrapper">
-                            <input type="text" name="long_desc" value="<%=long_desc%>">
-                        </div>
-			        </td>
-				</tr>
-		
-		
-			<!-- Assigned to agendapoint users -->
-            
-			<tr>
-    <td class="assigned-users" style="text-align: center;">
-
-        <!-- Button to open modal -->
-        <button type="button" class="toggle-button">Assign employees</button>
-
-        <!-- Modal -->
-        <div class="modal">
-            <div class="modal-content">
-
-                <!-- Close button -->
-                <span class="close-button">&times;</span>
-
-                <!-- Populating user list -->
-			<div class="user-list-container">
-                <div class="user-list">
-             
-                    <%
-                        SQL3 = "SELECT * FROM tbllogin WHERE id_company = '" & session("id_company") & "' ORDER BY id_login"
-                        Set objRS3 = conn.Execute(SQL3)
-
-                        While Not objRS3.EOF
-
-                            If Request("action") = "show" Then
-                            participants = Split(rs("id_login"), ",")
-                            checked = "" 
-                                For Each participant In participants
-                                    If Trim(CStr(participant)) = Trim(CStr(objRS3("id_login"))) Then
-                                        checked = "checked"
-                                        Exit For ' exit the loop if a match is found
-                                    End If
-                                Next
-                            End If
-                        %>
-                            <div class="label-container">
-                                <label class="user-item">
-                                    <input type="checkbox" name="id_login" class="checkuser" value="<%=objRS3("id_login")%>" <%=checked%>>
-                                    <%=objRS3("login")%><br>
-                                    <%=objRS3("fornavn")%>&nbsp;<%=objRS3("efternavn")%>
-                                </label>
-                            </div>
-                        <%
-                            objRS3.MoveNext
-                        Wend
-                        objRS3.Close
-                        %>
-                </div>
-				</div>
-            </div>
-        </div>
-    </td>
-					<script>
-   
-document.addEventListener("DOMContentLoaded", function() {
-    const modal = document.querySelector(".modal");
-    const modalContent = document.querySelector(".modal-content");
-    const toggleButton = document.querySelector(".toggle-button");
-    const closeButton = document.querySelector(".close-button");
-
-    // Function to show the modal
-    function showModal() {
-        modal.style.display = "block";
-    }
-
-    // Function to close the modal
-    function closeModal() {
-        modal.style.display = "none";
-    }
-
-    // Click event to show the modal
-    toggleButton.addEventListener("click", showModal);
-
-    // Click event to close the modal
-    closeButton.addEventListener("click", closeModal);
-
-    // Close the modal if clicked outside of it
-    window.addEventListener("click", function(event) {
-        if (event.target === modal) {
-            closeModal();
-        }
-    });
-});
-
-					</script>
-				</tr>
-
-			<!-- Agendapoint submit btn -->
-				<tr>
-					<td style="text-align: center">
-						<input type="hidden" name="id_company" value='<%=session("id_company")%>'>
-                        <input type="hidden" name="id_agenda" value='<% if LEN(request.QueryString("id_agenda"))>0 then %><%=request.QueryString("id_agenda")%><% else %><%=session("id_agenda")%><% end if %>'>
-                            <% If Request.QueryString("action") = "show" Then %>
-                        <input name="Submit2" type="submit" value="Update agenda point" data-theme="a" data-icon="check">
-                        <button type="button" id="deleteButton" value="Delete agenda point" data-theme="a" data-icon="delete">Delete agenda point</button>
+        end if %>
+<table align="center" style="width: 50%">
+    <!-- Møde dato og tid-->
+        <tr>
+            <td style="text-align: center">
+                <div style="display:flex;">
+                    <div style="width:50%">Deadline date
+                        <div class="input-wrapper">
+                        <input type="date" name="date"
+                        <% if  request("action")="show" then %>
+                            <% if  NOT IsNull(rs("dato"))=true then %>
+                                    value="<%=rs("dato")%>"
+                            <% else %>
+                                value=""
+                            <% end if %>
+                            
                         <% else %>
-                        <input name="Submit2" type="submit" value="Create new agenda point" data-theme="a" data-icon="check">
-                        <%end if %>
+                                value=""
+                        <% end if %> style="min-width: 360px;" >
+                    </div>
+                </div>
+            </td>
+        </tr>
+    <!-- Møde navn -->
+        <tr>
+            <th style="text-align: center">Name of agendapoint</th>
+
+            <% Function ConvertDateFormat(inputDate)
+                Dim dateParts
+                dateParts = Split(inputDate, "-")
+                    If UBound(dateParts) = 2 Then
+                        ConvertDateFormat = dateParts(2) & "-" & dateParts(1) & "-" & dateParts(0)
+                    Else
+                        ConvertDateFormat = inputDate ' return original if format is unexpected
+                    End If
+            End Function %>
+
+            <% Function ExtractHoursMinutes(timeStamp)
+                Dim timeParts, timeString
+                timeParts = Split(timeStamp, " ") ' Split date from time
+                    If UBound(timeParts) >= 1 Then
+                        timeString = timeParts(1) ' This should be HH:mm:ss
+                        ExtractHoursMinutes = Left(timeString, 5) ' This will return HH:mm
+                    Else
+                        ExtractHoursMinutes = ""
+                    End If
+            End Function %>
+
+            <td>
+                <input type="hidden" name="id_agendapoint" value="<%=id_agendapoint1%>">
+            </td>	
+        </tr>
+
+    <!-- Møde punkt -->
+        <tr>			
+            <td style="text-align: center">
+                <div class="input-wrapper">
+                    <input name="point_name" type="text"
+                    <% if  request("action")="show" AND NOT IsNull(point_name) then %>
+                        value="<%=point_name%>"
+                    <% else %>
+                        value=""
+                    <% end if %>
+                        style="width: 720px">
+                </div>
+            </td>
+        </tr>
+
+    <!-- Møde emne -->
+        <tr>
+            <th style="text-align: center">
+                Short description
+            </th>
+        </tr>
+        <tr>
+            <td style="text-align: center">
+                <div class="input-wrapper">
+                <input name="short_desc" type="text" value="<%=short_desc%>" style="width: 720px">
+                </div>
+            </td>
+        </tr>
+    <!-- Møde beskrivelse -->
+        <tr>
+            <th style="text-align: center">
+                Long description
+            </th>
+        </tr>
+        <tr>
+            <td style="text-align: center">
+                <div class="input-wrapper">
+                    <input type="text" name="long_desc" value="<%=long_desc%>">
+                </div>
+            </td>
+        </tr>
+
+
+    <!-- Assigned to agendapoint users -->
+        <tr>
+            <td class="assigned-users" style="text-align: center;">
+                <!-- Button to open modal -->
+                <button type="button" class="toggle-button">Assign employees</button>
+
+                <!-- Modal -->
+                <div class="modal">
+                    <div class="modal-content">
+
+                        <!-- Close button -->
+                        <span class="close-button">&times;</span>
+
+                        <!-- Populating user list -->
+                        <div class="user-list-container">
+                            <div class="user-list">
+                                <% SQL3 = "SELECT * FROM tbllogin WHERE id_company = '" & session("id_company") & "' ORDER BY id_login"
+                                    Set objRS3 = conn.Execute(SQL3)
+
+                                    While Not objRS3.EOF
+                                        If Request("action") = "show" Then
+                                        participants = Split(rs("id_login"), ",")
+                                        checked = "" 
+                                            For Each participant In participants
+                                                If Trim(CStr(participant)) = Trim(CStr(objRS3("id_login"))) Then
+                                                    checked = "checked"
+                                                    Exit For ' exit the loop if a match is found
+                                                End If
+                                            Next
+                                        End If %>
+                                        <div class="label-container">
+                                            <label class="user-item">
+                                                <input type="checkbox" name="id_login" class="checkuser" value="<%=objRS3("id_login")%>" <%=checked%>>
+                                                <%=objRS3("login")%><br>
+                                                <%=objRS3("fornavn")%>&nbsp;<%=objRS3("efternavn")%>
+                                            </label>
+                                        </div>
+                                    <% objRS3.MoveNext
+                                    Wend
+                                    objRS3.Close %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+    <!-- Agendapoint submit btn -->
+        <tr>
+            <td style="text-align: center">
+                <input type="hidden" name="id_company" value='<%=session("id_company")%>'>
+                <input type="hidden" name="id_agenda" value='<% if LEN(request.QueryString("id_agenda"))>0 then %><%=request.QueryString("id_agenda")%><% else %><%=session("id_agenda")%><% end if %>'>
+                <% If Request.QueryString("action") = "show" Then %>
+                    <input name="Submit2" type="submit" value="Update agenda point" data-theme="a" data-icon="check">
+                    <button type="button" id="deleteButton" value="Delete agenda point" data-theme="a" data-icon="delete">Delete agenda point</button>
+                <% else %>
+                    <input name="Submit2" type="submit" value="Create new agenda point" data-theme="a" data-icon="check">
+                <%end if %>
+                <!--This is how I can save multiple users to an agenda - There is for sure a better way to do this.. I just don't-->
+                <%If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
+                        Dim selectedUsersPoints
+                        selectedUsersPoints = Request.Form("id_login")
+                        If IsArray(selectedUsersPoints) Then
+                            ' Multiple checkboxes were selected
+                            For Each user In selectedUsersPoints
+                                Response.Write("Selected User ID: " & user & "<br />")
+                            Next
+                        Else
+                            ' Just one checkbox was selected
+                            Response.Write("Selected User ID: " & selectedUsersPoints & "<br />")
+                        End If
+                End If %>
+            </td>
+        </tr>
+</table>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const modal = document.querySelector(".modal");
+        const modalContent = document.querySelector(".modal-content");
+        const toggleButton = document.querySelector(".toggle-button");
+        const closeButton = document.querySelector(".close-button");
+
+        // Function to show the modal
+        function showModal() {
+            modal.style.display = "block";
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            modal.style.display = "none";
+        }
+
+        // Click event to show the modal
+        toggleButton.addEventListener("click", showModal);
+
+        // Click event to close the modal
+        closeButton.addEventListener("click", closeModal);
+
+        // Close the modal if clicked outside of it
+        window.addEventListener("click", function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    });
+
     document.getElementById("deleteButton").addEventListener("click", function() {
             console.log("Delete button clicked");
 
@@ -509,123 +512,103 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         }
     });
-</script>
-                  
 
-						<!--This is how I can save multiple users to an agenda - There is for sure a better way to do this.. I just don't-->
-					<%If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
-							Dim selectedUsersPoints
-							selectedUsersPoints = Request.Form("id_login")
-							If IsArray(selectedUsersPoints) Then
-								' Multiple checkboxes were selected
-								For Each user In selectedUsersPoints
-									Response.Write("Selected User ID: " & user & "<br />")
-								Next
-							Else
-								' Just one checkbox was selected
-								Response.Write("Selected User ID: " & selectedUsersPoints & "<br />")
-							End If
-					End If %>
-					</td>
-				</tr>
-			</table>
-<script>
-$(document).ready(function() {
-    // Custom method for validating dates If they are in the past you cannot create an agenda in the past.
-    $.validator.addMethod("dateGreaterThanOrEqualToday", function(value, element) {
-		const currentDate = new Date();
-        currentDate.setHours(0, 0, 0, 0);
-        const inputDate = new Date(value);
-		<%If request("action")="show" Then%>
-		return inputDate;
-		<%Else%>
-		
-        return inputDate >= currentDate;
-		<%end if%>
-        
-    }, "Please choose a date in the future.");
+    $(document).ready(function() {
+        // Custom method for validating dates If they are in the past you cannot create an agenda in the past.
+        $.validator.addMethod("dateGreaterThanOrEqualToday", function(value, element) {
+            const currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0);
+            const inputDate = new Date(value);
+            <%If request("action")="show" Then%>
+            return inputDate;
+            <%Else%>
+            
+            return inputDate >= currentDate;
+            <%end if%>
+            
+        }, "Please choose a date in the future.");
 
-    $('form').validate({
-        rules: {
-            dato: {
-                required: true,
-                dateISO: true,
-                dateGreaterThanOrEqualToday: true
+        $('form').validate({
+            rules: {
+                dato: {
+                    required: true,
+                    dateISO: true,
+                    dateGreaterThanOrEqualToday: true
+                },
+                point_name: {
+                    required: true,
+                    minlength: 2
+                },
+                id_login: {
+                    required: true
+                },
+                short_desc: {
+                    required: true,
+                    minlength: 2
+                },
+                long_desc: {
+                    required: true,
+                    minlength: 5
+                }
             },
-            point_name: {
-                required: true,
-                minlength: 2
+            messages: {
+                dato: {
+                    required: "Date is required.",
+                    dateISO: "This is not a valid date.",
+                    dateGreaterThanOrEqualToday: "Choose todays date or a date in the future."
+                },
+                point_name: {
+                    required: "Agendapoint title is required",
+                    minlength: "Agendapoint title must be atleast 2 characters."
+                },
+                id_login: {
+                    required: "Login is required."
+                },
+                short_desc: {
+                    required: "Description is required.",
+                    minlength: "Description must be atleast 2 characters."
+                },
+                long_desc: {
+                    required: "Longer description is required.",
+                    minlength: "Description must be atleast 5 characters."
+                }
             },
-            id_login: {
-                required: true
-            },
-            short_desc: {
-                required: true,
-                minlength: 2
-            },
-            long_desc: {
-                required: true,
-                minlength: 5
-            }
-        },
-        messages: {
-            dato: {
-                required: "Date is required.",
-                dateISO: "This is not a valid date.",
-                dateGreaterThanOrEqualToday: "Choose todays date or a date in the future."
-            },
-            point_name: {
-                required: "Agendapoint title is required",
-                minlength: "Agendapoint title must be atleast 2 characters."
-            },
-            id_login: {
-                required: "Login is required."
-            },
-            short_desc: {
-                required: "Description is required.",
-                minlength: "Description must be atleast 2 characters."
-            },
-            long_desc: {
-                required: "Longer description is required.",
-                minlength: "Description must be atleast 5 characters."
-            }
-        },
-	 	
-		errorElement: 'span',
-errorPlacement: function (error, element) {
-    var errorMessage = error.text();
+            
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                var errorMessage = error.text();
 
-    if (!$(element).next('.error-dot').length && !$(element).closest('td').find('.select-error-dot').length) {
-        if (element.is('select')) {
-            //create the red dot
-            var errorDot = $('<span class="select-error-dot" title=""></span>').attr('data-error', errorMessage);
-            errorDot.attr('title', errorMessage);
-            // Insert the red dot after the select element for selection
-            errorDot.appendTo(element.closest('td'));
-        } else {
-            // For non-select elements, create the normal red dot
-            var errorDot = $('<span class="error-dot" title=""></span>').attr('data-error', errorMessage);
-            errorDot.attr('title', errorMessage);
-            // Insert the red dot after the form element
-            errorDot.insertAfter(element);
-        }
-    }
-},
-highlight: function (element) {
-        // Show the error dot when there's an error.
-    },
-    unhighlight: function (element) {
-        // Hide the error dot when the error is corrected.
-        if ($(element).is('select')) {
-            $(element).closest('td').find('.select-error-dot').remove();
-        } else {
-            $(element).next('.error-dot').remove();
-        }
-    },
-	onkeyup: function(element) {
-        $(element).valid();
-    }
-});
+                if (!$(element).next('.error-dot').length && !$(element).closest('td').find('.select-error-dot').length) {
+                    if (element.is('select')) {
+                        //create the red dot
+                        var errorDot = $('<span class="select-error-dot" title=""></span>').attr('data-error', errorMessage);
+                        errorDot.attr('title', errorMessage);
+                        // Insert the red dot after the select element for selection
+                        errorDot.appendTo(element.closest('td'));
+                    } else {
+                        // For non-select elements, create the normal red dot
+                        var errorDot = $('<span class="error-dot" title=""></span>').attr('data-error', errorMessage);
+                        errorDot.attr('title', errorMessage);
+                        // Insert the red dot after the form element
+                        errorDot.insertAfter(element);
+                    }
+                }
+            },
+            highlight: function (element) {
+                    // Show the error dot when there's an error.
+                },
+                unhighlight: function (element) {
+                    // Hide the error dot when the error is corrected.
+                    if ($(element).is('select')) {
+                        $(element).closest('td').find('.select-error-dot').remove();
+                    } else {
+                        $(element).next('.error-dot').remove();
+                    }
+                },
+                onkeyup: function(element) {
+                    $(element).valid();
+                }
+            });
     });
 </script>
 		
