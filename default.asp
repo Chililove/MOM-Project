@@ -33,6 +33,15 @@
 .nav-tabs li a:hover {
     text-decoration: underline;
 }
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 </style>
 <body>
 
@@ -41,6 +50,7 @@
        <!-- <img src="login/orangedude.png" alt="User Avatar" class="user-avatar">  Replace with dynamic avatar if available -->
 
 <!--#include file="bruger/user-profile.asp"-->
+
 
 
 <%
@@ -55,7 +65,7 @@ End If
 %>
 
 
-<ul data-role="listview">
+<ul data-role="listview" style="animation: fadeIn 2s ease;">
 				
 <%if done=1 then%>
 <li><a href="reg/start_timer.asp?action=newday" data-ajax="false">Start day registration</a></li>
@@ -86,19 +96,7 @@ End If
 </ul>
 <!--#include file="shared/header_1.asp"-->
 <!--#include file="shared/footer.asp"-->
-<ul data-role="listview" data-inset="false" data-filter="false">
 
-<%if done=0 then%>
-<p>Ongoing job:</p>
-<li>
-<!--Customer:<b><%'=kundenavn%></b><br>-->
-Job:<b><%=job_dk%></b><br>
-Start date:<b><%=FormatDateTime(starttid,2)%></b><br>
-Start time:<b><%=FormatDateTime(starttid,4)%></b><br>
-</li>
-
-</ul>
-<%end if%>
 </body>
 
 </html>
