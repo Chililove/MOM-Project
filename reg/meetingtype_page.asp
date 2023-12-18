@@ -99,19 +99,19 @@ End If
   vertical-align: top;
   width: 200px; 
   }
-.user-list {
-  display: flex;
-  flex-wrap: wrap;
-}
+	.user-list {
+	display: flex;
+	flex-wrap: wrap;
+	}
 
-.user-item{
-	width: 80px;
-}
+	.user-item{
+		width: 80px;
+	}
 
 
-.checkuser{
-	width: 50%;
-}
+	.checkuser{
+		width: 50%;
+	}
 
 
 </style>
@@ -135,33 +135,33 @@ End If
 <%
 Dim sql, rs, id_meetingtype
 
-' Check if an id_company is provided in the query string
-If Len(Request.QueryString("id_meetingtype")) > 0 Then
-    ' Get the company ID from the query string and validate it
-    id_meetingtype = Trim(Request.QueryString("id_meetingtype"))
+	' Check if an id_company is provided in the query string
+	If Len(Request.QueryString("id_meetingtype")) > 0 Then
+		' Get the company ID from the query string and validate it
+		id_meetingtype = Trim(Request.QueryString("id_meetingtype"))
 
 
-    If IsNumeric(id_meetingtype) Then
-        ' SQL to get company details by id_company
-        sql = "SELECT * FROM tblmeeting_type WHERE id_meetingtype = " & id_meetingtype
-        Set rs = Conn.Execute(sql)
+		If IsNumeric(id_meetingtype) Then
+			' SQL to get company details by id_company
+			sql = "SELECT * FROM tblmeeting_type WHERE id_meetingtype = " & id_meetingtype
+			Set rs = Conn.Execute(sql)
 
-        If Not rs.EOF Then
-            id_meetingtype = rs("id_meetingtype")
-			meeting_type = rs("meeting_type")
-        End If
+			If Not rs.EOF Then
+				id_meetingtype = rs("id_meetingtype")
+				meeting_type = rs("meeting_type")
+			End If
 
-        rs.Close
-        Set rs = Nothing
-    Else
-        Response.Write("Invalid  ID for meetingtypes.")
-    End If
-Else
-    ' If there is no id_meetingtype in the query string, I'm creating a new meetingtype
-    ' Initialize meetingtype to an  empty string
-    id_meetingtype = ""
-	meeting_type = ""
-End If
+			rs.Close
+			Set rs = Nothing
+		Else
+			Response.Write("Invalid  ID for meetingtypes.")
+		End If
+	Else
+		' If there is no id_meetingtype in the query string, I'm creating a new meetingtype
+		' Initialize meetingtype to an  empty string
+		id_meetingtype = ""
+		meeting_type = ""
+	End If
 %>
 
 <!--#include file="../reg/meetingtype_form.asp"-->			

@@ -55,8 +55,7 @@ sluttid=aar & "-" & maaned & "-" & dag &" "& timer1 &":"& minutter
 
 Set rs = Server.CreateObject("ADODB.Command")
 rs.ActiveConnection = Conn
-'id_company = Session("id_company")
-'Response.Write("Session save2company_id: " & Session("id_company"))
+
 
 If request("action") = "newday" Then
     sql1 = "INSERT INTO tbl_agenda (moede_navn, emne, beskrivelse, noter, additionalinfo, oprettetaf, oprettetdato, starttid, id_meetingtype, id_afdeling, moede_dato, moede_tidspunkt, id_company, participants) "
@@ -65,7 +64,7 @@ If request("action") = "newday" Then
     rs.CommandText = sql1 & sql2
     rs.Parameters.Append rs.CreateParameter("@moede_navn", 202, 1, 255, moede_navn)
     rs.Parameters.Append rs.CreateParameter("@emne", 202, 1, 255, emne)
-	rs.Parameters.Append rs.CreateParameter("@beskrivelse", 202, 1, -1, summernoteContent)
+	rs.Parameters.Append rs.CreateParameter("@beskrivelse", 202, 1, 255, beskrivelse)
     rs.Parameters.Append rs.CreateParameter("@noter", 202, 1, -1, noter)
     rs.Parameters.Append rs.CreateParameter("@additionalinfo", 202, 1, -1, additionalinfo)
     rs.Parameters.Append rs.CreateParameter("@oprettetaf", 202, 1, 50, oprettetaf)
@@ -82,23 +81,22 @@ If request("action") = "newday" Then
 	response.write "<br>" & sql & "<br>"
     rs.Execute(sql)
 
-set rs = Conn.Execute("SELECT @@IDENTITY AS id_agenda1")
- id_agenda1 = rs(0).Value
- session("id_agenda") = id_agenda1
-sql= "SELECT participants FROM tbl_agenda WHERE id_agenda = "& id_agenda1 &""
-response.write sql & "<br>"
-set RS = Conn.Execute(sql)
+    set rs = Conn.Execute("SELECT @@IDENTITY AS id_agenda1")
+    id_agenda1 = rs(0).Value
+    session("id_agenda") = id_agenda1
+    sql= "SELECT participants FROM tbl_agenda WHERE id_agenda = "& id_agenda1 &""
+    set RS = Conn.Execute(sql)
 
-participants = Split(RS("participants"), ",")
-For Each participant In participants
-    response.write participant & "<br />"
-Next
+    participants = Split(RS("participants"), ",")
+    For Each participant In participants
+        response.write participant & "<br />"
+    Next
 
-Response.Write "<script type='text/javascript'>"
-Response.Write "setTimeout(function() { window.location.href = './nextstep.asp'; }, 3000);"
-Response.Write "</script>"
+    Response.Write "<script type='text/javascript'>"
+    Response.Write "setTimeout(function() { window.location.href = './nextstep.asp'; }, 3000);"
+    Response.Write "</script>"
 
-' Response.redirect "./nextstep.asp"
+    ' Response.redirect "./nextstep.asp"
 end if
 
 if request("action")="show" then
@@ -133,18 +131,18 @@ if request("action")="show" then
       set rs = Conn.Execute("SELECT @@IDENTITY AS id_agenda1")
  id_agenda1 = rs(0).Value
  session("id_agenda") = id_agenda1
-sql= "SELECT participants FROM tbl_agenda WHERE id_agenda = "& id_agenda1 &""
-response.write sql & "<br>"
-set RS = Conn.Execute(sql)
+    sql= "SELECT participants FROM tbl_agenda WHERE id_agenda = "& id_agenda1 &""
+    response.write sql & "<br>"
+    set RS = Conn.Execute(sql)
 
-participants = Split(RS("participants"), ",")
-For Each participant In participants
-    response.write participant & "<br />"
-Next
-    else
-        response.write "no data"
-        'response.redirect "../default.asp"
-    end if
+    participants = Split(RS("participants"), ",")
+    For Each participant In participants
+        response.write participant & "<br />"
+    Next
+        else
+            response.write "no data"
+            'response.redirect "../default.asp"
+        end if
 end if
 	
 If request("action") = "edit" Then
@@ -191,7 +189,11 @@ If request("action") = "edit" Then
 
    
 	'this redirect to the default page -v-
+    if request.querystring("id1")="1" then
+    response.redirect "./nextstep.asp?id_agenda=" & id_agenda
+    else
     response.redirect "../reg_list/saved_meetings.asp"
+    end if
 	response.write "Edit action executed successfully."
 
 End If

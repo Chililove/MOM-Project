@@ -5,7 +5,6 @@
 <%
 ' Check if the user is an administrator
 If Not session("administrator") Then
-    ' If not an administrator, redirect them to an error page or some other action
     Response.Redirect("access_denied.asp") ' Change "access_denied.asp" to the appropriate page
 End If
 %>
@@ -178,7 +177,7 @@ span.error {
                     %>
                 </select>
         <%
-            Else ' If the action is to create, show a regular dropdown without a selected option
+            Else 
         %>
                 <select name="id_logintype" required>
                     <% 

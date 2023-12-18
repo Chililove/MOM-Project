@@ -312,10 +312,13 @@
 	<% end if%>
 
 <form id="myForm"data-ajax="false" method="post"
-	<% if request("action")="show" then %>
+	<% if request("action")="show" AND NOT request.QueryString("id1")="1"  then %>
 	action='save.asp?action=edit&id_agenda=<%=request.QueryString("id_agenda")%>'  
+	<% else if request.QueryString("id1")="1" then %>
+	action='save.asp?action=edit&id1=1&id_agenda=<%=request.QueryString("id_agenda")%>'  
 	<% else %>
 	action='save.asp?action=<%=request("action")%>'  
+	<% end if %>
 	<% end if %>
 	style="position: relative;">
 			<table align="center" style="width: 50%">
@@ -378,37 +381,40 @@
 				</tr>
 			<!-- Møde subject meetingtype dropdown -->
 				<tr>
-					<td style="text-align: center;">
+					<td style="text-align: center">
 						<select name="id_meetingtype" required >
-								<% SQL3="Select * from tblmeeting_type  where id_company = "&session("id_company")&" order by id_meetingtype"
-								set objRS3 = conn.Execute(SQL3) %>
-							<% If NOT objRS3.EOF then %>
-								<% if  request("action")="show" then %>
-									<%if NOT IsNull(id_meetingtype) then %>
-										<% SQL4="Select * from tblmeeting_type WHERE id_meetingtype= "& id_meetingtype &""
-										'response.write objRS4
-										set objRS4 = conn.Execute(SQL4) %>
-										<% If NOT objRS4.EOF then %>
-											<% meetingtype=objRS4("meeting_type") %>
-											<option selected="" value="<%=objRS4("id_meetingtype")%>"><%=meetingtype%></option>
-											<% else %>
-											<option style="display:none;">Select</option>
-										<% end if %>
-									<% end if %>
-								<% else %>
-									<option selected="" value="">Select type of meeting</option>
-								<% end if 
-										while not objRS3.EOF %>
-											<option value='<%=objRS3("id_meetingtype")%>'>
-													<% if objRS3("id_meetingtype") = id_meetingtype then %> selected <% end if %>
-												<%=objRS3("meeting_type")%>
-											</option>
-										<% objRS3.MoveNext
-										Wend %>
-							<% else %>
-							<option>Fejl</option>
-							<% end if %>
-						</select>
+
+						<% SQL3 = "Select * from tblmeeting_type where id_company = "&session("id_company")&" order by id_meetingtype"
+						set objRS3 = conn.Execute(SQL3)
+
+						if request("action")="show" then
+							if NOT IsNull(id_meetingtype) then 
+								SQL4 = "Select * from tblmeeting_type WHERE id_company = "&session("id_company")&" order by id_meetingtype"
+								set objRS4 = conn.Execute(SQL4) 
+								meeting_type = objRS4("meeting_type") %>
+							<option selected="" value=""><%=meeting_type%></option>
+						<% else %>
+							<option selected="" value="">Select meeting type</option>
+						<% end if %>
+						<%  while not objRS3.EOF %>
+								<option value='<%=objRS3("id_meetingtype")%>' 
+									<% if objRS3("id_meetingtype") = id_meetingtype then %>selected
+									<% end if %>>
+									<%=objRS3("meeting_type")%>
+								</option>
+						<% objRS3.MoveNext
+								Wend 
+						else %>
+								<option selected="" value="">Select meeting type</option>
+							<% while not objRS3.EOF %>
+								<option value='<%=objRS3("id_meetingtype")%>'>
+									<%=objRS3("meeting_type")%>
+								</option>
+							<% objRS3.MoveNext %>
+						<%  Wend %>
+					<% end if %>
+					</select>
+	
 					</td>
 				</tr>
 			<!-- Møde emne -->
@@ -508,13 +514,14 @@
 								<div class="user-list">
 									<%
 										SQL3 = "SELECT * FROM tbllogin WHERE id_company = '" & session("id_company") & "' ORDER BY id_login"
+										'response.write sql3
 										Set objRS3 = conn.Execute(SQL3)
 
 										While Not objRS3.EOF
-											participants = Split(("participants"), ",")
-											checked = "" 
 
 											If Request("action") = "show" Then
+											participants = Split(rs("participants"), ",")
+											checked = "" 
 												For Each participant In participants
 													If Trim(CStr(participant)) = Trim(CStr(objRS3("id_login"))) Then
 														checked = "checked"
@@ -646,6 +653,9 @@ $(document).ready(function() {
         
     }, "Please choose a date in the future.");
 
+
+
+
     $('form').validate({
         rules: {
             moede_dato: {
@@ -689,6 +699,10 @@ $(document).ready(function() {
                 required: "Meeting name is required.",
                 minlength: "Meeting name must be more than 2 characters."
             },
+
+			id_meetingtype: {
+                required: "Meeting type is required."
+            },
            
             emne: {
                 required: "Subject is required.",
@@ -696,6 +710,10 @@ $(document).ready(function() {
             },
             beskrivelseInput: {
                 required: "Description is required.",
+            },
+
+			 id_afdeling: {
+                required: "Department is required.",
             }
         },
 		

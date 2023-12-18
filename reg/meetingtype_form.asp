@@ -119,43 +119,14 @@ End If
 
      <button type="submit">Update meetingtype</button>
      <button type="button" onclick='del("<%=request.querystring("id_meetingtype")%>")' class="delete-button" >Delete</button>
-<!-- <button type="button" id="deleteButton" value="Delete type" data-theme="a" data-icon="delete">Delete type</button>-->
 
 
 <%Else%>
     <button type="submit">Add meetingtype</button>
 
-    <% End If %>    <!-- External "Delete" button with event listener -->
+    <% End If %>   
 </form>
 
-<script>
-    // document.getElementById("deleteButton").addEventListener("click", function() {
-    //         console.log("Delete button clicked");
-
-    //     var r = confirm("Are you sure you want to delete this type?");
-    //     if (r == true) {
-    //         var formData = new FormData();
-    //         formData.append("action", "delete");
-
-    //         fetch("../reg/save_meetingtype.asp?id_meetingtype=<%=id_meetingtype%>", {
-    //             method: "POST",
-    //             body: formData
-    //         })
-    //         .then(function(response) {
-    //             if (response.ok) {
-    //                 alert("Meeting type deleted successfully.");
-    //                 // Redirecting to the list page or I could do another action?'
-    //                window.location.href = "/reg_list/meetingtype_list.asp";
-    //             } else {
-    //                 alert("An error occurred during meeting type deletion.");
-    //             }
-    //         })
-    //         .catch(function(error) {
-    //             console.error("Error:", error);
-    //         });
-    //     }
-    // });
-</script>
 <%
 sql = "SELECT * FROM tblmeeting_type  where id_company =  " & session("id_company") & " ORDER BY meeting_type DESC"
 Set rs = Conn.Execute(sql)
