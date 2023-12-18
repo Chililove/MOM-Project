@@ -35,10 +35,8 @@ id_company = session("id_company")
 If session("administrator") = True Then
 
     sql = "SELECT * FROM qrysaved_meetings WHERE id_company =  '" & session("id_company") & "'"
-    response.write sql
 Else
-sql = "SELECT * FROM qrysaved_meetings qm JOIN tblassign_users_to_agenda uma ON qm.id_agenda = uma.id_agenda WHERE uma.id_login = '" & session("id_login") & "'"
-response.write sql
+response.redirect("/default")  
 End If
 
 set rs=conn.execute(sql)
@@ -52,12 +50,12 @@ if not rs.eof then
 <%
 do while not rs.eof
 %>
-<li id="agenda-<%=rs("id_agenda")%>">
+<li style="animation: fadeIn 2s ease;"id="agenda-<%=rs("id_agenda")%>">
 			<!--	<a data-ajax="false" href='../reg_list/list_my.asp?oprettetdato=<%'=rs(("oprettetdato_string"))%>'> -->
     <a data-ajax="false" href='../reg/list_my.asp?action=show&amp;id_agenda=<%=rs("id_agenda")%>'>	
         <table style="width: 100%;">
 	        <tr>             
-                <td style="width: 20%; padding-left: 10px;">  <%=rs("moede_dato")%> <br> <%= rs("moede_tidspunkt")%> <br> </td>
+                <td style="width: 20%; padding-left: 10px;">  <%=FormatDateTime(rs("moede_dato"))%> <br> <%= FormatTime(rs("moede_tidspunkt"))%> <br> </td>
                 <td style="width: 40%; font-weight: bold;"> <%=rs("moede_navn")%> </td>
 		    </tr>
                <!-- Your delete button for each agenda -->
@@ -69,9 +67,6 @@ do while not rs.eof
     </a>
 
 </li>
-
-
-
 
 <%
  rs.movenext
@@ -169,8 +164,24 @@ $(document).ready(function() {
 });
 
 </script>
+    <%
+Function FormatTime(time)
+    Dim timeString
+    timeString = CStr(time)
+    FormatTime = Left(timeString, 5)
+End Function
 
+%>
 <style>
+
+    @keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
   /* Styles for the list view */
         ul[data-role="listview"] {
             list-style-type: none;

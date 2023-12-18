@@ -34,12 +34,16 @@
 </head>
 
 <style>
+.agenda-table{
+    animation: fadeIn 2s ease;
+}
    /* Style for the smaller button */
   .small-button-container {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     padding: 1% 1%;
+    animation: fadeIn 2s ease;
   }
 
   .small-button {
@@ -64,6 +68,15 @@
     font-weight: bold;
     margin-right: 5px; /* Add spacing between plus sign and text */
   }
+
+  @keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 </style>
 
 <body>
@@ -74,7 +87,7 @@
 			</a>
 	</div>
 
-<div style="display:flex; justify-content:center; align-items: center; margin-top: 3.5%; margin-left: 1%; margin-right: 1%; ">
+<div style="display:flex; justify-content:center; align-items: center; margin-top: 3.5%; margin-left: 1%; margin-right: 1%; animation: fadeIn 2s ease; ">
     <select id="id_agenda" required onchange="updateAgendaTitle(); filterAgendaPoints();">
         <option value="">Select a meeting</option>
         <% 
@@ -104,7 +117,7 @@
       <span class="plus-sign"></span> Add an agenda point
     </a>
   </div>
-    <h3 id="agendaTitle" style="margin-left: .4%;">Existing agendapoints<span id="selectedAgendaName" style="font-size: 16px !important;"></span></h3>
+    <h3 id="agendaTitle" style="margin-left: .4%; animation: fadeIn 2s ease;">Existing agendapoints<span id="selectedAgendaName" style="font-size: 16px !important;"></span></h3>
     <table class="agenda-table" style="width: 100%; background-color: #E9E9E9; padding: .5%;" >
         <tr style="text-align: left;">
             <th style="width: 25%">Point</th>
@@ -130,7 +143,7 @@
             ' if the Recordset is not empty, so enter the loop
             Do While Not rs.EOF
         %>
-        <li data-agenda-id="<%=rs("id_agenda")%>">
+        <li style="animation: fadeIn 2s ease;" data-agenda-id="<%=rs("id_agenda")%>">
             <a data-ajax="false" href='agendapoint_page.asp?action=show&amp;id_agendapoint=<%=rs("id_agendapoint")%>&source=page1'>
                 <table style="width: 100%">  
                     <tr>

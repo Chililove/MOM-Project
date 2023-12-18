@@ -46,7 +46,7 @@ do while not rs.eof
     <a data-ajax="false" href='../reg/list_my.asp?action=show&amp;id_agenda=<%=rs("id_agenda")%>'>	
         <table style="width: 100%;">
 	        <tr>             
-                <td style="width: 20%; padding-left: 10px;">  <%=rs("moede_dato")%> <br> <%= rs("moede_tidspunkt")%> <br> </td>
+                <td style="width: 20%; padding-left: 10px;">  <%=FormatDateTime(rs("moede_dato"))%> <br> <%= FormatTime(rs("moede_tidspunkt"))%> <br> </td>
                 <td style="width: 40%; font-weight: bold;"> <%=rs("moede_navn")%> </td>
 		    </tr>
                <!-- Your delete button for each agenda -->
@@ -155,8 +155,16 @@ $(document).ready(function() {
     }
 });
 </script>
-
+  
 <style>
+          @keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
   /* Styles for the list view */
         ul[data-role="listview"] {
             list-style-type: none;
