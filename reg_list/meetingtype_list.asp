@@ -31,6 +31,7 @@ End If
     color: grey; 
     border-radius: 5px; /* Rounded corners */
     text-decoration: none;
+    animation: fadeIn 2s ease;"
   }
 
   /* Hover effect for the smaller button */
@@ -66,6 +67,15 @@ End If
 
             z-index: 1000;
         }
+
+        @keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 
   </style>
   <script>
@@ -104,7 +114,7 @@ End If
 sql="select * from tblmeeting_type where id_company =  " & session("id_company") & "order by meeting_type desc "
 set rs=conn.execute(sql)
 %>
-	<ul data-role="listview" data-inset="false" data-filter="true">
+	<ul style="animation: fadeIn 2s ease;" data-role="listview" data-inset="false" data-filter="true">
 <h2 style="padding: 1%; height: .5px;">Existing meetingtypes</h2>
 
 <div class="small-button-container">

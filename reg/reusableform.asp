@@ -521,7 +521,8 @@
 
 											If Request("action") = "show" Then
 											participants = Split(rs("participants"), ",")
-											checked = "" 
+											checked = ""
+											If Not IsNull(rs("participants"))=true And rs("participants") <> "" Then 
 												For Each participant In participants
 													If Trim(CStr(participant)) = Trim(CStr(objRS3("id_login"))) Then
 														checked = "checked"
@@ -529,6 +530,7 @@
 													End If
 												Next
 											End If
+										End If
 										%>
 											<div class="label-container">
 												<label class="user-item">

@@ -1,3 +1,12 @@
+.ui-btn-icon-left:after, .ui-btn-icon-right:after, .ui-btn-icon-top:after, .ui-btn-icon-bottom:after, .ui-btn-icon-notext:after {
+    color:orange !important;
+    background-color:orange !important;
+}
+
+
+
+
+
 .popup {
     display: none;
     position: fixed;
@@ -38,14 +47,14 @@
     }   
 }
 
-#meeting_form{
+//#meeting_form{
     // @media (max-width:800px) {
     //     left: 10%;
     //     top: 20%;
     //     transform: translate(-50%, -50%);
     //     width: 40px;
     // }
-}
+//}
 
 #loginform {
     margin-top: -125px;

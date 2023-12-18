@@ -31,6 +31,8 @@ End If
     color: grey; 
     border-radius: 5px; /* Rounded corners */
     text-decoration: none;
+   animation: fadeIn 2s ease;
+
   }
 
   /* Hover effect for the smaller button */
@@ -40,7 +42,9 @@ End If
 	  box-shadow: 0px 4px 6px rgba(0, 0, 0.2, 0.2);
 
   }
-
+.delete-button{
+  animation: fadeIn 2s ease;
+}
   /* Style for the plus sign */
   .plus-sign::before {
     content: "+"; /* Content is a plus sign */
@@ -65,7 +69,14 @@ End If
 
             z-index: 1000;
         }
-
+ @keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 
 </style>
 <body>
@@ -80,7 +91,7 @@ sql="select * from tbl_afdeling_2nd where id_company =  " & session("id_company"
 set rs=conn.execute(sql)
 %>
 	<ul data-role="listview" data-inset="false" data-filter="true">
-		<h2 style="padding: 1%; height: .5px;">Existing departments</h2>
+		<h2 style="padding: 1%; height: .5px; animation: fadeIn 2s ease;">Existing departments</h2>
 
 				<div class="small-button-container">
 <!--<h2>Check out your meetingtypes here</h2>-->
@@ -88,8 +99,8 @@ set rs=conn.execute(sql)
       <span class="plus-sign"></span> Add a new department
     </a>
   </div>
-				<li data-role="list-divider">
-					<table style="width: 100%">
+				<li data-role="list-divider" style="animation: fadeIn 2s ease;" >
+					<table style="width: 100%;">
 						<tr style="text-align: left">
 							<th style="width: 25%">Department</th>
 						</tr>
@@ -99,9 +110,9 @@ set rs=conn.execute(sql)
 					do while not rs.eof
 				%>
 				<li>
-					<a data-ajax="false" href='../reg/afdeling_page.asp?action=update&amp;id_afdeling=<%=rs("id_afdeling")%>'>
+					<a style="animation: fadeIn 2s ease;" data-ajax="false" href='../reg/afdeling_page.asp?action=update&amp;id_afdeling=<%=rs("id_afdeling")%>'>
 
-						<table style="width: 100%">		
+						<table style="width: 100%;">		
 								<tr>
 									<td style="width: 25%"><%=rs("afdeling")%></td>
 								</tr>

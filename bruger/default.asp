@@ -7,6 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../jquery/jquery.mobile-1.4.5.css">
+<link rel="stylesheet" href="../shared/global.css">
 <script src="../jquery/jquery-1.8.2.min.js"></script>
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
 <style>
@@ -32,6 +33,7 @@
     color: grey; 
     border-radius: 5px; /* Rounded corners */
     text-decoration: none;
+	animation: fadeIn 2s ease;
   }
 
   /* Hover effect for the smaller button */
@@ -78,7 +80,7 @@ response.redirect("/default.asp") %>
   </div>
 				<li data-role="list-divider">
 					<table style="width: 100%">
-						<tr style="text-align: left">
+						<tr style="text-align: left;">
 							<th style="width: 20%">Login</th>
 
 							<th style="width: 20%">Fornavn</th>

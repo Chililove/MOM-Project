@@ -94,7 +94,7 @@ End If
 
      <button type="submit">Update department</button>
      
-<button type="button" id="deleteButton" value="Delete type" data-theme="a" data-icon="delete">Delete type</button>
+<button type="button" onclick='del("<%=request.querystring("id_afdeling")%>")' id="deleteButton" value="Delete department" data-theme="a" data-icon="delete">Delete type</button>
 
 
 <%Else%>
@@ -130,6 +130,31 @@ End If
             });
         }
     });
+</script>
+<script>
+    function del(id) { 
+        var idValue = id
+        
+        if (idValue !== null) {
+            var firstConfirm = window.confirm("Are you sure you want to delete this department?");
+            
+            if (firstConfirm) {
+            var secondConfirm = window.confirm("This action is irreversible. Are you absolutely sure?");
+            
+            if (secondConfirm) {
+                var deleteUrl = 'delete.asp?action=dtype&id=' + encodeURIComponent(id);
+                window.location.href = deleteUrl;
+            } else {
+            // Nothing
+            }
+            } else {
+            // Nothing
+            }
+        } else {
+            alert("No 'id' parameter found in the URL.");
+        }
+    }
+
 </script>
 <%
 sql = "SELECT * FROM tbl_afdeling_2nd  where id_company =  " & session("id_company") & " ORDER BY afdeling DESC"

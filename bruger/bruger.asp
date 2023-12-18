@@ -1,6 +1,5 @@
 ﻿<!--#include file="../login/protect.inc"-->
 <!--#include file="../opendb.asp"-->
-<!--#include file="../shared/global.css"-->
 <html>
 <%
 ' Check if the user is an administrator
@@ -13,6 +12,7 @@ End If
 		<title>OneTimer</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="../jquery/jquery.mobile-1.4.5.css">
+        <link rel="stylesheet" href="../shared/global.css">
 		<script src="../jquery/jquery-1.8.2.min.js"></script>
 		<script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
 		<link type="text/css" rel="stylesheet" href="../jquery/jquery-te-1.4.0.css">
@@ -63,7 +63,12 @@ span.error {
 				</a> 
 			</div>
 		<!-- form -->
-			<form data-ajax="false" method="post" action='save.asp?action=<%=request("action")%>'>
+			<form data-ajax="false" method="post" 
+            <% if request.querystring("default")="yes" then %>
+            action='save.asp?default=yes&action=<%=request("action")%>'
+            <% else %>
+            action='save.asp?action=<%=request("action")%>'
+            <% end if %> >
 				<table align="center" style="width: 50%">
 								<!-- Login -->
 					<tr>
@@ -221,12 +226,16 @@ span.error {
 								<!-- save btn -->
 						<tr>
 							<td style="text-align: center">
+                                <%if request("action")="ret" then%>
+								<input name="Submit1" type="submit" value="Update user" data-theme="a" data-icon="check">
+                                <%else%>
 								<input name="Submit1" type="submit" value="Create user" data-theme="a" data-icon="check">
-								<%if request("action")="ret" and Session("administrator") then%>
-								<input type="hidden" name="id_login" value="<%=id_login%>">
-								<input type="hidden" name="action" value="delete">
-                        <input type="button" value="Delete user" onclick="confirmDelete('<%=id_login%>');" data-theme="a" data-icon="delete">
-                    <%end if%>
+                                <%end if%>
+                                <%if request("action")="ret" and Session("administrator") then%>
+                                    <input type="hidden" name="id_login" value="<%=id_login%>">
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="button" value="Delete user" onclick="confirmDelete('<%=id_login%>');" data-theme="a" data-icon="delete">
+                                <%end if%>
 							</td>
 						</tr>
 				</table>

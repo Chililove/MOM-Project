@@ -33,6 +33,31 @@
 .nav-tabs li a:hover {
     text-decoration: underline;
 }
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+/* class="fade-in" style="animation-delay:500ms;" */
+.fade-in {
+    animation: fade-in 1s;
+}
 </style>
 <body>
 
@@ -41,6 +66,7 @@
        <!-- <img src="login/orangedude.png" alt="User Avatar" class="user-avatar">  Replace with dynamic avatar if available -->
 
 <!--#include file="bruger/user-profile.asp"-->
+
 
 
 <%
@@ -55,27 +81,27 @@ End If
 %>
 
 
-<ul data-role="listview">
+<ul data-role="listview" >
 				
 <%if done=1 then%>
-<li><a href="reg/start_timer.asp?action=newday" data-ajax="false">Start day registration</a></li>
+<li ><a class="fade-in" style="animation-duration:100ms;" href="reg/start_timer.asp?action=newday" data-ajax="false">Start day registration</a></li>
 <%end if%>
 <%if done<> 1 then%>
-<li><a href="reg/start_timer.asp?action=newjob" data-ajax="false">Start new job registration</a></li>
+<li ><a class="fade-in" style="animation-duration:200ms;" href="reg/start_timer.asp?action=newjob" data-ajax="false">Start new job registration</a></li>
 
-<li><a href="reg/slut_timer.asp" data-ajax="false">End day registration</a></li>
+<li ><a class="fade-in" style="animation-duration:300ms;" href="reg/slut_timer.asp" data-ajax="false">End day registration</a></li>
 <%end if%>
 
 
-<li><a data-ajax="false" href="reg_list/saved_meetings.asp">Saved meetings</a></li>
-<li><a data-ajax="false" href="reg_list/my_meetings.asp">My meetings</a></li>
+<li ><a class="fade-in" style="animation-duration:400ms;" data-ajax="false" href="reg_list/saved_meetings.asp">Saved meetings</a></li>
+<li ><a class="fade-in" style="animation-duration:500ms;" data-ajax="false" href="reg_list/my_meetings.asp">My meetings</a></li>
 
 
 <%if session("administrator")=true then%>				
-<li><a data-ajax="false" href="bruger/">User list</a></li>
-<li><a data-ajax="false" href="reg_list/meetingtype_list.asp">Meetingtypes</a></li>
-<li><a data-ajax="false" href="reg_list/afdeling_list.asp">Departments</a></li>
-<li><a data-ajax="false" href="reg/nextstep_agenda_dropdown_page.asp">Agenda points</a></li>
+<li ><a class="fade-in" style="animation-duration:600ms;" data-ajax="false" href="bruger/">User list</a></li>
+<li ><a class="fade-in" style="animation-duration:700ms;" data-ajax="false" href="reg_list/meetingtype_list.asp">Meetingtypes</a></li>
+<li ><a class="fade-in" style="animation-duration:800ms;" data-ajax="false" href="reg_list/afdeling_list.asp">Departments</a></li>
+<li ><a class="fade-in" style="animation-duration:900ms;" data-ajax="false" href="reg/nextstep_agenda_dropdown_page.asp">Agenda points</a></li>
 
 <!--<li><a data-ajax="false" href="reg_list/company_list.asp">Company list</a></li>
 <li><a data-ajax="false" href="reg/company_page.asp?action=create">Add a company </a></li>-->
@@ -86,19 +112,7 @@ End If
 </ul>
 <!--#include file="shared/header_1.asp"-->
 <!--#include file="shared/footer.asp"-->
-<ul data-role="listview" data-inset="false" data-filter="false">
 
-<%if done=0 then%>
-<p>Ongoing job:</p>
-<li>
-<!--Customer:<b><%'=kundenavn%></b><br>-->
-Job:<b><%=job_dk%></b><br>
-Start date:<b><%=FormatDateTime(starttid,2)%></b><br>
-Start time:<b><%=FormatDateTime(starttid,4)%></b><br>
-</li>
-
-</ul>
-<%end if%>
 </body>
 
 </html>
