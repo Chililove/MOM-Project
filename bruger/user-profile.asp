@@ -22,20 +22,20 @@ If LEN(id_login) > 0 Then
         ' Display user data
 %>
 <div class="overall-container">
-    <div class="user-upcoming-container">
+    <div class="user-upcoming-container fade-in" style="animation-duration:700ms;">
             <div class="user-profile">
                 <div class="companyname">
-                <img src="login/orangedude.png" alt="User Avatar" class="user-avatar">
+                    <img src="login/orangedude.png" alt="User Avatar" class="user-avatar">
                     <h2><%= rs("company_name") %></h2>
+                </div>
+
+                <div class="user-info">
+                    <h3 style="margin: 2;"><%= rs("fornavn") & " " & rs("efternavn") %></h3>
+                    <p>Email: <%= rs("mailadresse") %></p>
+                    <p><%= rs("login") %></p>
+                    <button onclick="location.href='bruger/bruger.asp?default=yes&action=ret&id_login=<%=id_login%>'" class="edit-profile-button">Edit</button>
 
                 </div>
-                    <div class="user-info">
-                        <h3 style="margin: 2;"><%= rs("fornavn") & " " & rs("efternavn") %></h3>
-                        <p>Email: <%= rs("mailadresse") %></p>
-                        <p><%= rs("login") %></p>
-                        <button onclick="location.href='bruger/bruger.asp?action=ret&id_login=<%=id_login%>'" class="edit-profile-button">Edit</button>
-
-                    </div>
 
             </div>
     </div>
@@ -61,11 +61,13 @@ If LEN(id_login) > 0 Then
     If Not rs.EOF Then
         ' Display upcoming meeting data
 %>
-    <div class="upcoming-meeting-container">
-        <div class="upcoming-meeting-box">
-            <h2 style="font-size: 20px !important;">Upcoming Meeting</h2>
-            <p><strong>Agenda:</strong> <%= rs("moede_navn") %></p>
-            <p><strong>Deadline:</strong><%= FormatDateTime(rs("moede_dato")) %>&nbsp;|&nbsp;<%= FormatTime(rs("moede_tidspunkt")) %></p>
+    <div class="fade-in" style="animation-duration:800ms;">
+        <div class="upcoming-meeting-container" style="animation-delay:800ms;">
+            <div class="upcoming-meeting-box">
+                <h2 style="font-size: 20px !important;">Upcoming Meeting</h2>
+                <p><strong>Agenda:</strong> <%= rs("moede_navn") %></p>
+                <p><strong>Deadline:</strong><%= FormatDateTime(rs("moede_dato")) %>&nbsp;|&nbsp;<%= FormatTime(rs("moede_tidspunkt")) %></p>
+            </div>
         </div>
     </div>
 </div>
@@ -111,7 +113,7 @@ End Function
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
     max-height: 200px;
-    animation: fadeIn 2s ease; 
+    /* animation: fadeIn 2s ease;  */
 
     
 }
@@ -175,8 +177,8 @@ End Function
 .upcoming-meeting-box {
     flex: 0.4;
     max-width: 250px;
-    background-color: #f9f9f9;
     margin-left: 20px;
+
     
 
 }
@@ -191,10 +193,27 @@ End Function
     margin-left: 53px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd; 
-    animation: fadeIn 2s ease-in-out forwards, pulsate 2s ease 3;
-    animation-duration: 2s;
+    animation: pulsate 2s ease 3, changeColor 4s ease 0s 1 normal forwards;
    
 
+}
+
+@keyframes changeColor {
+    0% {
+        background-color: transparent;
+    }
+    25% {
+        background-color: orange;
+    }
+    50% {
+        background-color: transparent;
+    }
+    75% {
+        background-color: orange;
+    }
+    100% {
+        background-color: transparent;
+    }
 }
 
 @keyframes pulsate {

@@ -174,7 +174,11 @@ On Error GoTo 0
 End If
 'Response.Write("Received login: " & Request.Form("login"))
 
-response.redirect "default.asp"
+if request.querystring("default")="yes" then
+response.redirect "../default.asp"
+else
+response.redirect "./default.asp"
+end if
 
 %>
 	</BODY>
