@@ -1,6 +1,5 @@
 ﻿<!--#include file="../login/protect.inc"-->
 <!--#include file="../opendb.asp"-->
-<!--#include file="../shared/global.css"-->
 <html>
 <%
 ' Check if the user is an administrator

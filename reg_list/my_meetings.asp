@@ -155,7 +155,14 @@ $(document).ready(function() {
     }
 });
 </script>
-  
+     <%
+Function FormatTime(time)
+    Dim timeString
+    timeString = CStr(time)
+    FormatTime = Left(timeString, 5)
+End Function
+
+%>
 <style>
           @keyframes fadeIn {
     0% {

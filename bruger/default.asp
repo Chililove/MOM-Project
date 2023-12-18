@@ -32,6 +32,7 @@
     color: grey; 
     border-radius: 5px; /* Rounded corners */
     text-decoration: none;
+	animation: fadeIn 2s ease;
   }
 
   /* Hover effect for the smaller button */
@@ -78,7 +79,7 @@ response.redirect("/default.asp") %>
   </div>
 				<li data-role="list-divider">
 					<table style="width: 100%">
-						<tr style="text-align: left">
+						<tr style="text-align: left;">
 							<th style="width: 20%">Login</th>
 
 							<th style="width: 20%">Fornavn</th>

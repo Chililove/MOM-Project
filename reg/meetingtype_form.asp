@@ -29,7 +29,7 @@ $(document).ready(function() {
         var idValue = id
         
         if (idValue !== null) {
-            var firstConfirm = window.confirm("Are you sure you want to delete this user?");
+            var firstConfirm = window.confirm("Are you sure you want to delete this meeting type?");
             
             if (firstConfirm) {
             var secondConfirm = window.confirm("This action is irreversible. Are you absolutely sure?");
@@ -112,8 +112,9 @@ End If
     <label for="meeting_type">Please fill out this form to create a new meetingtype:</label>
 <%end if%>
     <!-- Why do i get the name of the field back instead of the id?? -->
+    <tr>
     <input type="text" id="meeting_type" name="meeting_type" value="<%=meeting_type%>" required>
-
+    </tr>
      <% If Request.QueryString("action") = "update" Then %>
         <input type="hidden" name="id_meetingtype" value="<%=id_meetingtype%>">
 

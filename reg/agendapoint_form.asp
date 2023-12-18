@@ -397,17 +397,18 @@
                             <div class="user-list">
                                 <% SQL3 = "SELECT * FROM tbllogin WHERE id_company = '" & session("id_company") & "' ORDER BY id_login"
                                     Set objRS3 = conn.Execute(SQL3)
-
                                     While Not objRS3.EOF
                                         If Request("action") = "show" Then
                                         participants = Split(rs("id_login"), ",")
                                         checked = "" 
+                                    If Not IsNull(rs("id_login"))=true And rs("id_login") <> "" Then 
                                             For Each participant In participants
                                                 If Trim(CStr(participant)) = Trim(CStr(objRS3("id_login"))) Then
                                                     checked = "checked"
                                                     Exit For ' exit the loop if a match is found
                                                 End If
                                             Next
+                                        End If
                                         End If %>
                                         <div class="label-container">
                                             <label class="user-item">
@@ -437,7 +438,7 @@
                 <% else %>
                     <input name="Submit2" type="submit" value="Create new agenda point" data-theme="a" data-icon="check">
                 <%end if %>
-                <!--This is how I can save multiple users to an agenda - There is for sure a better way to do this.. I just don't-->
+                <!--This is how I can save multiple users to an agenda -->
                 <%If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
                         Dim selectedUsersPoints
                         selectedUsersPoints = Request.Form("id_login")

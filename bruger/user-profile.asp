@@ -125,7 +125,7 @@ End Function
     }
 }
 
-/* Usage: Apply fadeIn animation to an element */
+/* applying  fadeIn animation to element */
 .element {
     animation: fadeIn 2s ease-in-out;
 }
