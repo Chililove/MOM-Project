@@ -1,4 +1,5 @@
 <!--#include file="../login/protect.inc"-->
+<!--#include file="../opendb.asp"-->
 
 <!DOCTYPE>
 <html>
@@ -26,8 +27,26 @@
             <a class="ui-btn-right" href="http://mom.main-solution.dk/login/login.asp" data-ajax="false" data-icon="power">logoff</a>
     </div>
 <body>
-<!--#include file="../opendb.asp"-->
-<%
+
+<div data-role="header" data-id="header" data-position="fixed">
+		<h1>Assigned meetings</h1>
+			<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">
+				Home
+			</a>
+	</div>
+
+<div id="savedmeeting-Container">
+   <h3 id="savedmeetingTitle" style="margin-left: .4%; animation: fadeIn 2s ease;">Assigned to these meetings<span id="selectedSavedmeeting" style="font-size: 16px !important;"></span></h3>
+    <table class="savedmeeting-table" style="width: 100%; background-color: #E9E9E9; padding: .5%;" >
+        <tr style="text-align: left;">
+            <th style="width: 25%">Meeting name</th>
+            <th style="width: 25%">Date</th>
+            <th style="width: 25%">Time</th>
+        </tr>
+    </table>
+    <ul id="savedmeetingList" data-role="listview" data-inset="false">
+       
+       <%
 dim id_login, id_company
 	id_login = session("id_login")
 id_company = session("id_company")
@@ -38,56 +57,57 @@ If session("administrator") = True Then
 Else
     sql = "SELECT * FROM qrysaved_meetings WHERE id_company ='" & session("id_company") & "' AND id_agenda IN (SELECT id_agenda FROM tbl_agenda WHERE participants LIKE '%" & session("id_login") & "%')"
 End If
+        ' Create a Command object and set its properties
+        Set cmd = Server.CreateObject("ADODB.Command")
+        Set cmd.ActiveConnection = conn
+        cmd.CommandText = SQL
+        ' Creating a Recordset object and i open it using the Command object
+        'response.write SQL
+        Set rs = cmd.Execute
 
-set rs=conn.execute(sql)
-%>
-
-<ul data-role="listview" data-inset="false" data-filter="false">
-				
-<%
-if not rs.eof then
-%>
-<%
-do while not rs.eof
-%>
-<li style="animation: fadeIn 2s ease;"id="agenda-<%=rs("id_agenda")%>">
-			<!--	<a data-ajax="false" href='../reg_list/list_my.asp?oprettetdato=<%'=rs(("oprettetdato_string"))%>'> -->
-    <a data-ajax="false" href='../reg/list_my.asp?action=show&amp;id_agenda=<%=rs("id_agenda")%>'>	
-        <table style="width: 100%;">
-	        <tr>             
-                <td style="width: 20%; padding-left: 10px;">  <%=FormatDateTime(rs("moede_dato"))%> <br> <%= FormatTime(rs("moede_tidspunkt"))%> <br> </td>
-                <td style="width: 40%; font-weight: bold;"> <%=rs("moede_navn")%> </td>
-		    </tr>
-               <!-- Your delete button for each agenda -->
+        ' Check if the recordset is not empty before entering the loop
+        If Not rs.EOF Then
+            ' if the Recordset is not empty, so enter the loop
+            Do While Not rs.EOF
+        %>
+        <li style="animation: fadeIn 2s ease;" data-agenda-id="<%=rs("id_agenda")%>">
+            <a data-ajax="false" href='../reg/list_my.asp?action=show&amp;id_agenda=<%=rs("id_agenda")%>&source=page1'>
+                <table style="width: 100%">  
+                    <tr>
+                        <td style="width: 25%"><%=rs("moede_navn")%></td>
+                        <td style="width: 25%"><%=FormatDateTime(rs("moede_dato"))%></td>
+                        
+                    </tr>
+                      <!-- Delete button for each agenda -->
                <% If session("administrator") = True Then %>
-<button class="delete-button" data-id="<%=rs("id_agenda")%>">Delete</button>
+            <button onclick='del("<%=rs("id_agenda")%>")' class="delete-button" >Delete</button>
 <%end if%>
-        </table>
-         
-    </a>
+                </table>
+            </a>
+        </li>
+        <%
+                rs.MoveNext
+            Loop
+        Else
+            ' Recordset is empty, display a message to the user
+        %>
+        <li>
+            <span>No data</span>
+        </li>
+        <%
+        End If
 
-</li>
-
-<%
- rs.movenext
-loop
-%> 
-<%
-else
-%>
-<h3>None</h3>
-<%
-end if 
-%>
-</ul>
-
-<!-- Delete confirmation dialog -->
-<div id="delete-confirmation" title="Confirm Delete" style="background-color:#f9f9f9; color:#333;">
+        ' Close the recordset
+        rs.Close
+        Set rs = Nothing
+        %>
+    </ul>
+    <!--<div id="delete-confirmation" title="Confirm Delete" style="background-color:#f9f9f9; color:#333;">
  
         Are you sure you want to delete this agenda?
 
 
-</div>
+</div>-->
 
 <script>
 $(document).ready(function() {
@@ -162,19 +182,110 @@ $(document).ready(function() {
         });
     }
 });
-
 </script>
-    <%
-Function FormatTime(time)
-    Dim timeString
-    timeString = CStr(time)
-    FormatTime = Left(timeString, 5)
-End Function
+</div>
+<script>
+function redirectToNextPage() {
+    var selectedAgendaId = document.getElementById("id_agenda").value;
+    if (selectedAgendaId) {
+        // Redirect to the next page with the selected agenda ID
+        window.location.href = "agendapoint_page.asp?id_agenda=" + selectedAgendaId + "&action=newpoint";
+    } else {
+        alert("Please select a meeting before proceeding.");
+    }
+}
 
-%>
+function updateAgendaTitle() {
+    var selectedAgendaName = document.getElementById("id_agenda").options[document.getElementById("id_agenda").selectedIndex].getAttribute("data-agenda-name");
+    var selectedAgendaNameSpan = document.getElementById("selectedAgendaName");
+    
+    if (selectedAgendaNameSpan) {
+        selectedAgendaNameSpan.innerText = selectedAgendaName;
+    }
+    
+    var agendaTitle = document.getElementById("agendaTitle");
+    if (agendaTitle) {
+        agendaTitle.innerText = "Existing agenda Points for: " + selectedAgendaName;
+    }
+}
+
+function filterAgendaPoints() {
+    var selectedAgendaId = document.getElementById("id_agenda").value;
+    var agendaPoints = document.querySelectorAll("#agendaList li");
+
+    // Hide all agenda points initially
+    for (var i = 0; i < agendaPoints.length; i++) {
+        agendaPoints[i].style.display = "none";
+    }
+
+    // Show only agenda points for the selected agenda
+    if (selectedAgendaId) {
+        var selectedAgendaPoints = document.querySelectorAll("#agendaList li[data-agenda-id='" + selectedAgendaId + "']");
+        for (var j = 0; j < selectedAgendaPoints.length; j++) {
+            selectedAgendaPoints[j].style.display = "block";
+        }
+    }
+}
+</script>
+</body>
+
 <style>
 
-    @keyframes fadeIn {
+   .savedmeeting-table{
+    animation: fadeIn 2s ease;
+}
+   /* Style for the smaller button */
+  .small-button-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1% 1%;
+    animation: fadeIn 2s ease;
+  }
+
+  .small-button {
+    padding: .6% 2%; /* Adjust padding to control button size */
+    background-color: #E9E9E9; 
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none;
+    margin-bottom: .5%;
+  }
+
+  /* Hover effect for the smaller button */
+  .small-button:hover {
+    background-color: transparent;
+    text-decoration: none;
+	  box-shadow: 0px 4px 6px rgba(0, 0, 0.2, 0.2);
+
+  }
+
+  /* Style for the plus sign */
+  .plus-sign::before {
+    content: "+"; /* Content is a plus sign */
+    font-weight: bold;
+    margin-right: 5px; /* Add spacing between plus sign and text */
+  }
+
+a {
+            text-decoration: none;
+            color: blue;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .delete-button {
+           max-width: 100px;
+           float: right;
+        }
+
+        .confirm-dialog{
+
+            z-index: 1000;
+        }
+
+  @keyframes fadeIn {
     0% {
         opacity: 0;
     }
