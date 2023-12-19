@@ -253,6 +253,58 @@
 		z-index: 100;
 	}
 
+	
+  @keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+          @keyframes fadeInLogo {
+  0% {
+    opacity: 1; /* Start with 0% opacity */
+    transform: scale(1); 
+  }
+  100% {
+    opacity: 1; /* End with 100% opacity */
+    transform: scale(0.8); /* End with original scale (1) */
+  }
+}
+
+#logo{
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 1000px;
+
+}
+
+#imglogo{
+  height: 20%;
+  width: 20%;
+  transform: scale(0.8);
+  animation: fadeInLogo 2s ease;
+  margin-top: -4.9%;
+  
+}
+@media (max-width: 800px) {
+  #imglogo img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
+}
+
+/* applying  fadeIn animation to element */
+.element {
+    animation: fadeIn 2s ease-in-out;
+}
+
 </style>
 
 </head>
@@ -300,10 +352,10 @@
 			id_login=rs("id_login")
 			id_company=rs("id_company")
 			'For showing that I get the right converted data back from db
-			response.write("Converted date: " & moede_dato & "<br>")
-			response.write("Converted time: " & moede_tidspunkt & "<br>")
-			response.write("Companyid: " & id_company & "<br>")
-			response.write("id_meetingtype: " & id_meetingtype & "<br>")
+			'response.write("Converted date: " & moede_dato & "<br>")
+			'response.write("Converted time: " & moede_tidspunkt & "<br>")
+			'response.write("Companyid: " & id_company & "<br>")
+			'response.write("id_meetingtype: " & id_meetingtype & "<br>")
 
 			
 		%>
@@ -321,6 +373,13 @@
 	<% end if %>
 	<% end if %>
 	style="position: relative;">
+
+<%if Request.QueryString("action") = "edit" then%>
+	<h2 style="padding: 3%; height: .5px; text-align: center; animation-duration: 1s;" class="fade-in">Edit agenda here</h2>
+<%else%>
+	<h2 style="padding: 3%; height: .5px; text-align: center; animation-duration: 1s;" class="fade-in">Add new agenda here</h2>
+<%end if%>
+
 			<table align="center" style="width: 50%">
 			<!-- Møde dato og tid-->
 				<tr>
@@ -637,7 +696,9 @@
 					</td>
 				</tr>
 			</table>
-
+<div id="logo">
+                <img id="imglogo"src="../Login/Game-On.png" />
+            </div>	
 
 <script>
 $(document).ready(function() {

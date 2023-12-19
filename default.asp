@@ -3,7 +3,7 @@
 <!DOCTYPE>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>MoM</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="jquery/jquery.mobile-1.4.5.css">
@@ -63,6 +63,7 @@
 
 
 <!--#include file="bruger/user-profile.asp"-->
+<!--#include file="bruger/user-profile1.asp"-->
 
 
 
@@ -81,12 +82,12 @@ End If
 <ul data-role="listview" >
 				
 <li ><a class="fade-in" style="animation-duration:100ms;" href="reg/start_timer.asp?action=newday" data-ajax="false">Start agenda registration</a></li>
-<li ><a class="fade-in" style="animation-duration:500ms;" data-ajax="false" href="reg_list/my_meetings.asp">My meetings</a></li>
-<li ><a class="fade-in" style="animation-duration:400ms;" data-ajax="false" href="reg_list/saved_meetings.asp">Assigned meetings</a></li>
+<li ><a class="fade-in" style="animation-duration:200ms;" data-ajax="false" href="reg_list/my_meetings.asp">My meetings</a></li>
+<li ><a class="fade-in" style="animation-duration:300ms;" data-ajax="false" href="reg_list/saved_meetings.asp">Assigned meetings</a></li>
 <%if session("administrator")=true then%>
-<li ><a class="fade-in" style="animation-duration:500ms;" data-ajax="false" href="reg_list/all_meetings.asp">All meetings in the company</a></li>
+<li ><a class="fade-in" style="animation-duration:400ms;" data-ajax="false" href="reg_list/all_meetings.asp">All meetings in the company</a></li>
  <%end if %>
-<li ><a class="fade-in" style="animation-duration:900ms;" data-ajax="false" href="reg/nextstep_agenda_dropdown_page.asp">Agenda points</a></li>
+<li ><a class="fade-in" style="animation-duration:500ms;" data-ajax="false" href="reg/nextstep_agenda_dropdown_page.asp">Agenda points</a></li>
 
 <%if session("administrator")=true then%>
 <li ><a class="fade-in" style="animation-duration:600ms;" data-ajax="false" href="bruger/">User list</a></li>
