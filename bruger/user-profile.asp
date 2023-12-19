@@ -34,10 +34,8 @@ If LEN(id_login) > 0 Then
                     <p>Email: <%= rs("mailadresse") %></p>
                     <p><%= rs("login") %></p>
                     <button onclick="location.href='bruger/bruger.asp?default=yes&action=ret&id_login=<%=id_login%>'" class="edit-profile-button">Edit</button>
-
                 </div>
-
-            </div>
+            </div>        
     </div>
 <%
     Else
@@ -48,7 +46,9 @@ If LEN(id_login) > 0 Then
     rs.Close
     Set rs = Nothing
     Set cmd = Nothing
-
+%>
+ 
+<%
     ' Create the SQL command to retrieve the upcoming meeting data
     Set cmd = Server.CreateObject("ADODB.Command")
     With cmd
@@ -61,6 +61,9 @@ If LEN(id_login) > 0 Then
     If Not rs.EOF Then
         ' Display upcoming meeting data
 %>
+ <div id='logo' style="display: flex; align-items: center; justify-content: center;">
+        <img id="imglogo"src="../Login/Game-On.png" />
+    </div>
     <div class="fade-in" style="animation-duration:800ms;">
         <div class="upcoming-meeting-container" style="animation-delay:800ms;">
             <div class="upcoming-meeting-box">
@@ -96,6 +99,7 @@ End Function
 <style>
 .overall-container{
        display: flex;
+       flex-wrap: wrap;
     justify-content: space-between;
     align-items: flex-start;
     max-width: 900px; /* Adjust the maximum width as needed */
@@ -104,18 +108,43 @@ End Function
 
  .user-upcoming-container {
     flex: 1;
+    flex-grow: 1;
     padding: 8px;
-    max-width: 500px;
+    max-width: calc(50% - 80px); /* Adjust the maximum width for this container */
     border-radius: 8px;
     background-color: #f9f9f9;
     margin-top: 25px;
-    margin-bottom: 14px;
+    margin-bottom: 25px;
+    margin-left: -240px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
     max-height: 200px;
     /* animation: fadeIn 2s ease;  */
 
     
+}
+
+#logo{
+display: flex;
+justify-content: center;
+align-items: center;
+
+}
+
+#imglogo{
+  position: absolute;
+  height: 350px;
+  width: 350px;
+  top: 0;
+}
+@media (max-width: 800px) {
+  #imglogo img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
 }
 
 @keyframes fadeIn {
@@ -153,7 +182,7 @@ End Function
 
 .user-profile {
     padding: 8px;
-    max-width: 250px;
+    max-width: 400px;
     border-radius: 8px;
     background-color: #f9f9f9;
     margin-top: 12px;
@@ -185,12 +214,13 @@ End Function
 
 .upcoming-meeting-container{
     flex: 1;
+    flex-grow: 1;
     padding: 8px;
     max-width: 250px;
     border-radius: 8px;
     background-color: #f9f9f9;
-    margin-top: 48px;
-    margin-left: 53px;
+    margin-top: 25px;
+    margin-right: -240px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd; 
     animation: pulsate 2s ease 3, changeColor 4s ease 0s 1 normal forwards;
@@ -308,10 +338,10 @@ End Function
     text-decoration: none;
     border-radius: 5px;
     font-size: 14px;
+    margin-left: 240px;
     border: none; 
     cursor: pointer; 
     width: auto; 
-    margin-left: 380px;
     margin-top: -7px;
     
 }

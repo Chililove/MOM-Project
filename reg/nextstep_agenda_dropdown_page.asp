@@ -70,6 +70,25 @@
     margin-right: 5px; /* Add spacing between plus sign and text */
   }
 
+a {
+            text-decoration: none;
+            color: blue;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .delete-button {
+           max-width: 100px;
+           float: right;
+        }
+
+        .confirm-dialog{
+
+            z-index: 1000;
+        }
+
   @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -100,6 +119,7 @@
             Dim moede_navn
             id_agenda = objRS3("id_agenda")
             moede_navn = objRS3("moede_navn")
+
         %>
         <option value="<%=id_agenda%>" data-agenda-name="<%=moede_navn%>"><%=moede_navn%></option>
         <% 
@@ -135,7 +155,7 @@
         Set cmd = Server.CreateObject("ADODB.Command")
         Set cmd.ActiveConnection = conn
         cmd.CommandText = SQL
-        ' Create a Recordset object and open it using the Command object
+        ' Creating a Recordset object and i open it using the Command object
         'response.write SQL
         Set rs = cmd.Execute
 
@@ -149,7 +169,8 @@
                 <table style="width: 100%">  
                     <tr>
                         <td style="width: 25%"><%=rs("point_name")%></td>
-                        <td style="width: 25%"><%=rs("dato")%></td>
+                        <td style="width: 25%"><%=FormatDateTime(rs("dato"))%></td>
+                        
                     </tr>
                       <!-- Delete button for each agenda -->
                <% If session("administrator") = True Then %>
