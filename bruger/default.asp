@@ -51,7 +51,53 @@
     margin-right: 5px; /* Add spacing between plus sign and text */
   }
 
+    @keyframes fadeInLogo {
+  0% {
+    opacity: 0; /* Start with 0% opacity */
+    transform: scale(1); /* Start slightly scaled down */
+  }
+  100% {
+    opacity: 1; /* End with 100% opacity */
+    transform: scale(0.8); /* End with original scale (1) */
+  }
+}
+
+#logo{
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 1000px;
+margin-right: 900px;
+
+}
+
+#imglogo{
+  height: 500px;
+  width: 500px;
+  margin-right: 250px;
+  margin-top: -150px;
+  transform: scale(0.8);
+  margin-bottom: -120px;
+  animation: fadeInLogo 2s ease;
+  
+}
+@media (max-width: 800px) {
+  #imglogo img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
+}
+
+/* applying  fadeIn animation to element */
+.element {
+    animation: fadeIn 2s ease-in-out;
+}
+
   </style>
+ 
 <body>
 	<div data-role="header" data-id="header" data-position="fixed">
 		<h1>Users</h1>
@@ -72,6 +118,9 @@ set rs=conn.execute(sql)
 response.redirect("/default.asp") %>
 <%End if%>
 	<ul data-role="listview" data-inset="false" data-filter="true">
+		 <div id="logo">
+        <img id="imglogo"src="../Login/Game-On.png" />
+    </div>
 	<div class="small-button-container">
 <!--<h2>Check out your meetingtypes here</h2>-->
     <a class="small-button" data-ajax="false" href="../bruger/bruger.asp?action=opret">

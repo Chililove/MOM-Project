@@ -20,7 +20,6 @@
 <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
 
 </head>
-
     <div data-role="header" data-id="header" data-position="fixed">
         <h1 >List of meetings assigned</h1>
             <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
@@ -35,7 +34,10 @@
 			</a>
 	</div>
 
-<div id="savedmeeting-Container">
+<div id="savedmeeting-Container" data-filter="true">
+<div id="logo">
+        <img id="imglogo"src="../Login/Game-On.png" />
+    </div>
    <h3 id="savedmeetingTitle" style="margin-left: .4%; animation: fadeIn 2s ease;">Assigned to these meetings<span id="selectedSavedmeeting" style="font-size: 16px !important;"></span></h3>
     <table class="savedmeeting-table" style="width: 100%; background-color: #E9E9E9; padding: .5%;" >
         <tr style="text-align: left;">
@@ -230,6 +232,51 @@ function filterAgendaPoints() {
 </body>
 
 <style>
+
+          @keyframes fadeInLogo {
+  0% {
+    opacity: 0; /* Start with 0% opacity */
+    transform: scale(1); /* Start slightly scaled down */
+  }
+  100% {
+    opacity: 1; /* End with 100% opacity */
+    transform: scale(0.8); /* End with original scale (1) */
+  }
+}
+
+#logo{
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 1000px;
+margin-right: 900px;
+
+}
+
+#imglogo{
+  height: 500px;
+  width: 500px;
+  margin-right: 250px;
+  margin-top: -150px;
+  transform: scale(0.8);
+  margin-bottom: -120px;
+  animation: fadeInLogo 2s ease;
+  
+}
+@media (max-width: 800px) {
+  #imglogo img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
+}
+
+/* applying  fadeIn animation to element */
+.element {
+    animation: fadeIn 2s ease-in-out;
+}
 
    .savedmeeting-table{
     animation: fadeIn 2s ease;

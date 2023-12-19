@@ -97,8 +97,52 @@ a {
         opacity: 1;
     }
 }
-</style>
 
+      @keyframes fadeInLogo {
+  0% {
+    opacity: 0; /* Start with 0% opacity */
+    transform: scale(1); /* Start slightly scaled down */
+  }
+  100% {
+    opacity: 1; /* End with 100% opacity */
+    transform: scale(0.8); /* End with original scale (1) */
+  }
+}
+
+  #logo{
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 1000px;
+margin-right: 900px;
+
+}
+
+#imglogo{
+  height: 500px;
+  width: 500px;
+  margin-right: 250px;
+  margin-top: -260px;
+  transform: scale(0.8);
+  margin-bottom: -120px;
+  animation: fadeInLogo 2s ease;
+  
+}
+@media (max-width: 800px) {
+  #imglogo img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
+}
+
+/* applying  fadeIn animation to element */
+.element {
+    animation: fadeIn 2s ease-in-out;
+}
+</style>
 <body>
 <div data-role="header" data-id="header" data-position="fixed">
 		<h1>Agenda points</h1>
@@ -107,6 +151,8 @@ a {
 			</a>
 	</div>
 
+
+<div id="agendaPointsContainer" data-filter="true">
 <div style="display:flex; justify-content:center; align-items: center; margin-top: 3.5%; margin-left: 1%; margin-right: 1%; animation: fadeIn 2s ease; ">
     <select id="id_agenda" required onchange="updateAgendaTitle(); filterAgendaPoints();">
         <option value="">Select a meeting</option>
@@ -131,22 +177,24 @@ a {
     </select>
 
 </div>
-<div id="agendaPointsContainer">
+<div id="logo">
+        <img id="imglogo"src="../Login/Game-On.png" />
+    </div>
  <div class="small-button-container">
-<!--<h2>Add your agendapoints here</h2>-->
     <a class="small-button" data-ajax="false" onclick="redirectToNextPage()">
       <span class="plus-sign"></span> Add an agenda point
     </a>
   </div>
+
     <h3 id="agendaTitle" style="margin-left: .4%; animation: fadeIn 2s ease;">Existing agendapoints<span id="selectedAgendaName" style="font-size: 16px !important;"></span></h3>
-    <table class="agenda-table" style="width: 100%; background-color: #E9E9E9; padding: .5%;" >
+    <table class="agenda-table" style="width: 100%; background-color: #E9E9E9; padding: .5%;" data-filter="true">
         <tr style="text-align: left;">
             <th style="width: 25%">Point</th>
             <th style="width: 25%">Date</th>
             <th style="width: 25%">Assigned</th>
         </tr>
     </table>
-    <ul id="agendaList" data-role="listview" data-inset="false">
+    <ul id="agendaList" data-role="listview" data-inset="false" >
         <% 
         ' Initialize your database query
         SQL = "SELECT * FROM tbl_agendapoints" ' Fetch all agenda points

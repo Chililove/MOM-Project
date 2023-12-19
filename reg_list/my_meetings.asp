@@ -19,7 +19,6 @@
 <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
 
 </head>
-
     <div data-role="header" data-id="header" data-position="fixed">
         <h1 >Created meetings</h1>
             <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
@@ -34,7 +33,10 @@
 			</a>
 	</div>
 
-<div id="agenda-Container">
+<div id="agenda-Container" data-filter="true">
+<div id="logo">
+        <img id="imglogo"src="../Login/Game-On.png" />
+    </div>
    <h3 id="agendaTitle" style="margin-left: .4%; animation: fadeIn 2s ease;">Created these meetings<span id="selectedAgendaId" style="font-size: 16px !important;"></span></h3>
     <table class="agenda-table" style="width: 100%; background-color: #E9E9E9; padding: .5%;" >
         <tr style="text-align: left;">
@@ -71,7 +73,7 @@ End If
             Do While Not rs.EOF
         %>
         <li style="animation: fadeIn 2s ease;" data-agenda-id="<%=rs("id_agenda")%>">
-            <a data-ajax="false" href='../reg/list_my.asp?action=show&amp;id_agenda=<%=rs("id_agenda")%>'&source=page1'>
+            <a data-ajax="false" href='../reg/list_my.asp?action=show&amp;id_agenda=<%=rs("id_agenda")%>&source=page1'>
                 <table style="width: 100%">  
                     <tr>
                         <td style="width: 25%"><%=rs("moede_navn")%></td>
@@ -102,12 +104,6 @@ End If
         Set rs = Nothing
         %>
     </ul>
-    <!--<div id="delete-confirmation" title="Confirm Delete" style="background-color:#f9f9f9; color:#333;">
- 
-        Are you sure you want to delete this agenda?
-
-
-</div>-->
 
 <script>
 $(document).ready(function() {
@@ -293,6 +289,51 @@ a {
         opacity: 1;
     }
 }
+
+    @keyframes fadeInLogo {
+  0% {
+    opacity: 0; /* Start with 0% opacity */
+    transform: scale(1); /* Start slightly scaled down */
+  }
+  100% {
+    opacity: 1; /* End with 100% opacity */
+    transform: scale(0.8); /* End with original scale (1) */
+  }
+}
+
+#logo{
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 1000px;
+margin-right: 900px;
+}
+
+#imglogo{
+  height: 500px;
+  width: 500px;
+  margin-right: 250px;
+  margin-top: -150px;
+  transform: scale(0.8);
+  margin-bottom: -120px;
+  animation: fadeInLogo 2s ease;
+  
+}
+@media (max-width: 800px) {
+  #imglogo img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
+}
+
+/* applying  fadeIn animation to element */
+.element {
+    animation: fadeIn 2s ease-in-out;
+}
+
   /* Styles for the list view */
         ul[data-role="listview"] {
             list-style-type: none;

@@ -19,6 +19,53 @@ End If
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
 </head>
 <style>
+
+       @keyframes fadeInLogo {
+  0% {
+    opacity: 0; /* Start with 0% opacity */
+    transform: scale(1); /* Start slightly scaled down */
+  }
+  100% {
+    opacity: 1; /* End with 100% opacity */
+    transform: scale(0.8); /* End with original scale (1) */
+  }
+}
+
+#logo{
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 1000px;
+margin-right: 900px;
+
+}
+
+#imglogo{
+  height: 500px;
+  width: 500px;
+  margin-right: 250px;
+  margin-top: -150px;
+  transform: scale(0.8);
+  margin-bottom: -120px;
+  animation: fadeInLogo 2s ease;
+  
+}
+@media (max-width: 800px) {
+  #imglogo img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
+}
+
+/* applying  fadeIn animation to element */
+.element {
+    animation: fadeIn 2s ease-in-out;
+}
+
+
    /* Style for the smaller button */
   .small-button-container {
     display: flex;
@@ -116,6 +163,9 @@ sql="select * from tblmeeting_type where id_company =  " & session("id_company")
 set rs=conn.execute(sql)
 %>
 	<ul style="animation: fadeIn 2s ease;" data-role="listview" data-inset="false" data-filter="true">
+    <div id="logo">
+        <img id="imglogo"src="../Login/Game-On.png" />
+    </div>
 <h2 style="padding: 1%; height: .5px;">Existing meetingtypes</h2>
 
 <div class="small-button-container">

@@ -83,11 +83,12 @@ End If
 <li ><a class="fade-in" style="animation-duration:100ms;" href="reg/start_timer.asp?action=newday" data-ajax="false">Start agenda registration</a></li>
 <li ><a class="fade-in" style="animation-duration:500ms;" data-ajax="false" href="reg_list/my_meetings.asp">My meetings</a></li>
 <li ><a class="fade-in" style="animation-duration:400ms;" data-ajax="false" href="reg_list/saved_meetings.asp">Assigned meetings</a></li>
-
+<%if session("administrator")=true then%>
+<li ><a class="fade-in" style="animation-duration:500ms;" data-ajax="false" href="reg_list/all_meetings.asp">All meetings in the company</a></li>
+ <%end if %>
 <li ><a class="fade-in" style="animation-duration:900ms;" data-ajax="false" href="reg/nextstep_agenda_dropdown_page.asp">Agenda points</a></li>
 
 <%if session("administrator")=true then%>
-<li ><a class="fade-in" style="animation-duration:500ms;" data-ajax="false" href="reg_list/all_meetings.asp">All meetings</a></li>
 <li ><a class="fade-in" style="animation-duration:600ms;" data-ajax="false" href="bruger/">User list</a></li>
 <li ><a class="fade-in" style="animation-duration:700ms;" data-ajax="false" href="reg_list/meetingtype_list.asp">Meetingtypes</a></li>
 <li ><a class="fade-in" style="animation-duration:800ms;" data-ajax="false" href="reg_list/afdeling_list.asp">Departments</a></li>

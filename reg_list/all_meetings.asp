@@ -1,4 +1,5 @@
 <!--#include file="../login/protect.inc"-->
+<!--#include file="../opendb.asp"-->
 
 <!DOCTYPE>
 <html>
@@ -26,7 +27,6 @@
             <a class="ui-btn-right" href="http://mom.main-solution.dk/login/login.asp" data-ajax="false" data-icon="power">logoff</a>
     </div>
 <body>
-<!--#include file="../opendb.asp"-->
 <%
 dim id_login
 	id_login = session("id_login")

@@ -62,8 +62,8 @@ If LEN(id_login) > 0 Then
         ' Display upcoming meeting data
 %>
 
- <div id='logo'>
-        <img id="imglogo"src="../Login/Game-On.png" />
+ <div id='logo1'>
+        <img id="imglogo1"src="../Login/Game-On.png" />
     </div>
     <div class="fade-in" style="animation-duration:800ms;">
         <div class="upcoming-meeting-container" style="animation-delay:800ms;">
@@ -125,7 +125,7 @@ End Function
     
 }
 
-#logo{
+#logo1{
 display: flex;
 justify-content: center;
 align-items: center;
@@ -144,7 +144,7 @@ perspective: 1000px;
   }
 }
 
-#imglogo{
+#imglogo1{
   height: 500px;
   width: 500px;
   margin-right: 155px;
@@ -155,7 +155,7 @@ perspective: 1000px;
   
 }
 @media (max-width: 800px) {
-  #imglogo img {
+  #imglogo1 img {
     left: 50%;
     top: 25%;
     transform: translate(-50%, -50%);
