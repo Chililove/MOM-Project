@@ -1,12 +1,13 @@
 ﻿<!--#include file="../login/protect.inc"-->
 <!--#include file="../opendb.asp"-->
-<html>
 <%
 ' Check if the user is an administrator
-If Not session("administrator") Then
-    Response.Redirect("access_denied.asp") ' Change "access_denied.asp" to the appropriate page
-End If
+'If Not session("administrator") Then
+    ' If not an administrator, redirect them to an error page or some other action
+  '  Response.Redirect("../default.asp?accessDenied=true") 
+'End If
 %>
+<html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; chaRset=UTF-8">
 		<title>OneTimer</title>

@@ -61,7 +61,6 @@
 </style>
 <body>
 
-       <!-- <img src="login/orangedude.png" alt="User Avatar" class="user-avatar">  Replace with dynamic avatar if available -->
 
 <!--#include file="bruger/user-profile.asp"-->
 

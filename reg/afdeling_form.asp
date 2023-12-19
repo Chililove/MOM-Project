@@ -89,7 +89,7 @@ End If
 <form id="afdelingForm" method="post" action="save_afdeling.asp?action=create">
 <%end if%>
 <%if Request.QueryString("action") = "update" then%>
-        <label for="afdeling">Please fill out this form edit the department:</label>
+        <label for="afdeling">Please fill out this form to edit the department:</label>
 <%else%>
     <label for="afdeling">Please fill out this form to create a new department:</label>
 <%end if%>

@@ -61,7 +61,8 @@ If LEN(id_login) > 0 Then
     If Not rs.EOF Then
         ' Display upcoming meeting data
 %>
- <div id='logo' style="display: flex; align-items: center; justify-content: center;">
+
+ <div id='logo'>
         <img id="imglogo"src="../Login/Game-On.png" />
     </div>
     <div class="fade-in" style="animation-duration:800ms;">
@@ -128,14 +129,30 @@ End Function
 display: flex;
 justify-content: center;
 align-items: center;
+perspective: 1000px;
 
 }
 
+@keyframes fadeInLogo {
+  0% {
+    opacity: 0; /* Start with 0% opacity */
+    transform: scale(1); /* Start slightly scaled down */
+  }
+  100% {
+    opacity: 1; /* End with 100% opacity */
+    transform: scale(0.8); /* End with original scale (1) */
+  }
+}
+
 #imglogo{
-  position: absolute;
-  height: 350px;
-  width: 350px;
-  top: 0;
+  height: 500px;
+  width: 500px;
+  margin-right: 155px;
+  margin-top: -130px;
+  transform: scale(0.8);
+  margin-bottom: -120px;
+  animation: fadeInLogo 2s ease;
+  
 }
 @media (max-width: 800px) {
   #imglogo img {
