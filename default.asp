@@ -54,14 +54,12 @@
         transform: scale(1);
     }
 }
-/* class="fade-in" style="animation-delay:500ms;" */
+
 .fade-in {
     animation: fade-in 1s;
 }
 </style>
 <body>
-
-<!--#include file="reg/check_sluttid.asp"-->
 
        <!-- <img src="login/orangedude.png" alt="User Avatar" class="user-avatar">  Replace with dynamic avatar if available -->
 
@@ -83,25 +81,17 @@ End If
 
 <ul data-role="listview" >
 				
-<%if done=1 then%>
-<li ><a class="fade-in" style="animation-duration:100ms;" href="reg/start_timer.asp?action=newday" data-ajax="false">Start day registration</a></li>
-<%end if%>
-<%if done<> 1 then%>
-<li ><a class="fade-in" style="animation-duration:200ms;" href="reg/start_timer.asp?action=newjob" data-ajax="false">Start new job registration</a></li>
-
-<li ><a class="fade-in" style="animation-duration:300ms;" href="reg/slut_timer.asp" data-ajax="false">End day registration</a></li>
-<%end if%>
-
-
-<li ><a class="fade-in" style="animation-duration:400ms;" data-ajax="false" href="reg_list/saved_meetings.asp">Saved meetings</a></li>
+<li ><a class="fade-in" style="animation-duration:100ms;" href="reg/start_timer.asp?action=newday" data-ajax="false">Start agenda registration</a></li>
 <li ><a class="fade-in" style="animation-duration:500ms;" data-ajax="false" href="reg_list/my_meetings.asp">My meetings</a></li>
+<li ><a class="fade-in" style="animation-duration:400ms;" data-ajax="false" href="reg_list/saved_meetings.asp">Assigned meetings</a></li>
 
+<li ><a class="fade-in" style="animation-duration:900ms;" data-ajax="false" href="reg/nextstep_agenda_dropdown_page.asp">Agenda points</a></li>
 
-<%if session("administrator")=true then%>				
+<%if session("administrator")=true then%>
+<li ><a class="fade-in" style="animation-duration:500ms;" data-ajax="false" href="reg_list/all_meetings.asp">All meetings</a></li>
 <li ><a class="fade-in" style="animation-duration:600ms;" data-ajax="false" href="bruger/">User list</a></li>
 <li ><a class="fade-in" style="animation-duration:700ms;" data-ajax="false" href="reg_list/meetingtype_list.asp">Meetingtypes</a></li>
 <li ><a class="fade-in" style="animation-duration:800ms;" data-ajax="false" href="reg_list/afdeling_list.asp">Departments</a></li>
-<li ><a class="fade-in" style="animation-duration:900ms;" data-ajax="false" href="reg/nextstep_agenda_dropdown_page.asp">Agenda points</a></li>
 
 <!--<li><a data-ajax="false" href="reg_list/company_list.asp">Company list</a></li>
 <li><a data-ajax="false" href="reg/company_page.asp?action=create">Add a company </a></li>-->
