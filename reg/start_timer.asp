@@ -1,6 +1,5 @@
 ﻿<!--#include file="../login/protect.inc"-->
 <!--#include file="../opendb.asp"-->
-<!--#include file="check_sluttid.asp"-->
 <!DOCTYPE>
 <html>
 
