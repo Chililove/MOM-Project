@@ -16,6 +16,22 @@
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
 <style>
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fade-in 1s;
+}
+
 	label.error {
 	color: red;
 	font-size: 16px;
@@ -259,6 +275,55 @@
             z-index: 100;
         }
 
+  @keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+          @keyframes fadeInLogo {
+  0% {
+    opacity: 1; /* Start with 0% opacity */
+    transform: scale(1); 
+  }
+  100% {
+    opacity: 1; /* End with 100% opacity */
+    transform: scale(0.8); /* End with original scale (1) */
+  }
+}
+
+#logo{
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 1000px;
+
+}
+
+#imglogo{
+  height: 20%;
+  width: 20%;
+  transform: scale(0.8);
+  animation: fadeInLogo 2s ease;
+  
+}
+@media (max-width: 800px) {
+  #imglogo img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
+}
+
+/* applying  fadeIn animation to element */
+.element {
+    animation: fadeIn 2s ease-in-out;
+}
 </style>
 
 </head>
@@ -286,9 +351,11 @@
             response.write("Companyid: " & id_company & "<br>")
 
         end if %>
+         <h2 style="height: .5px; text-align: center; padding: 3%;">Submit agenda point</h2>
+
 <table align="center" style="width: 50%">
     <!-- Møde dato og tid-->
-        <tr>
+        <tr class="fade-in" style="animation-duration: 200ms;">
             <td style="text-align: center">
                 <div style="display:flex;">
                     <div style="width:50%">Deadline date
@@ -309,7 +376,7 @@
             </td>
         </tr>
     <!-- Møde navn -->
-        <tr>
+        <tr class="fade-in" style="animation-duration: 300ms;">
             <th style="text-align: center">Name of agendapoint</th>
 
             <% Function ConvertDateFormat(inputDate)
@@ -339,7 +406,7 @@
         </tr>
 
     <!-- Møde punkt -->
-        <tr>			
+        <tr class="fade-in" style="animation-duration: 400ms;">			
             <td style="text-align: center">
                 <div class="input-wrapper">
                     <input name="point_name" type="text"
@@ -354,12 +421,12 @@
         </tr>
 
     <!-- Møde emne -->
-        <tr>
+        <tr class="fade-in" style="animation-duration: 500ms;">
             <th style="text-align: center">
                 Short description
             </th>
         </tr>
-        <tr>
+        <tr class="fade-in" style="animation-duration: 600ms;">
             <td style="text-align: center">
                 <div class="input-wrapper">
                 <input name="short_desc" type="text" value="<%=short_desc%>" style="width: 720px">
@@ -367,12 +434,12 @@
             </td>
         </tr>
     <!-- Møde beskrivelse -->
-        <tr>
+        <tr class="fade-in" style="animation-duration: 700ms;">
             <th style="text-align: center">
                 Long description
             </th>
         </tr>
-        <tr>
+        <tr class="fade-in" style="animation-duration: 800ms;">
             <td style="text-align: center">
                 <div class="input-wrapper">
                     <input type="text" name="long_desc" value="<%=long_desc%>">
@@ -382,7 +449,7 @@
 
 
     <!-- Assigned to agendapoint users -->
-        <tr>
+        <tr class="fade-in" style="animation-duration: 900ms;">
             <td class="assigned-users" style="text-align: center;">
                 <!-- Button to open modal -->
                 <button type="button" class="toggle-button">Assign employees</button>
@@ -430,7 +497,7 @@
         </tr>
 
     <!-- Agendapoint submit btn -->
-        <tr>
+        <tr class="fade-in" style="animation-duration: 1000ms;">
             <td style="text-align: center">
                 <input type="hidden" name="id_company" value='<%=session("id_company")%>'>
                 <input type="hidden" name="id_agenda" value='<% if LEN(request.QueryString("id_agenda"))>0 then %><%=request.QueryString("id_agenda")%><% else %><%=session("id_agenda")%><% end if %>'>
@@ -457,7 +524,9 @@
             </td>
         </tr>
 </table>
-
+ <div id="logo">
+                <img id="imglogo"src="../Login/Game-On.png" />
+            </div>	
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const modal = document.querySelector(".modal");

@@ -124,6 +124,23 @@ End If
         }
     }
 
+    
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fade-in 1s;
+}
+
 </style>
 <body>
  
@@ -140,18 +157,19 @@ set rs=conn.execute(sql)
   <div id="logo">
         <img id="imglogo"src="../Login/Game-On.png" />
     </div>
-	<ul data-role="listview" data-inset="false" data-filter="true">
-		<h2 style="padding: 1%; height: .5px; animation: fadeIn 2s ease;">Existing departments</h2>
-
-				<div class="small-button-container">
+    <div class="small-button-container">
 <!--<h2>Check out your meetingtypes here</h2>-->
     <a class="small-button" data-ajax="false" href="../reg/afdeling_page.asp?action=create">
       <span class="plus-sign"></span> Add a new department
     </a>
   </div>
-				<li data-role="list-divider" style="animation: fadeIn 2s ease;" >
+    <h2 style="padding: 1%; height: .5px; animation: fade-in 400ms;">Existing departments</h2>
+	<ul data-role="listview" data-inset="false">
+
+				
+				<li data-role="list-divider" >
 					<table style="width: 100%;">
-						<tr style="text-align: left">
+						<tr class="fade-in" style="text-align: left; animation-duration: 300ms;">
 							<th style="width: 25%">Department</th>
 						</tr>
 					</table>
@@ -160,14 +178,14 @@ set rs=conn.execute(sql)
 					do while not rs.eof
 				%>
 				<li>
-					<a style="animation: fadeIn 2s ease;" data-ajax="false" href='../reg/afdeling_page.asp?action=update&amp;id_afdeling=<%=rs("id_afdeling")%>'>
+					<a  data-ajax="false" href='../reg/afdeling_page.asp?action=update&amp;id_afdeling=<%=rs("id_afdeling")%>'>
 
 						<table style="width: 100%;">		
-								<tr>
+								<tr class="fade-in" style="animation-duration: 400ms;">
 									<td style="width: 25%"><%=rs("afdeling")%></td>
 								</tr>
 								   <% If session("administrator") = True Then %>
-<button class="delete-button" data-id="<%=rs("id_afdeling")%>">Delete</button>
+<button class="delete-button" data-id="<%=rs("id_afdeling")%>" style="animation: fade-in; animation-duration: 500ms;">Delete</button>
 <%end if%>
 						</table>
 					</a>

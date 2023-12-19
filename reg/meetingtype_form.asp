@@ -77,6 +77,60 @@ padding: 2%;
 }
 
 
+  @keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 2s ease;
+}
+
+          @keyframes fadeInLogo {
+  0% {
+    opacity: 1; /* Start with 0% opacity */
+    transform: scale(1); 
+  }
+  100% {
+    opacity: 1; /* End with 100% opacity */
+    transform: scale(0.8); /* End with original scale (1) */
+  }
+}
+
+#logo{
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 1000px;
+
+}
+
+#imglogo{
+  height: 20%;
+  width: 20%;
+  transform: scale(0.8);
+  animation: fadeInLogo 2s ease;
+  
+}
+@media (max-width: 800px) {
+  #imglogo img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
+}
+
+/* applying  fadeIn animation to element */
+.element {
+    animation: fadeIn 2s ease-in-out;
+}
+
 </style>
 <body>
 <%
@@ -101,16 +155,16 @@ End If
 </div>
 
 <%if Request.QueryString("action") = "update" then%>
-	<h2 style="padding: 1%; height: .5px;">Edit meetingtype here</h2>
+	<h2 style="padding: 3%; height: .5px; text-align: center; animation-duration: 1s;" class="fade-in">Edit meetingtype here</h2>
 <%else%>
-	<h2 style="padding: 1%; height: .5px;">Add a new meetingtype here</h2>
+	<h2 style="padding: 3%; height: .5px; text-align: center; animation-duration: 1s;" class="fade-in">Add a new meetingtype here</h2>
 <%end if%>
 
 <%IF Request.QueryString("action") = "update" then%>
 
-<form id="meetingtypeForm" method="post" action="save_meetingtype.asp?action=update&id_meetingtype=<%=id_meetingtype%>">
+<form class="fade-in" style="animation-duration: 2s" id="meetingtypeForm" method="post" action="save_meetingtype.asp?action=update&id_meetingtype=<%=id_meetingtype%>">
 <%Else%>
-<form id="meetingtypeForm" method="post" action="save_meetingtype.asp?action=create">
+<form  class="fade-in" style="animation-duration: 2s" id="meetingtypeForm" method="post" action="save_meetingtype.asp?action=create">
 <%end if%>
 
 <%if Request.QueryString("action") = "update" then%>
@@ -134,7 +188,9 @@ End If
 
     <% End If %>   
 </form>
-
+<div id="logo">
+                <img id="imglogo"src="../Login/Game-On.png" />
+            </div>	
 <%
 sql = "SELECT * FROM tblmeeting_type  where id_company =  " & session("id_company") & " ORDER BY meeting_type DESC"
 Set rs = Conn.Execute(sql)

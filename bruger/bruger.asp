@@ -14,6 +14,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="../jquery/jquery.mobile-1.4.5.css">
         <link rel="stylesheet" href="../shared/global.css">
+    
 		<script src="../jquery/jquery-1.8.2.min.js"></script>
 		<script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
 		<link type="text/css" rel="stylesheet" href="../jquery/jquery-te-1.4.0.css">
@@ -48,7 +49,17 @@ span.error {
     z-index: 10;
     margin-left: 10px; /* Space between the input and tooltip */
 }
-
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+ .fade-in{
+    animation: fadeIn ease 2s;
+ }
       @keyframes fadeInLogo {
   0% {
     opacity: 0; /* Start with 0% opacity */
@@ -94,9 +105,6 @@ margin-left: 240px;
     animation: fadeIn 2s ease-in-out;
 }
 	</style>
-    <div id="logo">
-        <img id="imglogo"src="../Login/Game-On.png" />
-    </div>
 	<body>
 		<div id="page1" data-role="page">
 		<!-- header -->
@@ -111,8 +119,14 @@ margin-left: 240px;
 					Home
 				</a> 
 			</div>
+            <%if request("action")="opret" then%>
+            <h2 style="height: .5px; text-align: center; padding: 3%;">Create user here </h2>
+            <%else%>
+            <h2 style="height: .5px; text-align: center; padding: 3%;">Update user here </h2>
+            <%end if %>
+
 		<!-- form -->
-			<form data-ajax="false" method="post" 
+			<form id="userForm" data-ajax="false" method="post" 
             <% if request.querystring("default")="yes" then %>
             action='save.asp?default=yes&action=<%=request("action")%>'
             <% else %>
@@ -120,12 +134,12 @@ margin-left: 240px;
             <% end if %> >
 				<table align="center" style="width: 50%">
 								<!-- Login -->
-					<tr>
+					<tr class="fade-in" style="animation-duration: 200ms;">
 						<th style="text-align: center">
 							Login
 						</th>
 					</tr>
-					<tr>
+					<tr class="fade-in" style="animation-duration: 300ms;">
 						<td style="text-align: center">
 							<input name="login" type="text" size="25" style="min-width: 720px;"
 								<%if request("action")="ret" then%>
@@ -135,12 +149,12 @@ margin-left: 240px;
 						</td>
 					</tr>
 								<!-- Fornavn -->
-					<tr>
+					<tr class="fade-in" style="animation-duration: 400ms;">
 						<td style="text-align: center">
 							Firstname
 						</td>
 					</tr>
-					<tr>
+					<tr class="fade-in" style="animation-duration: 500ms;">
 						<td style="text-align: center">
 							<div class="input-wrapper">
 								<input name="fornavn" type="text" size="25" style="min-width: 720px;" value="<%=fornavn%>" required >
@@ -149,12 +163,12 @@ margin-left: 240px;
 							
 					</tr>
 								<!-- Efternavn -->
-					<tr>
+					<tr class="fade-in" style="animation-duration: 600ms;">
 						<td style="text-align: center">
 							Lastname
 						</td>
 					</tr>
-					<tr>
+					<tr class="fade-in" style="animation-duration: 700ms;">
 						<td style="text-align: center">
 							<div class="input-wrapper">
 								<input name="efternavn" type="text" size="25" style="min-width: 720px;" value="<%=efternavn%>" required >
@@ -163,12 +177,12 @@ margin-left: 240px;
 							
 					</tr>
 									<!--Email-->
-					<tr>
+					<tr class="fade-in" style="animation-duration: 800ms">
 						<td style="text-align: center">
 										Email
 						</td>
 					</tr>
-					<tr>
+					<tr class="fade-in" style="animation-duration: 900ms">
 						<td style="text-align: center">
 							<div class="input-wrapper">
 								<input name="mailadresse" type="text" size="25" style="min-width: 720px;" value="<%=mailadresse%>" required >
@@ -178,12 +192,12 @@ margin-left: 240px;
 					</tr>
 								<!-- Password -->
 
-					<tr>
+					<tr class="fade-in" style="animation-duration: 1000ms;">
 						<td style="text-align: center">
 										Password
 						</td>
 					</tr>
-					<tr>
+					<tr class="fade-in" style="animation-duration: 1100ms;">
 						<td style="text-align: center">
 							<div class="input-wrapper">
 								<input name="password1" type="password" size="25" style="min-width: 720px;" value="<%=password1%>" required >
@@ -193,7 +207,7 @@ margin-left: 240px;
 									
 					</tr>
 								<!-- Profil -->
-					<tr>
+					<tr class="fade-in" style="animation-duration: 1200ms;">
 						<td style="text-align: center">
 										Profil
 						</td>
@@ -201,7 +215,7 @@ margin-left: 240px;
 
 
 
-<tr>
+<tr class="fade-in" style="animation-duration: 1300ms;">
     <td style="text-align: center">
         <% 
         ' Check if the user is an admin and if the action is to edit or create
@@ -264,16 +278,8 @@ margin-left: 240px;
     </td>
 </tr>
 
-
-
-
-<!-- Company -->
-
-		
-
-
 								<!-- save btn -->
-						<tr>
+						<tr class="fade-in" style="animation-duration: 1400ms;">
 							<td style="text-align: center">
                                 <%if request("action")="ret" then%>
 								<input name="Submit1" type="submit" value="Update user" data-theme="a" data-icon="check">
@@ -289,7 +295,9 @@ margin-left: 240px;
 						</tr>
 				</table>
 
-
+<div id="logo">
+                <img id="imglogo"src="../Login/Game-On.png" />
+            </div>	
 <script>
  
         function confirmDelete(id_login) {
@@ -315,11 +323,16 @@ margin-left: 240px;
                 form.submit();
             }
         }
+        
+        
 
 $(document).ready(function() {
 	$.validator.addMethod("patternEmail", function(value, element) {
     return this.optional(element) || /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/.test(value);
 }, "This is not a valid email");
+
+  // Fading in the form after the document is ready
+            $('#userForm').addClass('fade-in');
 
     $('form').validate({
         rules: {

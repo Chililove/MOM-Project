@@ -34,19 +34,19 @@
 			</a>
 	</div>
 
-<div id="savedmeeting-Container" data-filter="true">
+<div id="savedmeeting-Container">
 <div id="logo">
         <img id="imglogo"src="../Login/Game-On.png" />
     </div>
-   <h3 id="savedmeetingTitle" style="margin-left: .4%; animation: fadeIn 2s ease;">Assigned to these meetings<span id="selectedSavedmeeting" style="font-size: 16px !important;"></span></h3>
-    <table class="savedmeeting-table" style="width: 100%; background-color: #E9E9E9; padding: .5%;" >
-        <tr style="text-align: left;">
+   <h3 id="savedmeetingTitle" class="fade-in" style="margin-left: .4%; animation-duration: 200ms;">Assigned to these meetings<span id="selectedSavedmeeting" style="font-size: 16px !important;"></span></h3>
+    <table class="savedmeeting-table" style="width: 100%; background-color: #E9E9E9; padding: .5%;">
+        <tr class="fade-in" style="text-align: left; animation-duration: 300ms;">
             <th style="width: 25%">Meeting name</th>
             <th style="width: 25%">Date</th>
             <th style="width: 25%">Time</th>
         </tr>
     </table>
-    <ul id="savedmeetingList" data-role="listview" data-inset="false">
+    <ul id="savedmeetingList" data-role="listview" data-inset="false" data-filter="true">
        
        <%
 dim id_login, id_company
@@ -72,17 +72,19 @@ End If
             ' if the Recordset is not empty, so enter the loop
             Do While Not rs.EOF
         %>
-        <li style="animation: fadeIn 2s ease;" data-agenda-id="<%=rs("id_agenda")%>">
+        <li data-agenda-id="<%=rs("id_agenda")%>">
             <a data-ajax="false" href='../reg/list_my.asp?action=show&amp;id_agenda=<%=rs("id_agenda")%>&source=page1'>
                 <table style="width: 100%">  
-                    <tr>
+                    <tr class="fade-in" style="animation-duration: 400ms;">
                         <td style="width: 25%"><%=rs("moede_navn")%></td>
                         <td style="width: 25%"><%=FormatDateTime(rs("moede_dato"))%></td>
+                        <td style="width: 25%"><%=FormatTime(rs("moede_tidspunkt"))%></td>
+
                         
                     </tr>
                       <!-- Delete button for each agenda -->
                <% If session("administrator") = True Then %>
-            <button onclick='del("<%=rs("id_agenda")%>")' class="delete-button" >Delete</button>
+            <button onclick='del("<%=rs("id_agenda")%>")' class="delete-button" style="animation: fade-in 2s; animation-duration: 500ms;" >Delete</button>
 <%end if%>
                 </table>
             </a>
@@ -110,7 +112,14 @@ End If
 
 
 </div>-->
+<%
+Function FormatTime(time)
+    Dim timeString
+    timeString = CStr(time)
+    FormatTime = Left(timeString, 5)
+End Function
 
+%>
 <script>
 $(document).ready(function() {
     // Initialize the dialog
@@ -233,6 +242,23 @@ function filterAgendaPoints() {
 
 <style>
 
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fade-in 1s;
+}
+
+
           @keyframes fadeInLogo {
   0% {
     opacity: 0; /* Start with 0% opacity */
@@ -311,6 +337,8 @@ margin-right: 900px;
     content: "+"; /* Content is a plus sign */
     font-weight: bold;
     margin-right: 5px; /* Add spacing between plus sign and text */
+    animation: fade-in 2s;
+    animation-duration: 
   }
 
 a {

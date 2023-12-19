@@ -125,6 +125,23 @@ margin-right: 900px;
     }
 }
 
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fade-in 1s;
+}
+
   </style>
   <script>
     function del(id) { 
@@ -162,21 +179,22 @@ margin-right: 900px;
 sql="select * from tblmeeting_type where id_company =  " & session("id_company") & "order by meeting_type desc "
 set rs=conn.execute(sql)
 %>
-	<ul style="animation: fadeIn 2s ease;" data-role="listview" data-inset="false" data-filter="true">
+	
     <div id="logo">
         <img id="imglogo"src="../Login/Game-On.png" />
     </div>
-<h2 style="padding: 1%; height: .5px;">Existing meetingtypes</h2>
+<h2 style="padding: 1%; height: .5px; animation: fade-in; animation-duration: 200ms;">Existing meetingtypes</h2>
 
 <div class="small-button-container">
     <a class="small-button" data-ajax="false" href="../reg/meetingtype_page.asp?action=create">
       <span class="plus-sign"></span> Add a new meetingtype
     </a>
   </div>
+  <ul data-role="listview" data-inset="false" data-filter="true">
 				<li data-role="list-divider">
 					<table style="width: 100%">
-						<tr style="text-align: left">
-							<th style="width: 25%">type</th>
+						<tr>
+							<th class="fade-in" style="width: 25%; text-align: left; animation-duration: 500ms">type</th>
 						</tr>
 					</table>
 				</li>
@@ -187,12 +205,12 @@ set rs=conn.execute(sql)
 					<a data-ajax="false" href='../reg/meetingtype_page.asp?action=update&amp;id_meetingtype=<%=rs("id_meetingtype")%>'>
 
 						<table style="width: 100%">		
-								<tr>
-									<td style="width: 25%"><%=rs("meeting_type")%></td>
+								<tr class="fade-in" style="animation-duration: 400ms;">
+									<td class="fade-in" style="width: 25%; animation-duration: 500ms;"><%=rs("meeting_type")%></td>
 								</tr>
                  <% If session("administrator") = True Then %>
                     <!-- <button class="delete-button" data-id="<%'=rs("id_meetingtype")%>">Delete</button> -->
-                    <button onclick='del("<%=rs("id_meetingtype")%>")' class="delete-button" >Delete</button>
+                    <button onclick='del("<%=rs("id_meetingtype")%>")' class="delete-button" style="animation: fade-in; animation-duration: 600ms;" >Delete</button>
                 <%end if%>
 						</table>
 					</a>

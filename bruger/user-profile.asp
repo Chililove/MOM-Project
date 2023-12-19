@@ -73,8 +73,8 @@ If LEN(id_login) > 0 Then
                     <a href="../reg/list_my.asp?action=show&id_agenda=<%=rs("id_agenda")%>" data-ajax="false" style="text-decoration:none; color:unset">
                         <div class="upcoming-meeting-box">
                             <h2 style="font-size: 20px !important; text-shadow:none;">Upcoming Meeting</h2>
-                            <p style="text-shadow:none;"><strong>Agenda:</strong> <%= rs("moede_navn") %></p>
-                            <p style="text-shadow:none;"><strong>Deadline:</strong><%= FormatDateTime(rs("moede_dato")) %>&nbsp;|&nbsp;<%= FormatTime(rs("moede_tidspunkt")) %></p>
+                            <p style="text-shadow:none; margin-right: 1%;"><strong>Agenda:</strong> <%= rs("moede_navn") %></p>
+                            <p style="text-shadow:none; margin-right: 1%;"><strong>Deadline:<br></strong><%= FormatDateTime(rs("moede_dato")) %>&nbsp;|&nbsp;<%= FormatTime(rs("moede_tidspunkt")) %></p>
                         </div>
                     </a>
                 </div>

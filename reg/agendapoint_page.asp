@@ -105,7 +105,16 @@
 	.checkuser{
 		width: 50%;
 	}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 
+   
 
 </style>
 </head>
@@ -158,10 +167,11 @@ Else
 End If
 %>
 
-<!--#include file="../reg/agendapoint_form.asp"-->			
+<!--#include file="../reg/agendapoint_form.asp"-->
+ 		
 <!--#include file="../shared/footer.asp"-->
 </div>
-
+ 
 </body>
 </html>
 

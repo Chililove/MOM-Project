@@ -62,6 +62,33 @@
   }
 }
 
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fade-in 1s;
+}
+
+
+
 #logo{
 display: flex;
 justify-content: center;
@@ -129,16 +156,16 @@ response.redirect("/default.asp") %>
   </div>
 				<li data-role="list-divider">
 					<table style="width: 100%">
-						<tr style="text-align: left;">
-							<th style="width: 20%">Login</th>
+						<tr class="fade-in" style="text-align: left; aninimation-duration: 200ms;">
+							<th class="fade-in" style="width: 20%; animation-duration: 300ms;">Login</th>
 
-							<th style="width: 20%">Fornavn</th>
+							<th class="fade-in" style="width: 20%; animation-duration: 400ms;">Fornavn</th>
 
-							<th style="width: 20%">Efternavn</th>
+							<th class="fade-in" style="width: 20%; animation-duration: 500ms;">Efternavn</th>
 								
-							<th style="width: 20%">Email</th>
+							<th class="fade-in" style="width: 20%; animation-duration: 600ms;">Email</th>
 
-							<th style="width: 20%">Profil</th>
+							<th class="fade-in" style="width: 20%; animation-duration: 700ms;">Profil</th>
 
 						</tr>
 					</table>
@@ -149,16 +176,16 @@ response.redirect("/default.asp") %>
 				<li>
 					<a data-ajax="false" href='../bruger/bruger.asp?action=ret&amp;id_login=<%=rs("id_login")%>'>
 						<table style="width: 100%">		
-								<tr>
-									<td style="width: 20%"><%=rs("login")%></td>
+								<tr class="fade-in" style="animation-duration: 800ms;">
+									<td class="fade-in" style="width: 20%; animation-duration: 900ms;"><%=rs("login")%></td>
 				
-									<td style="width: 20%"><%=rs("fornavn")%></td>
+									<td class="fade-in" style="width: 20%; animation-duration: 1000ms;"><%=rs("fornavn")%></td>
 				
-									<td style="width: 20%"><%=rs("efternavn")%></td>
+									<td class="fade-in" style="width: 20%; animation-duration: 1100ms;"><%=rs("efternavn")%></td>
 
-									<td style="width: 20%"><%=rs("mailadresse")%></td>
+									<td class="fade-in" style="width: 20%; animation-duration: 1200ms;"><%=rs("mailadresse")%></td>
 				
-									<td style="width: 20%"><%=rs("logintype")%></td>
+									<td class="fade-in" style="width: 20%; animation-duration: 1300ms;"><%=rs("logintype")%></td>
 				
 								</tr>
 						</table>

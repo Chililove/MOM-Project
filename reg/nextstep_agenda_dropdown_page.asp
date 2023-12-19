@@ -88,6 +88,22 @@ a {
 
             z-index: 1000;
         }
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fade-in 1s;
+}
+
 
   @keyframes fadeIn {
     0% {
@@ -152,7 +168,7 @@ margin-right: 900px;
 	</div>
 
 
-<div id="agendaPointsContainer" data-filter="true">
+<div id="agendaPointsContainer">
 <div style="display:flex; justify-content:center; align-items: center; margin-top: 3.5%; margin-left: 1%; margin-right: 1%; animation: fadeIn 2s ease; ">
     <select id="id_agenda" required onchange="updateAgendaTitle(); filterAgendaPoints();">
         <option value="">Select a meeting</option>
@@ -187,14 +203,14 @@ margin-right: 900px;
   </div>
 
     <h3 id="agendaTitle" style="margin-left: .4%; animation: fadeIn 2s ease;">Existing agendapoints<span id="selectedAgendaName" style="font-size: 16px !important;"></span></h3>
-    <table class="agenda-table" style="width: 100%; background-color: #E9E9E9; padding: .5%;" data-filter="true">
-        <tr style="text-align: left;">
+    <table class="agenda-table" style="width: 100%; background-color: #E9E9E9; padding: .5%;">
+        <tr class="fade-in" style="text-align: left; animation-duration: 200ms;">
             <th style="width: 25%">Point</th>
             <th style="width: 25%">Date</th>
             <th style="width: 25%">Assigned</th>
         </tr>
     </table>
-    <ul id="agendaList" data-role="listview" data-inset="false" >
+    <ul id="agendaList" data-role="listview" data-inset="false" data-filter="true">
         <% 
         ' Initialize your database query
         SQL = "SELECT * FROM tbl_agendapoints" ' Fetch all agenda points
@@ -215,14 +231,26 @@ margin-right: 900px;
         <li style="animation: fadeIn 2s ease;" data-agenda-id="<%=rs("id_agenda")%>">
             <a data-ajax="false" href='agendapoint_page.asp?action=show&amp;id_agendapoint=<%=rs("id_agendapoint")%>&source=page1'>
                 <table style="width: 100%">  
-                    <tr>
+                    <tr class="fade-in" atyle="animation-duration: 300ms;">
                         <td style="width: 25%"><%=rs("point_name")%></td>
                         <td style="width: 25%"><%=FormatDateTime(rs("dato"))%></td>
+                        <td style="width: 25%">
                         
+                        <% 
+                            If Not IsNull(rs("id_login"))=true And rs("id_login") <> "" Then 
+                                participants = Split(rs("id_login"), ",")
+                                For Each participant In participants
+                                        SQL="SELECT * FROM tbllogin WHERE id_login = "& participant &" "
+                                        'response.write SQL
+                                        Set RSparticipants = Conn.Execute(SQL) %>
+                                        <%=RSparticipants("fornavn")%>&nbsp;<%=RSparticipants("efternavn")%>,&nbsp;
+                                <% Next
+                            End If %>
+                        </td>
                     </tr>
                       <!-- Delete button for each agenda -->
                <% If session("administrator") = True Then %>
-            <button onclick='del("<%=rs("id_agendapoint")%>")' class="delete-button" >Delete</button>
+            <button onclick='del("<%=rs("id_agendapoint")%>")' class="delete-button" style="animation: fade-in 2s; animation-duration: 400ms;" >Delete</button>
 <%end if%>
                 </table>
             </a>

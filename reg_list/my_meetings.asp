@@ -39,13 +39,13 @@
     </div>
    <h3 id="agendaTitle" style="margin-left: .4%; animation: fadeIn 2s ease;">Created these meetings<span id="selectedAgendaId" style="font-size: 16px !important;"></span></h3>
     <table class="agenda-table" style="width: 100%; background-color: #E9E9E9; padding: .5%;" >
-        <tr style="text-align: left;">
-            <th style="width: 25%">Meeting name</th>
-            <th style="width: 25%">Date</th>
-            <th style="width: 25%">Time</th>
+        <tr class="fade-in" style="text-align: left; animation-duration: 300ms;">
+            <th class="fade-in" style="width: 25%; animation-duration: 400ms;">Meeting name</th>
+            <th class="fade-in" style="width: 25%; animation-duration: 500ms;">Date</th>
+            <th class="fade-in" style="width: 25%; animation-duration: 600ms;">Time</th>
         </tr>
     </table>
-    <ul id="agendaList" data-role="listview" data-inset="false">
+    <ul id="agendaList" data-role="listview" data-inset="false" data-filter="true">
        
        <%
 dim id_login, id_company
@@ -72,17 +72,17 @@ End If
             ' if the Recordset is not empty, so enter the loop
             Do While Not rs.EOF
         %>
-        <li style="animation: fadeIn 2s ease;" data-agenda-id="<%=rs("id_agenda")%>">
+        <li data-agenda-id="<%=rs("id_agenda")%>">
             <a data-ajax="false" href='../reg/list_my.asp?action=show&amp;id_agenda=<%=rs("id_agenda")%>&source=page1'>
                 <table style="width: 100%">  
-                    <tr>
-                        <td style="width: 25%"><%=rs("moede_navn")%></td>
-                        <td style="width: 25%"><%=FormatDateTime(rs("moede_dato"))%></td>
+                    <tr class="fade-in" style="animation-duration: 700ms;">
+                        <td class="fade-in" style="width: 25%; animation-duration: 800ms;"><%=rs("moede_navn")%></td>
+                        <td class="fade-in" style="width: 25%; animation-duration: 900ms;"><%=FormatDateTime(rs("moede_dato"))%></td>
                         
                     </tr>
                       <!-- Delete button for each agenda -->
                <% If session("administrator") = True Then %>
-            <button onclick='del("<%=rs("id_agenda")%>")' class="delete-button" >Delete</button>
+            <button onclick='del("<%=rs("id_agenda")%>")' class="delete-button" style="animation: fade-in 4s; animation-duration: 1000ms;" >Delete</button>
 <%end if%>
                 </table>
             </a>
@@ -288,6 +288,21 @@ a {
     100% {
         opacity: 1;
     }
+}
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fade-in 1s;
 }
 
     @keyframes fadeInLogo {

@@ -15,6 +15,7 @@ End If
 <link rel="stylesheet" href="../jquery/jquery.mobile-1.4.5.css">
 <script src="../jquery/jquery-1.8.2.min.js"></script>
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
+
 <script>
 $(document).ready(function() {
     // Client-side validation logic here
@@ -52,6 +53,60 @@ form {
 padding: 2%;
 }
 
+
+  @keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 2s ease;
+}
+
+          @keyframes fadeInLogo {
+  0% {
+    opacity: 1; /* Start with 0% opacity */
+    transform: scale(1); 
+  }
+  100% {
+    opacity: 1; /* End with 100% opacity */
+    transform: scale(0.8); /* End with original scale (1) */
+  }
+}
+
+#logo{
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 1000px;
+
+}
+
+#imglogo{
+  height: 20%;
+  width: 20%;
+  transform: scale(0.8);
+  animation: fadeInLogo 2s ease;
+  
+}
+@media (max-width: 800px) {
+  #imglogo img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
+}
+
+/* applying  fadeIn animation to element */
+.element {
+    animation: fadeIn 2s ease-in-out;
+}
   
 </style>
 
@@ -76,18 +131,19 @@ End If
     <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
 </div>
 <%if Request.QueryString("action") = "update" then%>
-	<h2 style="padding: 1%; height: .5px;">Edit department here</h2>
+	<h2 style="padding: 3%; height: .5px; text-align:center; animation-duration: 1s;">Edit department here</h2>
 <%else%>
-	<h2 style="padding: 1%; height: .5px;">Add a new department here</h2>
+	<h2 style="padding: 3%; height: .5px; text-align: center; animation-duration: 1s;" class="fade-in">Add a new department here</h2>
 <%end if%>
 
 
 <%IF Request.QueryString("action") = "update" then%>
 
-<form id="afdelingForm" method="post" action="save_afdeling.asp?action=update&id_afdeling=<%=id_afdeling%>">
+<form id="afdelingForm" class="fade-in" style="animation-duration: 2s;" method="post" action="save_afdeling.asp?action=update&id_afdeling=<%=id_afdeling%>">
 <%Else%>
-<form id="afdelingForm" method="post" action="save_afdeling.asp?action=create">
+<form id="afdelingForm" class="fade-in" style="animation-duration: 2s;" method="post" action="save_afdeling.asp?action=create">
 <%end if%>
+
 <%if Request.QueryString("action") = "update" then%>
         <label for="afdeling">Please fill out this form to edit the department:</label>
 <%else%>
@@ -101,7 +157,7 @@ End If
 
      <button type="submit">Update department</button>
      
-<button type="button" onclick='del("<%=request.querystring("id_afdeling")%>")' id="deleteButton" value="Delete department" data-theme="a" data-icon="delete">Delete type</button>
+<button type="button" onclick='del("<%=request.querystring("id_afdeling")%>")' class="fade-in" style="animation-duration: 400ms;" id="deleteButton" value="Delete department" data-theme="a" data-icon="delete">Delete type</button>
 
 
 <%Else%>
@@ -109,7 +165,9 @@ End If
 
     <% End If %>    <!-- External "Delete" button with event listener -->
 </form>
-
+<div id="logo">
+                <img id="imglogo"src="../Login/Game-On.png" />
+            </div>	
 <script>
     document.getElementById("deleteButton").addEventListener("click", function() {
             console.log("Delete button clicked");
