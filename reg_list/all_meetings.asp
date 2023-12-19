@@ -30,7 +30,7 @@
 <%
 dim id_login
 	id_login = session("id_login")
-sql ="SELECT * FROM qrysaved_meetings WHERE id_company= '" & session("id_company") & "'
+sql ="SELECT * FROM qrysaved_meetings WHERE id_company= '" & session("id_company") & "'"
 set rs=conn.execute(sql)
 %>
 
