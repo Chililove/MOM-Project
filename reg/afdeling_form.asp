@@ -1,6 +1,13 @@
 <!--#include file="../login/protect.inc"-->
 
 <!DOCTYPE html>
+<%
+' Check if the user is an administrator
+If Not session("administrator") Then
+    ' If not an administrator, redirect them to an error page or some other action
+    Response.Redirect("../default.asp?accessDenied=true") 
+End If
+%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

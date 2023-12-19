@@ -5,7 +5,7 @@
 ' Check if the user is an administrator
 If Not session("administrator") Then
     ' If not an administrator, redirect them to an error page or some other action
-    Response.Redirect("../default.asp") ' Change "access_denied.asp" to the appropriate page
+    Response.Redirect("../default.asp?accessDenied=true") 
 End If
 %>
 <html>
