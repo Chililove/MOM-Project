@@ -21,36 +21,27 @@
 </head>
 
     <div data-role="header" data-id="header" data-position="fixed">
-        <h1 >List of meetings assigned</h1>
+        <h1 >List of all meetings</h1>
             <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
             <a class="ui-btn-right" href="http://mom.main-solution.dk/login/login.asp" data-ajax="false" data-icon="power">logoff</a>
     </div>
 <body>
 <!--#include file="../opendb.asp"-->
 <%
-dim id_login, id_company
+dim id_login
 	id_login = session("id_login")
-id_company = session("id_company")
-
-If session("administrator") = True Then
-
-    sql = "SELECT * FROM qrysaved_meetings WHERE id_company =  '" & session("id_company") & "'"
-Else
-    sql = "SELECT * FROM qrysaved_meetings WHERE id_company ='" & session("id_company") & "' AND id_agenda IN (SELECT id_agenda FROM tbl_agenda WHERE participants LIKE '%" & session("id_login") & "%')"
-End If
-
+sql ="SELECT * FROM qrysaved_meetings WHERE id_company= '" & session("id_company") & "'
 set rs=conn.execute(sql)
 %>
 
 <ul data-role="listview" data-inset="false" data-filter="false">
-				
 <%
 if not rs.eof then
 %>
 <%
 do while not rs.eof
 %>
-<li style="animation: fadeIn 2s ease;"id="agenda-<%=rs("id_agenda")%>">
+<li id="agenda-<%=rs("id_agenda")%>">
 			<!--	<a data-ajax="false" href='../reg_list/list_my.asp?oprettetdato=<%'=rs(("oprettetdato_string"))%>'> -->
     <a data-ajax="false" href='../reg/list_my.asp?action=show&amp;id_agenda=<%=rs("id_agenda")%>'>	
         <table style="width: 100%;">
@@ -60,13 +51,16 @@ do while not rs.eof
 		    </tr>
                <!-- Your delete button for each agenda -->
                <% If session("administrator") = True Then %>
-<button class="delete-button" data-id="<%=rs("id_agenda")%>">Delete</button>
-<%end if%>
+                <button class="delete-button" data-id="<%=rs("id_agenda")%>">Delete</button>
+                <%end if%>
         </table>
-         
+
     </a>
 
 </li>
+
+
+
 
 <%
  rs.movenext
@@ -83,7 +77,7 @@ end if
 
 <!-- Delete confirmation dialog -->
 <div id="delete-confirmation" title="Confirm Delete" style="background-color:#f9f9f9; color:#333;">
- 
+
         Are you sure you want to delete this agenda?
 
 
@@ -111,7 +105,6 @@ $(document).ready(function() {
             }
         }
     });
-
     // When a delete button is clicked using event delegation
     $('ul[data-role="listview"]').on('click', '.delete-button', function(e) {
         e.preventDefault();
@@ -119,7 +112,6 @@ $(document).ready(function() {
         // Store the id in the dialog's data and open the dialog
         $("#delete-confirmation").data('id', id_agenda).dialog('open');
     });
-
     function deleteFunction() {
         var id_agenda = $(this).data('id');
         // Make AJAX request
@@ -162,9 +154,8 @@ $(document).ready(function() {
         });
     }
 });
-
 </script>
-    <%
+     <%
 Function FormatTime(time)
     Dim timeString
     timeString = CStr(time)
@@ -173,8 +164,7 @@ End Function
 
 %>
 <style>
-
-    @keyframes fadeIn {
+          @keyframes fadeIn {
     0% {
         opacity: 0;
     }
@@ -187,47 +177,38 @@ End Function
             list-style-type: none;
             border: 1px solid #ccc;
         }
-
         /* Styles for each list item */
         li {
             border-bottom: 1px solid #ccc;
             padding: 5px;
         }
-
         /* Styles for the list divider */
         li[data-role="list-divider"] {
             background-color: #f2f2f2;
             font-weight: bold;
         }
-
         /* Styles for tables */
         table {
             width: 100%;
         }
-
         td {
             padding: 3px;
             text-align: left;
             font-size: 18px;
         }
-
         /* Styles for anchor tags */
         a {
             text-decoration: none;
             color: blue;
         }
-
         a:hover {
             text-decoration: underline;
         }
-
         .delete-button {
            max-width: 100px;
            float: right;
         }
-
         .confirm-dialog{
-
             z-index: 1000;
         }
 </style>
