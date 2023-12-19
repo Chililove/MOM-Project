@@ -19,110 +19,110 @@ End If
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
 </head>
 <style>
-      @keyframes fadeInLogo {
-  0% {
-    opacity: 0; /* Start with 0% opacity */
-    transform: scale(1); /* Start slightly scaled down */
-  }
-  100% {
-    opacity: 1; /* End with 100% opacity */
-    transform: scale(0.8); /* End with original scale (1) */
-  }
-}
+          @keyframes fadeInLogo {
+      0% {
+        opacity: 0; /* Start with 0% opacity */
+        transform: scale(1); /* Start slightly scaled down */
+      }
+      100% {
+        opacity: 1; /* End with 100% opacity */
+        transform: scale(0.8); /* End with original scale (1) */
+      }
+    }
 
-  #logo{
-display: flex;
-justify-content: center;
-align-items: center;
-perspective: 1000px;
-margin-right: 900px;
-
-}
-
-#imglogo{
-  height: 500px;
-  width: 500px;
-  margin-right: 250px;
-  margin-top: -150px;
-  transform: scale(0.8);
-  margin-bottom: -120px;
-  animation: fadeInLogo 2s ease;
-  
-}
-@media (max-width: 800px) {
-  #imglogo img {
-    left: 50%;
-    top: 25%;
-    transform: translate(-50%, -50%);
-    height: 250px;
-    width: 250px;
-  }
-}
-
-/* applying  fadeIn animation to element */
-.element {
-    animation: fadeIn 2s ease-in-out;
-}
-
-   /* Style for the smaller button */
-  .small-button-container {
+      #logo{
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
-    padding: 10px; 
-  }
+    perspective: 1000px;
+    margin-right: 900px;
 
-  .small-button {
-    padding: 12px 16px; /* Adjust padding to control button size */
-    color: grey; 
-    border-radius: 5px; /* Rounded corners */
-    text-decoration: none;
-   animation: fadeIn 2s ease;
-
-  }
-
-  /* Hover effect for the smaller button */
-  .small-button:hover {
-    background-color: transparent;
-    text-decoration: none;
-	  box-shadow: 0px 4px 6px rgba(0, 0, 0.2, 0.2);
-
-  }
-.delete-button{
-  animation: fadeIn 2s ease;
-}
-  /* Style for the plus sign */
-  .plus-sign::before {
-    content: "+"; /* Content is a plus sign */
-    font-weight: bold;
-    margin-right: 5px; /* Add spacing between plus sign and text */
-  }
- a {
-            text-decoration: none;
-            color: blue;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .delete-button {
-           max-width: 100px;
-           float: right;
-        }
-
-        .confirm-dialog{
-
-            z-index: 1000;
-        }
- @keyframes fadeIn {
-    0% {
-        opacity: 0;
     }
-    100% {
-        opacity: 1;
+
+    #imglogo{
+      height: 500px;
+      width: 500px;
+      margin-right: 250px;
+      margin-top: -150px;
+      transform: scale(0.8);
+      margin-bottom: -120px;
+      animation: fadeInLogo 2s ease;
+      
     }
-}
+    @media (max-width: 800px) {
+      #imglogo img {
+        left: 50%;
+        top: 25%;
+        transform: translate(-50%, -50%);
+        height: 250px;
+        width: 250px;
+      }
+    }
+
+    /* applying  fadeIn animation to element */
+    .element {
+        animation: fadeIn 2s ease-in-out;
+    }
+
+      /* Style for the smaller button */
+      .small-button-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 10px; 
+      }
+
+      .small-button {
+        padding: 12px 16px; /* Adjust padding to control button size */
+        color: grey; 
+        border-radius: 5px; /* Rounded corners */
+        text-decoration: none;
+      animation: fadeIn 2s ease;
+
+      }
+
+      /* Hover effect for the smaller button */
+      .small-button:hover {
+        background-color: transparent;
+        text-decoration: none;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0.2, 0.2);
+
+      }
+    .delete-button{
+      animation: fadeIn 2s ease;
+    }
+      /* Style for the plus sign */
+      .plus-sign::before {
+        content: "+"; /* Content is a plus sign */
+        font-weight: bold;
+        margin-right: 5px; /* Add spacing between plus sign and text */
+      }
+    a {
+                text-decoration: none;
+                color: blue;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            .delete-button {
+              max-width: 100px;
+              float: right;
+            }
+
+            .confirm-dialog{
+
+                z-index: 1000;
+            }
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
 
 </style>
 <body>
@@ -137,10 +137,10 @@ margin-right: 900px;
 sql="select * from tbl_afdeling_2nd where id_company =  " & session("id_company") & "order by afdeling desc "
 set rs=conn.execute(sql)
 %>
-	<ul data-role="listview" data-inset="false" data-filter="true">
   <div id="logo">
         <img id="imglogo"src="../Login/Game-On.png" />
     </div>
+	<ul data-role="listview" data-inset="false" data-filter="true">
 		<h2 style="padding: 1%; height: .5px; animation: fadeIn 2s ease;">Existing departments</h2>
 
 				<div class="small-button-container">

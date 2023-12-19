@@ -3,6 +3,12 @@
   background-color: orange !important;
 }
 
+@media (max-width: 500px) {
+  #flex-container {
+    flex-direction: column;
+  }
+}
+
 .popup {
   display: none;
   position: fixed;

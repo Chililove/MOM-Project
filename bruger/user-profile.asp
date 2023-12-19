@@ -20,24 +20,24 @@ If LEN(id_login) > 0 Then
     ' Check if data was found
     If Not rs.EOF Then
         ' Display user data
-%>
-<div class="overall-container">
-    <div class="user-upcoming-container fade-in" style="animation-duration:700ms;">
-            <div class="user-profile">
-                <div class="companyname">
-                    <img src="login/orangedude.png" alt="User Avatar" class="user-avatar">
-                    <h2><%= rs("company_name") %></h2>
-                </div>
+        %>
+        <div class="overall-container">
+            <div class="user-upcoming-container fade-in" style="animation-duration:700ms;">
+                    <div class="user-profile">
+                        <div class="companyname">
+                            <img src="login/orangedude.png" alt="User Avatar" class="user-avatar">
+                            <h2><%= rs("company_name") %></h2>
+                        </div>
 
-                <div class="user-info">
-                    <h3 style="margin: 2;"><%= rs("fornavn") & " " & rs("efternavn") %></h3>
-                    <p>Email: <%= rs("mailadresse") %></p>
-                    <p><%= rs("login") %></p>
-                    <button onclick="location.href='bruger/bruger.asp?default=yes&action=ret&id_login=<%=id_login%>'" class="edit-profile-button">Edit</button>
-                </div>
-            </div>        
-    </div>
-<%
+                        <div class="user-info">
+                            <h3 style="margin: 2;"><%= rs("fornavn") & " " & rs("efternavn") %></h3>
+                            <p>Email: <%= rs("mailadresse") %></p>
+                            <p><%= rs("login") %></p>
+                            <button onclick="location.href='bruger/brugeruser.asp?action=ret'" class="edit-profile-button">Edit</button>
+                        </div>
+                    </div>        
+            </div>
+        <% 
     Else
         Response.Write("User data not found.")
     End If
@@ -53,29 +53,34 @@ If LEN(id_login) > 0 Then
     Set cmd = Server.CreateObject("ADODB.Command")
     With cmd
         Set .ActiveConnection = Conn ' Conn is our ADODB.Connection object
-.CommandText = "SELECT TOP 1 moede_navn, moede_tidspunkt, moede_dato FROM qry_agenda WHERE CAST(moede_dato AS DATE) > CAST(GETDATE() AS DATE) OR (CAST(moede_dato AS DATE) = CAST(GETDATE() AS DATE) AND CAST(moede_tidspunkt AS TIME(7)) >= CAST(GETDATE() AS TIME(7))) ORDER BY moede_dato, moede_tidspunkt ASC"
+' .CommandText = "SELECT TOP 1 moede_navn, moede_tidspunkt, moede_dato, id_agenda FROM qry_agenda WHERE CAST(moede_dato AS DATE) > CAST(GETDATE() AS DATE) OR (CAST(moede_dato AS DATE) = CAST(GETDATE() AS DATE) AND CAST(moede_tidspunkt AS TIME(7)) >= CAST(GETDATE() AS TIME(7))) ORDER BY moede_dato, moede_tidspunkt ASC"
+    .CommandText = "SELECT TOP 1 moede_deadline, id_agenda, moede_navn, moede_dato, moede_tidspunkt FROM qry_Agenda WHERE oprettetaf = "& session("id_login") &" OR participants LIKE '%" & session("id_login") & "%' ORDER BY moede_deadline ASC "
+        'response.write .CommandText
         Set rs = .Execute
+    'response.write rs("id_agenda") & "<br>"
     End With
-
+    
     ' Check if data was found
     If Not rs.EOF Then
-        ' Display upcoming meeting data
-%>
+                ' Display upcoming meeting data
+        %>
 
- <div id='logo1'>
-        <img id="imglogo1"src="../Login/Game-On.png" />
-    </div>
-    <div class="fade-in" style="animation-duration:800ms;">
-        <div class="upcoming-meeting-container" style="animation-delay:800ms;">
-            <div class="upcoming-meeting-box">
-                <h2 style="font-size: 20px !important;">Upcoming Meeting</h2>
-                <p><strong>Agenda:</strong> <%= rs("moede_navn") %></p>
-                <p><strong>Deadline:</strong><%= FormatDateTime(rs("moede_dato")) %>&nbsp;|&nbsp;<%= FormatTime(rs("moede_tidspunkt")) %></p>
+        <div id='logo1'>
+                <img id="imglogo1"src="../Login/Game-On.png" />
+            </div>
+            <div class="fade-in" style="animation-duration:800ms;">
+                <div class="upcoming-meeting-container" style="animation-delay:800ms;">
+                    <a href="../reg/list_my.asp?action=show&id_agenda=<%=rs("id_agenda")%>" data-ajax="false" style="text-decoration:none; color:unset">
+                        <div class="upcoming-meeting-box">
+                            <h2 style="font-size: 20px !important; text-shadow:none;">Upcoming Meeting</h2>
+                            <p style="text-shadow:none;"><strong>Agenda:</strong> <%= rs("moede_navn") %></p>
+                            <p style="text-shadow:none;"><strong>Deadline:</strong><%= FormatDateTime(rs("moede_dato")) %>&nbsp;|&nbsp;<%= FormatTime(rs("moede_tidspunkt")) %></p>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-<%
+        <%
     Else
         Response.Write("No upcoming meetings found.")
     End If

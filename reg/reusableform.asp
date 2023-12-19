@@ -763,16 +763,16 @@ highlight: function (element) {
 </form>
 	
   <script>
-	document.getElementById('show-agendapoint-form').addEventListener('click', function () {
-		var agendapointsForm = document.getElementById('agendapoint-form');
-		agendapointsForm.style.display = 'block'; // Show the overlay
-	});
+	// document.getElementById('show-agendapoint-form').addEventListener('click', function () {
+	// 	var agendapointsForm = document.getElementById('agendapoint-form');
+	// 	agendapointsForm.style.display = 'block'; // Show the overlay
+	// });
 
-	// Add logic to close the overlay when needed, e.g., by clicking a close button
-	document.getElementById('close-agendapoint-form').addEventListener('click', function () {
-		var agendapointsForm = document.getElementById('agendapoint-form');
-		agendapointsForm.style.display = 'none'; // Hide the overlay
-	});
+	// // Add logic to close the overlay when needed, e.g., by clicking a close button
+	// document.getElementById('close-agendapoint-form').addEventListener('click', function () {
+	// 	var agendapointsForm = document.getElementById('agendapoint-form');
+	// 	agendapointsForm.style.display = 'none'; // Hide the overlay
+	// });
 </script>
 		
 
