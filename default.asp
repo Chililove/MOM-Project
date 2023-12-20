@@ -62,7 +62,6 @@
 <body>
 
 
-<!--#include file="bruger/user-profile.asp"-->
 <!--#include file="bruger/user-profile1.asp"-->
 
 

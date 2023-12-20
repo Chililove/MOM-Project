@@ -305,6 +305,23 @@ perspective: 1000px;
     animation: fadeIn 2s ease-in-out;
 }
 
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fade-in 1s;
+}
+
 </style>
 
 </head>
@@ -374,15 +391,19 @@ perspective: 1000px;
 	<% end if %>
 	style="position: relative;">
 
-<%if Request.QueryString("action") = "edit" then%>
-	<h2 style="padding: 3%; height: .5px; text-align: center; animation-duration: 1s;" class="fade-in">Edit agenda here</h2>
-<%else%>
-	<h2 style="padding: 3%; height: .5px; text-align: center; animation-duration: 1s;" class="fade-in">Add new agenda here</h2>
+<%if Request.QueryString("action") = "edit"then%>
+	<h2 style="padding: 3%; height: .5px; text-align: center; animation-duration: 100ms;" class="fade-in">Edit meeting agenda here</h2>
+<%else if Request.QueryString("action") = "show" then%>
+	<h2 style="padding: 3%; height: .5px; text-align: center; animation-duration: 100ms;" class="fade-in">Edit meeting agenda here</h2>
+<%else if Request.QueryString("action") = "newday" then%>
+	<h2 style="padding: 3%; height: .5px; text-align: center; animation-duration: 100ms;" class="fade-in">Add new meeting agenda here</h2>
+<%end if%>
+<%end if%>
 <%end if%>
 
 			<table align="center" style="width: 50%">
 			<!-- Møde dato og tid-->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 200ms;">
 					<td style="text-align: center">
 									<%=moede_dato%>
 
@@ -418,14 +439,14 @@ perspective: 1000px;
 					</td>
 				</tr>
 			<!-- Møde navn -->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 300ms;">
 					<th style="text-align: center">Name of meeting</th>
 					<td>
 						<input type="hidden" name="id_agenda" value="<%=id_agenda1%>">
 					</td>	
 				</tr>
 
-				<tr>			
+				<tr class="fade-in" style="animation-duration: 400ms;">			
 					<td style="text-align: center">
 						<div class="input-wrapper">
 						<input name="moede_navn" type="text"
@@ -439,7 +460,7 @@ perspective: 1000px;
 					</td>
 				</tr>
 			<!-- Møde subject meetingtype dropdown -->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 500ms;">
 					<td style="text-align: center">
 						<select name="id_meetingtype" required >
 
@@ -477,12 +498,12 @@ perspective: 1000px;
 					</td>
 				</tr>
 			<!-- Møde emne -->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 600ms;">
 					<th style="text-align: center">
 						Subject
 					</th>
 				</tr>
-				<tr>
+				<tr class="fade-in" style="animation-duration: 700ms;">
 					<td style="text-align: center">
 						<div class="input-wrapper">
 						<input name="emne" type="text" value="<%=emne%>" style="width: 720px">
@@ -490,13 +511,13 @@ perspective: 1000px;
 					</td>
 				</tr>
 			<!-- Møde beskrivelse -->
-					<tr>
+					<tr class="fade-in" style="animation-duration: 800ms;">
 					<th style="text-align: center">
 						Description
 					</th>
 				</tr>
 				<tr>
-					<td style="text-align: center">
+					<td class="fade-in" style="text-align: center; animation-duration: 900ms;">
 						<div class="input-wrapper">
 						<input name="beskrivelse" id="beskrivelseInput" value="<%=beskrivelse%>">
 						</div>
@@ -504,12 +525,12 @@ perspective: 1000px;
 				</tr>
 
 			<!-- Møde note -->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 1000ms;">
 					<th style="text-align: center">
 						Notes
 					</th>
 				</tr>
-				<tr>
+				<tr class="fade-in" style="animation-duration: 1100ms;">
 					<td style="text-align: center">
 						<div class="input-wrapper">
 						<textarea name="noter" rows="4" cols="50" style="min-width: 720px;"><%=noter%></textarea>
@@ -517,7 +538,7 @@ perspective: 1000px;
 					</td>
 				</tr>
 			<!-- Møde afdeling -->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 1200ms;">
 					<td style="text-align: center">
 						<select name="id_afdeling" required >
 
@@ -555,7 +576,7 @@ perspective: 1000px;
 					</td>
 				</tr>
 			<!-- Møde deltagere -->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 1300ms;">
 					<td class="assigned-users" style="text-align: center;">
 
 						<!-- Button to open modal -->
@@ -643,12 +664,12 @@ perspective: 1000px;
 					</script>
 				</tr>
 			<!-- Møde info -->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 1400ms;">
 					<th style="text-align: center">
 						Additional information
 					</th>
 				</tr>
-				<tr>
+				<tr class="fade-in" style="animation-duration: 1500ms;">
 					<td style="text-align: center">
 						<div class="input-wrapper">
 						<textarea name="additionalinfo" rows="4" cols="50"><%=additionalinfo%></textarea>
@@ -667,7 +688,7 @@ perspective: 1000px;
 
 				</script>
 			<!-- Møde submit btn -->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 1600ms;">
 					<td style="text-align: center">
 						<input name="existing_id_registrering" type="hidden" value="<%=existing_id_registrering%>">
 						<input type="hidden" name="oprettetaf" value='<%=session("id_login")%>'>

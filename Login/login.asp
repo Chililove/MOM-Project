@@ -46,16 +46,6 @@ Session("user")=""
 
     
 <table align="center" >
-       <!-- <tr>
-          <%' If LEN(strERR)<1 Then %>
-            <td>
-            <%'=strERR%>
-          <%' Else %> 
-            <td style="background-color: red; text-shadow:none;">
-            <%'=strERR%>
-          <%' End If %>
-            </td>
-        </tr>-->
 	<tr>
 			<td>
           <div class="input-wrapper">
@@ -183,6 +173,13 @@ highlight: function (element) {
 </script>
 </body>
 <style>
+#fpimg{
+width: 400px;
+height: 400px;
+}
+
+
+
 body {
   background-color: #e0e0e0;
   font-family: 'Roboto', sans-serif;
