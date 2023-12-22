@@ -345,6 +345,10 @@ perspective: 1000px;
   }
   }
 
+  button span {
+    user-select: none;
+    pointer-events: none;
+}
 
 </style>
 
@@ -474,7 +478,7 @@ perspective: 1000px;
         <tr class="fade-in" style="animation-duration: 900ms;">
             <td class="assigned-users" style="text-align: center;">
                 <!-- Button to open modal -->
-                <button type="button" class="toggle-button">Assign employees</button>
+                <button type="button" style="z-index: 1;" class="toggle-button">Assign employees</button>
 
                 <!-- Modal -->
                 <div class="modal">

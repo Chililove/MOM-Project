@@ -112,7 +112,7 @@ perspective: 1000px;
 #imglogo{
   height: 40%;
   width: 40%;
-  margin-top: -13%;
+  margin-top: -5%;
   transform: scale(0.8);
   animation: fadeInLogo 2s ease;
   
@@ -173,10 +173,9 @@ End If
 <%else%>
     <label for="meeting_type">Please fill out this form to create a new meetingtype:</label>
 <%end if%>
-    <!-- Why do i get the name of the field back instead of the id?? -->
-    <tr>
+    
     <input type="text" id="meeting_type" name="meeting_type" value="<%=meeting_type%>" required>
-    </tr>
+    
      <% If Request.QueryString("action") = "update" Then %>
         <input type="hidden" name="id_meetingtype" value="<%=id_meetingtype%>">
 
@@ -185,7 +184,9 @@ End If
 
 
 <%Else%>
-    <button type="submit">Add meetingtype</button>
+    <button type="submit">
+   Add a meetingtype
+</button>
 
     <% End If %>   
 </form>

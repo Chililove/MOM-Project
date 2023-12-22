@@ -129,7 +129,7 @@ End Function
     background-color: #f9f9f9;
    /* margin-top: 25px;
     margin-bottom: 25px;*/
-    margin-left: -204px;
+    margin-left: -12;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
     max-height: 250px;
@@ -354,6 +354,7 @@ perspective: 1000px;
 }
 
 .edit-profile-button {
+    z-index: 1;
     max-width: 100px;
     background-color: transparent;
     color: white;
