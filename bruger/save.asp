@@ -5,10 +5,7 @@
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
     
 </HEAD>
-	<BODY>
-       
-      <!--  this is what i am working on -->
-    
+	<BODY>   
     <% 
 
 	id_login = request("id_login")

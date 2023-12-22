@@ -43,10 +43,10 @@ margin-right: 900px;
 #imglogo{
   height: 500px;
   width: 500px;
-   margin-right: 84%;
-  margin-top: -160px;
-  margin-bottom: -120px;
+  margin-right: 250px;
+  margin-top: -150px;
   transform: scale(0.8);
+  margin-bottom: -120px;
   animation: fadeInLogo 2s ease;
   
 }
@@ -59,6 +59,7 @@ margin-right: 900px;
     width: 250px;
   }
 }
+
 
 /* applying  fadeIn animation to element */
 .element {

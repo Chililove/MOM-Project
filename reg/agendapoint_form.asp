@@ -304,8 +304,9 @@ perspective: 1000px;
 }
 
 #imglogo{
-  height: 20%;
-  width: 20%;
+  height: 40%;
+  width: 40%;
+  margin-top: -13%;
   transform: scale(0.8);
   animation: fadeInLogo 2s ease;
   
@@ -324,6 +325,27 @@ perspective: 1000px;
 .element {
     animation: fadeIn 2s ease-in-out;
 }
+
+/* Tablet styles */
+@media screen and (min-width: 768px) {
+  /* Add styles for tablets and larger screens */
+  .container {
+    width: 80%; /* Adjusted width for tablets */
+  }
+
+
+  /* Additional tablet-specific styles */
+}
+
+/* Desktop styles */
+@media screen and (min-width: 1024px) {
+  /* Add styles for desktop screens */
+  .container {
+    width: 70%; /* Adjusted width for desktops */
+  }
+  }
+
+
 </style>
 
 </head>

@@ -5,7 +5,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>MoM</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link rel="stylesheet" href="jquery/jquery.mobile-1.4.5.css">
 <link rel="stylesheet" href="./shared/global.css">
 <script src="jquery/jquery-1.8.2.min.js"></script>
@@ -58,6 +59,7 @@
 .fade-in {
     animation: fade-in 1s;
 }
+
 </style>
 <body>
 

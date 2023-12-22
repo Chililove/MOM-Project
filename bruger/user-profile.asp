@@ -1,3 +1,4 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <%
 Dim id_login, cmd, rs, sql
@@ -49,11 +50,10 @@ If LEN(id_login) > 0 Then
 %>
  
 <%
-    ' Create the SQL command to retrieve the upcoming meeting data
+    ' SQL command to retrieve the upcoming meeting data
     Set cmd = Server.CreateObject("ADODB.Command")
     With cmd
         Set .ActiveConnection = Conn ' Conn is our ADODB.Connection object
-' .CommandText = "SELECT TOP 1 moede_navn, moede_tidspunkt, moede_dato, id_agenda FROM qry_agenda WHERE CAST(moede_dato AS DATE) > CAST(GETDATE() AS DATE) OR (CAST(moede_dato AS DATE) = CAST(GETDATE() AS DATE) AND CAST(moede_tidspunkt AS TIME(7)) >= CAST(GETDATE() AS TIME(7))) ORDER BY moede_dato, moede_tidspunkt ASC"
     .CommandText = "SELECT TOP 1 moede_deadline, id_agenda, moede_navn, moede_dato, moede_tidspunkt FROM qry_Agenda WHERE oprettetaf = "& session("id_login") &" OR participants LIKE '%" & session("id_login") & "%' ORDER BY moede_deadline ASC "
         'response.write .CommandText
         Set rs = .Execute
@@ -62,12 +62,12 @@ If LEN(id_login) > 0 Then
     
     ' Check if data was found
     If Not rs.EOF Then
-                ' Display upcoming meeting data
         %>
 
         <div id='logo1'>
                 <img id="imglogo1"src="../Login/Game-On.png" />
             </div>
+
             <div class="fade-in" style="animation-duration:800ms;">
                 <div class="upcoming-meeting-container" style="animation-delay:800ms;">
                     <a href="../reg/list_my.asp?action=show&id_agenda=<%=rs("id_agenda")%>" data-ajax="false" style="text-decoration:none; color:unset">
@@ -103,20 +103,38 @@ End Function
 
 %>
 <style>
+/* Tablet styles */
+@media screen and (min-width: 768px) {
+ .overall-container{
+    flex-direction: column;
+ }
+ .user-upcoming-container {
+        flex-direction: column;
+
+        max-width: 100%; /* Full width on smaller screens */
+    }
+}
+
+/* Desktop styles */
+@media screen and (min-width: 1024px) {
+  /* Add styles for desktop screens */
+  
+  }
+
 .overall-container{
-       display: flex;
-       flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     max-width: 900px; /* Adjust the maximum width as needed */
     margin: 0 auto; /* Center the container horizontally */
+    
 }
 
  .user-upcoming-container {
     flex: 1;
-    flex-grow: 1;
     padding: 8px;
-    max-width: calc(50% - 80px); /* Adjust the maximum width for this container */
+    max-width: 100%;
     border-radius: 8px;
     background-color: #f9f9f9;
     margin-top: 25px;
@@ -125,12 +143,14 @@ End Function
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
     max-height: 200px;
+
     /* animation: fadeIn 2s ease;  */
 
     
 }
 
 #logo1{
+max-width: 100%;
 display: flex;
 justify-content: center;
 align-items: center;
@@ -203,6 +223,7 @@ perspective: 1000px;
   }
 
 .user-profile {
+    flex: 1;
     padding: 8px;
     max-width: 400px;
     border-radius: 8px;
@@ -226,7 +247,7 @@ perspective: 1000px;
 
 
 .upcoming-meeting-box {
-    flex: 0.4;
+    flex: 1;
     max-width: 250px;
     margin-left: 20px;
 
@@ -236,7 +257,6 @@ perspective: 1000px;
 
 .upcoming-meeting-container{
     flex: 1;
-    flex-grow: 1;
     padding: 8px;
     max-width: 250px;
     border-radius: 8px;
@@ -248,6 +268,22 @@ perspective: 1000px;
     animation: pulsate 2s ease 3, changeColor 4s ease 0s 1 normal forwards;
    
 
+}
+
+@media screen and (min-width: 768px) {
+ .user-upcoming-container {
+    max-width: 33%; /* Adjust the maximum width for the user container on tablets */
+  }
+
+  #logo1 {
+    max-width: 33%; /* Adjust the maximum width for the logo container on tablets */
+  }
+
+
+  .upcoming-meeting-container{
+        max-width: 33%; /* Adjust the maximum width for the user container on tablets */
+
+  }
 }
 
 @keyframes changeColor {

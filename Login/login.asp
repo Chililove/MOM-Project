@@ -173,11 +173,11 @@ highlight: function (element) {
 </script>
 </body>
 <style>
-#fpimg{
+#fpimg img{
 width: 400px;
 height: 400px;
-}
 
+}
 
 
 body {

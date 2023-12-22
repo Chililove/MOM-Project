@@ -48,6 +48,17 @@ span.error {
     z-index: 10;
     margin-left: 10px; /* Space between the input and tooltip */
 }
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+ .fade-in{
+    animation: fadeIn ease 2s;
+ }
 
       @keyframes fadeInLogo {
   0% {
@@ -70,8 +81,9 @@ margin-left: 240px;
 }
 
 #imglogo{
-  height: 500px;
-  width: 500px;
+  height: 40%;
+  width: 40%;
+  margin-top: -13%;;
   margin-right: 250px;
   margin-top: -130px;
   transform: scale(0.8);
@@ -112,6 +124,7 @@ margin-left: 240px;
 				</a> 
 			</div>
 		<!-- form -->
+                        <h2 class="fade-in" style="text-align: center; padding: 1%; animation-duration: 200ms;">Update user here </h2>
 			<form data-ajax="false" method="post" 
             <% if request.querystring("default")="yes" then %>
             action='save.asp?default=yes&action=<%=request("action")%>'
@@ -120,12 +133,12 @@ margin-left: 240px;
             <% end if %> >
 				<table align="center" style="width: 50%">
 								<!-- Login -->
-					<tr>
+					<tr class="fade-in" style="animation-duration: 300ms;">
 						<th style="text-align: center">
 							Login
 						</th>
 					</tr>
-					<tr>
+					<tr class="fade-in" style="animation-duration: 400ms;">
 						<td style="text-align: center">
 							<input name="login" type="text" size="25" style="min-width: 720px;"
 								<%if request("action")="ret" then%>
@@ -135,12 +148,12 @@ margin-left: 240px;
 						</td>
 					</tr>
 								<!-- Fornavn -->
-					<tr>
+					<tr class="fade-in" style="animation-duration: 500ms;">
 						<td style="text-align: center">
 							Firstname
 						</td>
 					</tr>
-					<tr>
+					<tr class="fade-in" style="animation-duration: 600ms;">
 						<td style="text-align: center">
 							<div class="input-wrapper">
 								<input name="fornavn" type="text" size="25" style="min-width: 720px;" value="<%=fornavn%>" required >
@@ -149,12 +162,12 @@ margin-left: 240px;
 							
 					</tr>
 								<!-- Efternavn -->
-					<tr>
+					<tr class="fade-in" style="animation-duration: 700ms;">
 						<td style="text-align: center">
 							Lastname
 						</td>
 					</tr>
-					<tr>
+					<tr class="fade-in" style="animation-duration: 800ms;">
 						<td style="text-align: center">
 							<div class="input-wrapper">
 								<input name="efternavn" type="text" size="25" style="min-width: 720px;" value="<%=efternavn%>" required >
@@ -163,12 +176,12 @@ margin-left: 240px;
 							
 					</tr>
 									<!--Email-->
-					<tr>
+					<tr class="fade-in" style="animation-duration: 900ms;">
 						<td style="text-align: center">
 										Email
 						</td>
 					</tr>
-					<tr>
+					<tr class="fade-in" style="animation-duration: 1000ms;">
 						<td style="text-align: center">
 							<div class="input-wrapper">
 								<input name="mailadresse" type="text" size="25" style="min-width: 720px;" value="<%=mailadresse%>" required >
@@ -178,12 +191,12 @@ margin-left: 240px;
 					</tr>
 								<!-- Password -->
 
-					<tr>
+					<tr class="fade-in" style="animation-duration: 1100ms;">
 						<td style="text-align: center">
 										Password
 						</td>
 					</tr>
-					<tr>
+					<tr class="fade-in" style="animation-duration: 1200ms;">
 						<td style="text-align: center">
 							<div class="input-wrapper">
 								<input name="password1" type="password" size="25" style="min-width: 720px;" value="<%=password1%>" required >
@@ -193,7 +206,7 @@ margin-left: 240px;
 									
 					</tr>
 								<!-- Profil -->
-					<tr>
+					<tr class="fade-in" style="animation-duration: 1300ms;">
 						<td style="text-align: center">
 										Profil
 						</td>
@@ -201,7 +214,7 @@ margin-left: 240px;
 
 
 
-<tr>
+<tr class="fade-in" style="animation-duration: 1400ms;">
     <td style="text-align: center">
         <% 
         ' Check if the user is an admin and if the action is to edit or create
@@ -273,7 +286,7 @@ margin-left: 240px;
 
 
 								<!-- save btn -->
-						<tr>
+						<tr class="fade-in" style="animation-duration: 1500ms;">
 							<td style="text-align: center">
                                 <%if request("action")="ret" then%>
 								<input name="Submit1" type="submit" value="Update user" data-theme="a" data-icon="check">
@@ -291,8 +304,9 @@ margin-left: 240px;
 							</td>
 						</tr>
 				</table>
-
-
+<div id="logo">
+                <img id="imglogo"src="../Login/Game-On.png" />
+            </div>	
 <script>
  
         function confirmDelete(id_login) {

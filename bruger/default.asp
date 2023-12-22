@@ -54,11 +54,11 @@
     @keyframes fadeInLogo {
   0% {
     opacity: 0; /* Start with 0% opacity */
-    transform: scale(1); /* Start slightly scaled down */
+    transform: scale(1); 
   }
   100% {
     opacity: 1; /* End with 100% opacity */
-    transform: scale(0.8); /* End with original scale (1) */
+    transform: scale(0.8); 
   }
 }
 
