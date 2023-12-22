@@ -113,6 +113,11 @@ End Function
 
         max-width: 100%; /* Full width on smaller screens */
     }
+.upcoming-meeting-container{
+    flex-direction: column;
+
+        max-width: 100%; /* Full width on smaller screens */
+}
 }
 
 /* Desktop styles */
@@ -123,29 +128,28 @@ End Function
 
 .overall-container{
     display: flex;
-    flex-wrap: wrap;
+       flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     max-width: 900px; /* Adjust the maximum width as needed */
     margin: 0 auto; /* Center the container horizontally */
     
 }
 
  .user-upcoming-container {
-    flex: 1;
+   flex: 1;
+    flex-grow: 1;
     padding: 8px;
-    max-width: 100%;
+    width: 450px;
     border-radius: 8px;
     background-color: #f9f9f9;
-    margin-top: 25px;
-    margin-bottom: 25px;
-    margin-left: -240px;
+   /* margin-top: 25px;
+    margin-bottom: 25px;*/
+    margin-left: -204px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
-    max-height: 200px;
-
+    max-height: 250px;
     /* animation: fadeIn 2s ease;  */
-
     
 }
 
@@ -170,24 +174,13 @@ perspective: 1000px;
 }
 
 #imglogo1{
-  height: 500px;
-  width: 500px;
-  margin-right: 155px;
-  margin-top: -130px;
+  height: 120%;
+  width: 120%;
   transform: scale(0.8);
-  margin-bottom: -120px;
   animation: fadeInLogo 2s ease;
   
 }
-@media (max-width: 800px) {
-  #imglogo1 img {
-    left: 50%;
-    top: 25%;
-    transform: translate(-50%, -50%);
-    height: 250px;
-    width: 250px;
-  }
-}
+
 
 @keyframes fadeIn {
     0% {
@@ -223,13 +216,9 @@ perspective: 1000px;
   }
 
 .user-profile {
-    flex: 1;
     padding: 8px;
-    max-width: 400px;
     border-radius: 8px;
     background-color: #f9f9f9;
-    margin-top: 12px;
-    margin-left: 12px;
   
    
 }
@@ -247,7 +236,7 @@ perspective: 1000px;
 
 
 .upcoming-meeting-box {
-    flex: 1;
+     flex: 0.4;
     max-width: 250px;
     margin-left: 20px;
 
@@ -256,31 +245,46 @@ perspective: 1000px;
 }
 
 .upcoming-meeting-container{
-    flex: 1;
+        flex: 1;
     padding: 8px;
     max-width: 250px;
     border-radius: 8px;
     background-color: #f9f9f9;
-    margin-top: 25px;
-    margin-right: -240px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd; 
     animation: pulsate 2s ease 3, changeColor 4s ease 0s 1 normal forwards;
-   
+   margin-right: -30%;
+   margin-top: 20%;
 
 }
 
 @media screen and (min-width: 768px) {
  .user-upcoming-container {
-    max-width: 33%; /* Adjust the maximum width for the user container on tablets */
+    max-width: 33%; /* Adjust the maximum width for the user container on tablets */ flex: 1;
+    padding: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+  
   }
 
   #logo1 {
     max-width: 33%; /* Adjust the maximum width for the logo container on tablets */
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
   }
 
 
   .upcoming-meeting-container{
+      flex: 1;
+    padding: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd; 
+    animation: pulsate 2s ease 3, changeColor 4s ease 0s 1 normal forwards;
         max-width: 33%; /* Adjust the maximum width for the user container on tablets */
 
   }
