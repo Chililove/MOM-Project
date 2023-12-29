@@ -134,9 +134,6 @@ margin-right: 900px;
 	</div>
 <%
  If Session("administrator") Then
-
- 'id_company = session("id_company")
-
 sql="select * from qrylogin where id_company =  " & session("id_company") & " order by login desc "
 set rs=conn.execute(sql)
 
@@ -159,9 +156,9 @@ response.redirect("/default.asp") %>
 						<tr class="fade-in" style="text-align: left; aninimation-duration: 200ms;">
 							<th class="fade-in" style="width: 20%; animation-duration: 300ms;">Login</th>
 
-							<th class="fade-in" style="width: 20%; animation-duration: 400ms;">Fornavn</th>
+							<th class="fade-in" style="width: 20%; animation-duration: 400ms;">Firstname</th>
 
-							<th class="fade-in" style="width: 20%; animation-duration: 500ms;">Efternavn</th>
+							<th class="fade-in" style="width: 20%; animation-duration: 500ms;">Lastname</th>
 								
 							<th class="fade-in" style="width: 20%; animation-duration: 600ms;">Email</th>
 

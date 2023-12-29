@@ -219,18 +219,11 @@ If request("action") = "delete" Then
     ' Check for errors
     If Err.Number <> 0 Then
         Conn.RollbackTrans
-       ' response.write "Error deleting record: " & Err.Description
         Response.write "error: " & Err.Description
-
     Else
         Conn.CommitTrans
         Response.write "success"
-
-       ' response.write "Record deleted successfully."
     End If
-
-    ' Redirect after successful deletion
-   ' response.redirect "../default.asp"
    Response.End
 End If
 

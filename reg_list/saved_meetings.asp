@@ -25,6 +25,33 @@
             <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
             <a class="ui-btn-right" href="http://mom.main-solution.dk/login/login.asp" data-ajax="false" data-icon="power">logoff</a>
     </div>
+
+    <script>
+    function del(id) { 
+        var idValue = id
+        
+        if (idValue !== null) {
+            var firstConfirm = window.confirm("Are you sure you want to delete this agenda?");
+            
+            if (firstConfirm) {
+            var secondConfirm = window.confirm("This action is irreversible. Are you absolutely sure?");
+            
+            if (secondConfirm) {
+                var deleteUrl = '../reg/delete.asp?action=metype&id=' + encodeURIComponent(id);
+                window.location.href = deleteUrl;
+            } else {
+            // Nothing
+            }
+            } else {
+            // Nothing
+            }
+        } else {
+            alert("No 'id' parameter found in the URL.");
+        }
+    }
+
+</script>
+
 <body>
 
 <div data-role="header" data-id="header" data-position="fixed">

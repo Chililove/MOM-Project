@@ -12,7 +12,7 @@
         var idValue = id
         
         if (idValue !== null) {
-            var firstConfirm = window.confirm("Are you sure you want to delete this user?");
+            var firstConfirm = window.confirm("Are you sure you want to delete this agenda point?");
             
             if (firstConfirm) {
             var secondConfirm = window.confirm("This action is irreversible. Are you absolutely sure?");

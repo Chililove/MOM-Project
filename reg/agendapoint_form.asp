@@ -304,9 +304,9 @@ perspective: 1000px;
 }
 
 #imglogo{
-  height: 40%;
-  width: 40%;
-  margin-top: -13%;
+  height: 35%;
+  width: 35%;
+  margin-top: -4%;
   transform: scale(0.8);
   animation: fadeInLogo 2s ease;
   
