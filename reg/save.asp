@@ -23,8 +23,6 @@ moede_navn=request("moede_navn")
 emne=request("emne")
 beskrivelse=request.form("beskrivelse")
 
-' Dim summernoteContent
-' summernoteContent = Request.Form("summernote")
 noter=request("noter")
 additionalinfo=request("additionalinfo")
 id_meetingtype=request("id_meetingtype")
@@ -92,11 +90,11 @@ If request("action") = "newday" Then
         response.write participant & "<br />"
     Next
 
-    Response.Write "<script type='text/javascript'>"
-    Response.Write "setTimeout(function() { window.location.href = './nextstep.asp'; }, 3000);"
-    Response.Write "</script>"
+    'Response.Write "<script type='text/javascript'>"
+    'Response.Write "setTimeout(function() { window.location.href = './nextstep.asp'; }, 3000);"
+    'Response.Write "</script>"
 
-    ' Response.redirect "./nextstep.asp"
+     Response.redirect "./nextstep.asp"
 end if
 
 if request("action")="show" then

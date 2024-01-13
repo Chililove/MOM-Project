@@ -61,7 +61,7 @@
 </style>
 <body>
 
-<!--#include file="bruger/user-profile1.asp"-->
+<!--#include file="bruger/user-profile.asp"-->
 
 <%
 ' Check if the "accessDenied" query parameter is present
@@ -85,6 +85,7 @@ End If
 <li ><a class="fade-in" style="animation-duration:600ms;" data-ajax="false" href="bruger/">User list</a></li>
 <li ><a class="fade-in" style="animation-duration:700ms;" data-ajax="false" href="reg_list/meetingtype_list.asp">Meetingtypes</a></li>
 <li ><a class="fade-in" style="animation-duration:800ms;" data-ajax="false" href="reg_list/afdeling_list.asp">Departments</a></li>
+<li ><a class="fade-in" style="animation-duration:800ms;" data-ajax="false" href="reg/display_full_meeting.asp">Display full meeting information</a></li>
 
 <!--<li><a data-ajax="false" href="reg_list/company_list.asp">Company list</a></li>
 <li><a data-ajax="false" href="reg/company_page.asp?action=create">Add a company </a></li>-->

@@ -103,7 +103,7 @@ End If
                     <tr class="fade-in" style="animation-duration: 700ms;">
                         <td class="fade-in" style="width: 25%; animation-duration: 800ms;"><%=rs("moede_navn")%></td>
                         <td class="fade-in" style="width: 25%; animation-duration: 900ms;"><%=FormatDateTime(rs("moede_dato"))%></td>
-                        
+                        <td class="fade-in" style="width: 25%; animation-duration: 900ms;"><%=FormatTime(rs("moede_tidspunkt"))%></td>
                     </tr>
                       <!-- Delete button for each agenda -->
                <% If session("administrator") = True Then %>
@@ -130,7 +130,14 @@ End If
         Set rs = Nothing
         %>
     </ul>
+<%
+Function FormatTime(time)
+    Dim timeString
+    timeString = CStr(time)
+    FormatTime = Left(timeString, 5)
+End Function
 
+%>
 <script>
 $(document).ready(function() {
     // Initialize the dialog
