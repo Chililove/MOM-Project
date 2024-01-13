@@ -24,20 +24,10 @@
 If request("action") = "delete" Then
     ' Get the id_user value from the request
     	id_login = request("id_login")
-    ' Use a transaction to ensure data integrity
-    'dim id_login
+    ' Use a transaction to ensure my data integrity
   Conn.BeginTrans
-    
-   ' Remove any associated user assignments from tbl_assign_users_to_agenda
-  ' sql = "DELETE FROM tblassign_users_to_agenda WHERE id_login = ?"
-  '  Set cmd = Server.CreateObject("ADODB.Command")
-  '  cmd.ActiveConnection = Conn
-  '  cmd.CommandText = sql
-  '  cmd.Parameters.Append cmd.CreateParameter("@id_login", 3, 1, , id_login)
-   ' cmd.Execute
-   ' Set cmd = Nothing
 
-    ' Now, delete the main record from tbllogin
+    ' delete the main record from tbllogin
     sql = "DELETE FROM tbllogin WHERE id_login = ?"
     Set cmd = Server.CreateObject("ADODB.Command")
     cmd.ActiveConnection = Conn
