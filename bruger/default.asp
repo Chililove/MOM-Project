@@ -51,7 +51,80 @@
     margin-right: 5px; /* Add spacing between plus sign and text */
   }
 
+    @keyframes fadeInLogo {
+  0% {
+    opacity: 0; /* Start with 0% opacity */
+    transform: scale(1); 
+  }
+  100% {
+    opacity: 1; /* End with 100% opacity */
+    transform: scale(0.8); 
+  }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fade-in 1s;
+}
+
+
+
+#logo{
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 1000px;
+margin-right: 900px;
+
+}
+
+#imglogo{
+  height: 500px;
+  width: 500px;
+  margin-right: 250px;
+  margin-top: -150px;
+  transform: scale(0.8);
+  margin-bottom: -120px;
+  animation: fadeInLogo 2s ease;
+  
+}
+@media (max-width: 800px) {
+  #imglogo img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
+}
+
+/* applying  fadeIn animation to element */
+.element {
+    animation: fadeIn 2s ease-in-out;
+}
+
   </style>
+ 
 <body>
 	<div data-role="header" data-id="header" data-position="fixed">
 		<h1>Users</h1>
@@ -61,9 +134,6 @@
 	</div>
 <%
  If Session("administrator") Then
-
- 'id_company = session("id_company")
-
 sql="select * from qrylogin where id_company =  " & session("id_company") & " order by login desc "
 set rs=conn.execute(sql)
 
@@ -72,6 +142,9 @@ set rs=conn.execute(sql)
 response.redirect("/default.asp") %>
 <%End if%>
 	<ul data-role="listview" data-inset="false" data-filter="true">
+		 <div id="logo">
+        <img id="imglogo"src="../Login/Game-On.png" />
+    </div>
 	<div class="small-button-container">
 <!--<h2>Check out your meetingtypes here</h2>-->
     <a class="small-button" data-ajax="false" href="../bruger/bruger.asp?action=opret">
@@ -80,16 +153,16 @@ response.redirect("/default.asp") %>
   </div>
 				<li data-role="list-divider">
 					<table style="width: 100%">
-						<tr style="text-align: left;">
-							<th style="width: 20%">Login</th>
+						<tr class="fade-in" style="text-align: left; aninimation-duration: 200ms;">
+							<th class="fade-in" style="width: 20%; animation-duration: 300ms;">Login</th>
 
-							<th style="width: 20%">Fornavn</th>
+							<th class="fade-in" style="width: 20%; animation-duration: 400ms;">Firstname</th>
 
-							<th style="width: 20%">Efternavn</th>
+							<th class="fade-in" style="width: 20%; animation-duration: 500ms;">Lastname</th>
 								
-							<th style="width: 20%">Email</th>
+							<th class="fade-in" style="width: 20%; animation-duration: 600ms;">Email</th>
 
-							<th style="width: 20%">Profil</th>
+							<th class="fade-in" style="width: 20%; animation-duration: 700ms;">Profil</th>
 
 						</tr>
 					</table>
@@ -100,16 +173,16 @@ response.redirect("/default.asp") %>
 				<li>
 					<a data-ajax="false" href='../bruger/bruger.asp?action=ret&amp;id_login=<%=rs("id_login")%>'>
 						<table style="width: 100%">		
-								<tr>
-									<td style="width: 20%"><%=rs("login")%></td>
+								<tr class="fade-in" style="animation-duration: 800ms;">
+									<td class="fade-in" style="width: 20%; animation-duration: 900ms;"><%=rs("login")%></td>
 				
-									<td style="width: 20%"><%=rs("fornavn")%></td>
+									<td class="fade-in" style="width: 20%; animation-duration: 1000ms;"><%=rs("fornavn")%></td>
 				
-									<td style="width: 20%"><%=rs("efternavn")%></td>
+									<td class="fade-in" style="width: 20%; animation-duration: 1100ms;"><%=rs("efternavn")%></td>
 
-									<td style="width: 20%"><%=rs("mailadresse")%></td>
+									<td class="fade-in" style="width: 20%; animation-duration: 1200ms;"><%=rs("mailadresse")%></td>
 				
-									<td style="width: 20%"><%=rs("logintype")%></td>
+									<td class="fade-in" style="width: 20%; animation-duration: 1300ms;"><%=rs("logintype")%></td>
 				
 								</tr>
 						</table>

@@ -55,31 +55,12 @@ id_agenda1=request.querystring("id_agenda")
         cmd.CommandText = sql
          cmd.Parameters.Append cmd.CreateParameter("@point_name", 202, 1, 255, point_name)
          cmd.Parameters.Append cmd.CreateParameter("@short_desc", 202, 1, 255, short_desc)
-    	 cmd.Parameters.Append cmd.CreateParameter("@long_desc", 203, 1, 255, long_desc)
+    	 cmd.Parameters.Append cmd.CreateParameter("@long_desc", 202, 1, 255, long_desc)
      	 cmd.Parameters.Append cmd.CreateParameter("@id_agenda", 3, 1, , id_agenda1)
          cmd.Parameters.Append cmd.CreateParameter("@dato", 7, 1, , dato)
          cmd.Parameters.Append cmd.CreateParameter("@id_company", 3, 1, , id_company)
         cmd.Parameters.Append cmd.CreateParameter("@id_login", 202, 1, 255, logins)  
- ' Split the logins string into individual user ids
-    ' Dim loginArray
-    ' loginArray = Split(logins, ",")
-    
-    ' Insert each user Iid separately
-    ' For Each login In loginArray
-    '     cmd.Parameters.Append cmd.CreateParameter("@id_login", 202, 1, 255, login)  
-    '     cmd.Parameters("@id_login").Value = logins
-
-    '     ' cmd.Execute
-    ' Next
-
-    ' ' Set the parameter values
-    '  cmd.Parameters("@point_name").Value = point_name
-    '  cmd.Parameters("@short_desc").Value = short_desc
-    '  cmd.Parameters("@long_desc").Value = long_desc
-    '  cmd.Parameters("@id_agenda").Value = id_agenda1
-    '  cmd.Parameters("@dato").Value = dato
-    '  cmd.Parameters("@id_company").Value = id_company
-    ' cmd.Parameters("@id_login").Value = logins
+ 
         
     cmd.Execute
  

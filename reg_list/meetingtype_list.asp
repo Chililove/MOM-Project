@@ -5,7 +5,7 @@
 ' Check if the user is an administrator
 If Not session("administrator") Then
     ' If not an administrator, redirect them to an error page or some other action
-    Response.Redirect("../default.asp") ' Change "access_denied.asp" to the appropriate page
+    Response.Redirect("../default.asp?accessDenied=true") 
 End If
 %>
 <html>
@@ -14,10 +14,59 @@ End If
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../jquery/jquery.mobile-1.4.5.css">
+<link rel="stylesheet" href="../shared/global.css">
 <script src="../jquery/jquery-1.8.2.min.js"></script>
 <script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
 </head>
 <style>
+
+       @keyframes fadeInLogo {
+  0% {
+    opacity: 0; /* Start with 0% opacity */
+    transform: scale(1); /* Start slightly scaled down */
+  }
+  100% {
+    opacity: 1; /* End with 100% opacity */
+    transform: scale(0.8); /* End with original scale (1) */
+  }
+}
+
+#logo{
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 1000px;
+margin-right: 900px;
+
+}
+
+#imglogo{
+  height: 500px;
+  width: 500px;
+  margin-right: 250px;
+  margin-top: -150px;
+  transform: scale(0.8);
+  margin-bottom: -120px;
+  animation: fadeInLogo 2s ease;
+  
+}
+@media (max-width: 800px) {
+  #imglogo img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
+}
+
+
+/* applying  fadeIn animation to element */
+.element {
+    animation: fadeIn 2s ease-in-out;
+}
+
+
    /* Style for the smaller button */
   .small-button-container {
     display: flex;
@@ -77,6 +126,23 @@ End If
     }
 }
 
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fade-in 1s;
+}
+
   </style>
   <script>
     function del(id) { 
@@ -114,18 +180,22 @@ End If
 sql="select * from tblmeeting_type where id_company =  " & session("id_company") & "order by meeting_type desc "
 set rs=conn.execute(sql)
 %>
-	<ul style="animation: fadeIn 2s ease;" data-role="listview" data-inset="false" data-filter="true">
-<h2 style="padding: 1%; height: .5px;">Existing meetingtypes</h2>
+	
+    <div id="logo">
+        <img id="imglogo"src="../Login/Game-On.png" />
+    </div>
+<h2 style="padding: 1%; height: .5px; animation: fade-in; animation-duration: 200ms;">Existing meetingtypes</h2>
 
 <div class="small-button-container">
     <a class="small-button" data-ajax="false" href="../reg/meetingtype_page.asp?action=create">
       <span class="plus-sign"></span> Add a new meetingtype
     </a>
   </div>
+  <ul data-role="listview" data-inset="false" data-filter="true">
 				<li data-role="list-divider">
 					<table style="width: 100%">
-						<tr style="text-align: left">
-							<th style="width: 25%">type</th>
+						<tr>
+							<th class="fade-in" style="width: 25%; text-align: left; animation-duration: 500ms">type</th>
 						</tr>
 					</table>
 				</li>
@@ -136,12 +206,12 @@ set rs=conn.execute(sql)
 					<a data-ajax="false" href='../reg/meetingtype_page.asp?action=update&amp;id_meetingtype=<%=rs("id_meetingtype")%>'>
 
 						<table style="width: 100%">		
-								<tr>
-									<td style="width: 25%"><%=rs("meeting_type")%></td>
+								<tr class="fade-in" style="animation-duration: 400ms;">
+									<td class="fade-in" style="width: 25%; animation-duration: 500ms;"><%=rs("meeting_type")%></td>
 								</tr>
                  <% If session("administrator") = True Then %>
                     <!-- <button class="delete-button" data-id="<%'=rs("id_meetingtype")%>">Delete</button> -->
-                    <button onclick='del("<%=rs("id_meetingtype")%>")' class="delete-button" >Delete</button>
+                    <button onclick='del("<%=rs("id_meetingtype")%>")' class="delete-button" style="animation: fade-in; animation-duration: 600ms;" >Delete</button>
                 <%end if%>
 						</table>
 					</a>

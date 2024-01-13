@@ -3,6 +3,12 @@
     background-color:orange !important;
 }
 
+#flex-container {
+    // styles
+    @media (max-width:500px) {
+        flex-direction: column;
+    }
+}
 
 
 

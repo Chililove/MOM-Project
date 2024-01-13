@@ -253,6 +253,75 @@
 		z-index: 100;
 	}
 
+	
+  @keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+          @keyframes fadeInLogo {
+  0% {
+    opacity: 1; /* Start with 0% opacity */
+    transform: scale(1); 
+  }
+  100% {
+    opacity: 1; /* End with 100% opacity */
+    transform: scale(0.8); /* End with original scale (1) */
+  }
+}
+
+#logo{
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 1000px;
+
+}
+
+#imglogo{
+  height: 20%;
+  width: 20%;
+  transform: scale(0.8);
+  animation: fadeInLogo 2s ease;
+  margin-top: -4.9%;
+  
+}
+@media (max-width: 800px) {
+  #imglogo img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
+}
+
+/* applying  fadeIn animation to element */
+.element {
+    animation: fadeIn 2s ease-in-out;
+}
+
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fade-in 1s;
+}
+
 </style>
 
 </head>
@@ -300,10 +369,10 @@
 			id_login=rs("id_login")
 			id_company=rs("id_company")
 			'For showing that I get the right converted data back from db
-			response.write("Converted date: " & moede_dato & "<br>")
-			response.write("Converted time: " & moede_tidspunkt & "<br>")
-			response.write("Companyid: " & id_company & "<br>")
-			response.write("id_meetingtype: " & id_meetingtype & "<br>")
+			'response.write("Converted date: " & moede_dato & "<br>")
+			'response.write("Converted time: " & moede_tidspunkt & "<br>")
+			'response.write("Companyid: " & id_company & "<br>")
+			'response.write("id_meetingtype: " & id_meetingtype & "<br>")
 
 			
 		%>
@@ -321,9 +390,20 @@
 	<% end if %>
 	<% end if %>
 	style="position: relative;">
+
+<%if Request.QueryString("action") = "edit"then%>
+	<h2 style="padding: 3%; height: .5px; text-align: center; animation-duration: 100ms;" class="fade-in">Edit meeting agenda here</h2>
+<%else if Request.QueryString("action") = "show" then%>
+	<h2 style="padding: 3%; height: .5px; text-align: center; animation-duration: 100ms;" class="fade-in">Edit meeting agenda here</h2>
+<%else if Request.QueryString("action") = "newday" then%>
+	<h2 style="padding: 3%; height: .5px; text-align: center; animation-duration: 100ms;" class="fade-in">Add new meeting agenda here</h2>
+<%end if%>
+<%end if%>
+<%end if%>
+
 			<table align="center" style="width: 50%">
 			<!-- Møde dato og tid-->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 200ms;">
 					<td style="text-align: center">
 									<%=moede_dato%>
 
@@ -359,14 +439,14 @@
 					</td>
 				</tr>
 			<!-- Møde navn -->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 300ms;">
 					<th style="text-align: center">Name of meeting</th>
 					<td>
 						<input type="hidden" name="id_agenda" value="<%=id_agenda1%>">
 					</td>	
 				</tr>
 
-				<tr>			
+				<tr class="fade-in" style="animation-duration: 400ms;">			
 					<td style="text-align: center">
 						<div class="input-wrapper">
 						<input name="moede_navn" type="text"
@@ -380,7 +460,7 @@
 					</td>
 				</tr>
 			<!-- Møde subject meetingtype dropdown -->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 500ms;">
 					<td style="text-align: center">
 						<select name="id_meetingtype" required >
 
@@ -418,12 +498,12 @@
 					</td>
 				</tr>
 			<!-- Møde emne -->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 600ms;">
 					<th style="text-align: center">
 						Subject
 					</th>
 				</tr>
-				<tr>
+				<tr class="fade-in" style="animation-duration: 700ms;">
 					<td style="text-align: center">
 						<div class="input-wrapper">
 						<input name="emne" type="text" value="<%=emne%>" style="width: 720px">
@@ -431,13 +511,13 @@
 					</td>
 				</tr>
 			<!-- Møde beskrivelse -->
-					<tr>
+					<tr class="fade-in" style="animation-duration: 800ms;">
 					<th style="text-align: center">
 						Description
 					</th>
 				</tr>
 				<tr>
-					<td style="text-align: center">
+					<td class="fade-in" style="text-align: center; animation-duration: 900ms;">
 						<div class="input-wrapper">
 						<input name="beskrivelse" id="beskrivelseInput" value="<%=beskrivelse%>">
 						</div>
@@ -445,12 +525,12 @@
 				</tr>
 
 			<!-- Møde note -->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 1000ms;">
 					<th style="text-align: center">
 						Notes
 					</th>
 				</tr>
-				<tr>
+				<tr class="fade-in" style="animation-duration: 1100ms;">
 					<td style="text-align: center">
 						<div class="input-wrapper">
 						<textarea name="noter" rows="4" cols="50" style="min-width: 720px;"><%=noter%></textarea>
@@ -458,7 +538,7 @@
 					</td>
 				</tr>
 			<!-- Møde afdeling -->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 1200ms;">
 					<td style="text-align: center">
 						<select name="id_afdeling" required >
 
@@ -496,7 +576,7 @@
 					</td>
 				</tr>
 			<!-- Møde deltagere -->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 1300ms;">
 					<td class="assigned-users" style="text-align: center;">
 
 						<!-- Button to open modal -->
@@ -584,12 +664,12 @@
 					</script>
 				</tr>
 			<!-- Møde info -->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 1400ms;">
 					<th style="text-align: center">
 						Additional information
 					</th>
 				</tr>
-				<tr>
+				<tr class="fade-in" style="animation-duration: 1500ms;">
 					<td style="text-align: center">
 						<div class="input-wrapper">
 						<textarea name="additionalinfo" rows="4" cols="50"><%=additionalinfo%></textarea>
@@ -608,7 +688,7 @@
 
 				</script>
 			<!-- Møde submit btn -->
-				<tr>
+				<tr class="fade-in" style="animation-duration: 1600ms;">
 					<td style="text-align: center">
 						<input name="existing_id_registrering" type="hidden" value="<%=existing_id_registrering%>">
 						<input type="hidden" name="oprettetaf" value='<%=session("id_login")%>'>
@@ -637,7 +717,9 @@
 					</td>
 				</tr>
 			</table>
-
+<div id="logo">
+                <img id="imglogo"src="../Login/Game-On.png" />
+            </div>	
 
 <script>
 $(document).ready(function() {
@@ -763,16 +845,16 @@ highlight: function (element) {
 </form>
 	
   <script>
-	document.getElementById('show-agendapoint-form').addEventListener('click', function () {
-		var agendapointsForm = document.getElementById('agendapoint-form');
-		agendapointsForm.style.display = 'block'; // Show the overlay
-	});
+	// document.getElementById('show-agendapoint-form').addEventListener('click', function () {
+	// 	var agendapointsForm = document.getElementById('agendapoint-form');
+	// 	agendapointsForm.style.display = 'block'; // Show the overlay
+	// });
 
-	// Add logic to close the overlay when needed, e.g., by clicking a close button
-	document.getElementById('close-agendapoint-form').addEventListener('click', function () {
-		var agendapointsForm = document.getElementById('agendapoint-form');
-		agendapointsForm.style.display = 'none'; // Hide the overlay
-	});
+	// // Add logic to close the overlay when needed, e.g., by clicking a close button
+	// document.getElementById('close-agendapoint-form').addEventListener('click', function () {
+	// 	var agendapointsForm = document.getElementById('agendapoint-form');
+	// 	agendapointsForm.style.display = 'none'; // Hide the overlay
+	// });
 </script>
 		
 

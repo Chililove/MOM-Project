@@ -14,7 +14,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="../jquery/jquery.mobile-1.4.5.css">
         <link rel="stylesheet" href="../shared/global.css">
-    
 		<script src="../jquery/jquery-1.8.2.min.js"></script>
 		<script src="../jquery/jquery.mobile-1.4.5.min.js"></script>
 		<link type="text/css" rel="stylesheet" href="../jquery/jquery-te-1.4.0.css">
@@ -60,6 +59,7 @@ span.error {
  .fade-in{
     animation: fadeIn ease 2s;
  }
+
       @keyframes fadeInLogo {
   0% {
     opacity: 0; /* Start with 0% opacity */
@@ -83,7 +83,7 @@ margin-left: 240px;
 #imglogo{
   height: 40%;
   width: 40%;
-  margin-top: -13%;
+  margin-top: -13%;;
   margin-right: 250px;
   margin-top: -130px;
   transform: scale(0.8);
@@ -106,12 +106,15 @@ margin-left: 240px;
     animation: fadeIn 2s ease-in-out;
 }
 	</style>
+    <div id="logo">
+        <img id="imglogo"src="../Login/Game-On.png" />
+    </div>
 	<body>
 		<div id="page1" data-role="page">
 		<!-- header -->
 			<div data-role="header" data-id="header" data-position="fixed">
 					<%if request("action")="ret" then%>
-					<!--#include file="alle_felter.asp"-->
+					<!--#include file="alle_felter1.asp"-->
 					<h1>Update user</h1>
 					<%else%>
 					<h1>Create user</h1>
@@ -120,14 +123,9 @@ margin-left: 240px;
 					Home
 				</a> 
 			</div>
-            <%if request("action")="opret" then%>
-            <h2 class="fade-in" style="text-align: center; padding: 1%; animation-duration: 200ms;">Create user here </h2>
-            <%else%>
-            <h2 class="fade-in" style="text-align: center; padding: 1%; animation-duration: 200ms;">Update user here </h2>
-            <%end if %>
-
 		<!-- form -->
-			<form id="userForm" data-ajax="false" method="post" 
+                        <h2 class="fade-in" style="text-align: center; padding: 1%; animation-duration: 200ms;">Update user here </h2>
+			<form data-ajax="false" method="post" 
             <% if request.querystring("default")="yes" then %>
             action='save.asp?default=yes&action=<%=request("action")%>'
             <% else %>
@@ -178,12 +176,12 @@ margin-left: 240px;
 							
 					</tr>
 									<!--Email-->
-					<tr class="fade-in" style="animation-duration: 900ms">
+					<tr class="fade-in" style="animation-duration: 900ms;">
 						<td style="text-align: center">
 										Email
 						</td>
 					</tr>
-					<tr class="fade-in" style="animation-duration: 1000ms">
+					<tr class="fade-in" style="animation-duration: 1000ms;">
 						<td style="text-align: center">
 							<div class="input-wrapper">
 								<input name="mailadresse" type="text" size="25" style="min-width: 720px;" value="<%=mailadresse%>" required >
@@ -279,6 +277,14 @@ margin-left: 240px;
     </td>
 </tr>
 
+
+
+
+<!-- Company -->
+
+		
+
+
 								<!-- save btn -->
 						<tr class="fade-in" style="animation-duration: 1500ms;">
 							<td style="text-align: center">
@@ -287,15 +293,17 @@ margin-left: 240px;
                                 <%else%>
 								<input name="Submit1" type="submit" value="Create user" data-theme="a" data-icon="check">
                                 <%end if%>
-                                <%if request("action")="ret" and Session("administrator") then%>
+                                <%if request("action")="ret" then%>
                                     <input type="hidden" name="id_login" value="<%=id_login%>">
+                                    <input type="hidden" name="id_logintype" value="<%=id_logintype%>">
+                                <%end if%>
+                                <%if Session("administrator") then%>
                                     <input type="hidden" name="action" value="delete">
                                     <input type="button" value="Delete user" onclick="confirmDelete('<%=id_login%>');" data-theme="a" data-icon="delete">
                                 <%end if%>
 							</td>
 						</tr>
 				</table>
-
 <div id="logo">
                 <img id="imglogo"src="../Login/Game-On.png" />
             </div>	
@@ -324,16 +332,11 @@ margin-left: 240px;
                 form.submit();
             }
         }
-        
-        
 
 $(document).ready(function() {
 	$.validator.addMethod("patternEmail", function(value, element) {
     return this.optional(element) || /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/.test(value);
 }, "This is not a valid email");
-
-  // Fading in the form after the document is ready
-            $('#userForm').addClass('fade-in');
 
     $('form').validate({
         rules: {

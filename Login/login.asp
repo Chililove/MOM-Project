@@ -46,16 +46,6 @@ Session("user")=""
 
     
 <table align="center" >
-       <!-- <tr>
-          <%' If LEN(strERR)<1 Then %>
-            <td>
-            <%'=strERR%>
-          <%' Else %> 
-            <td style="background-color: red; text-shadow:none;">
-            <%'=strERR%>
-          <%' End If %>
-            </td>
-        </tr>-->
 	<tr>
 			<td>
           <div class="input-wrapper">
@@ -93,13 +83,6 @@ Session("user")=""
 	      <input type="submit" value="Login" data-theme="a" data-icon="check" name="Action">
 	    </td>
 	</tr>
-	<tr>
-			<td >
-		    <form method="POST" action="login_glemt.asp" target="_top">
-
-<input type="submit" value="Lost Password" data-theme="a" data-icon="phone" name="Action" >
-      </td>
-				</tr>
 </table>
 </form>
 
@@ -183,6 +166,13 @@ highlight: function (element) {
 </script>
 </body>
 <style>
+#fpimg img{
+width: 400px;
+height: 400px;
+
+}
+
+
 body {
   background-color: #e0e0e0;
   font-family: 'Roboto', sans-serif;

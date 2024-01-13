@@ -1,4 +1,5 @@
 <!--#include file="../login/protect.inc"-->
+<!--#include file="../opendb.asp"-->
 
 <!DOCTYPE>
 <html>
@@ -19,15 +20,62 @@
 <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
 
 </head>
-
     <div data-role="header" data-id="header" data-position="fixed">
-        <h1 >List of meetings</h1>
+        <h1 >List of meetings assigned</h1>
             <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
             <a class="ui-btn-right" href="http://mom.main-solution.dk/login/login.asp" data-ajax="false" data-icon="power">logoff</a>
     </div>
+
+    <script>
+    function del(id) { 
+        var idValue = id
+        
+        if (idValue !== null) {
+            var firstConfirm = window.confirm("Are you sure you want to delete this agenda?");
+            
+            if (firstConfirm) {
+            var secondConfirm = window.confirm("This action is irreversible. Are you absolutely sure?");
+            
+            if (secondConfirm) {
+                var deleteUrl = '../reg/delete.asp?action=metype&id=' + encodeURIComponent(id);
+                window.location.href = deleteUrl;
+            } else {
+            // Nothing
+            }
+            } else {
+            // Nothing
+            }
+        } else {
+            alert("No 'id' parameter found in the URL.");
+        }
+    }
+
+</script>
+
 <body>
-<!--#include file="../opendb.asp"-->
-<%
+
+<div data-role="header" data-id="header" data-position="fixed">
+		<h1>Assigned meetings</h1>
+			<a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">
+				Home
+			</a>
+	</div>
+
+<div id="savedmeeting-Container">
+<div id="logo">
+        <img id="imglogo"src="../Login/Game-On.png" />
+    </div>
+   <h3 id="savedmeetingTitle" class="fade-in" style="margin-left: .4%; animation-duration: 200ms;">Assigned to these meetings<span id="selectedSavedmeeting" style="font-size: 16px !important;"></span></h3>
+    <table class="savedmeeting-table" style="width: 100%; background-color: #E9E9E9; padding: .5%;">
+        <tr class="fade-in" style="text-align: left; animation-duration: 300ms;">
+            <th style="width: 25%">Meeting name</th>
+            <th style="width: 25%">Date</th>
+            <th style="width: 25%">Time</th>
+        </tr>
+    </table>
+    <ul id="savedmeetingList" data-role="listview" data-inset="false" data-filter="true">
+       
+       <%
 dim id_login, id_company
 	id_login = session("id_login")
 id_company = session("id_company")
@@ -36,59 +84,69 @@ If session("administrator") = True Then
 
     sql = "SELECT * FROM qrysaved_meetings WHERE id_company =  '" & session("id_company") & "'"
 Else
-response.redirect("/default")  
+    sql = "SELECT * FROM qrysaved_meetings WHERE id_company ='" & session("id_company") & "' AND id_agenda IN (SELECT id_agenda FROM tbl_agenda WHERE participants LIKE '%" & session("id_login") & "%')"
 End If
+        ' Create a Command object and set its properties
+        Set cmd = Server.CreateObject("ADODB.Command")
+        Set cmd.ActiveConnection = conn
+        cmd.CommandText = SQL
+        ' Creating a Recordset object and i open it using the Command object
+        'response.write SQL
+        Set rs = cmd.Execute
 
-set rs=conn.execute(sql)
-%>
+        ' Check if the recordset is not empty before entering the loop
+        If Not rs.EOF Then
+            ' if the Recordset is not empty, so enter the loop
+            Do While Not rs.EOF
+        %>
+        <li data-agenda-id="<%=rs("id_agenda")%>">
+            <a data-ajax="false" href='../reg/list_my.asp?action=show&amp;id_agenda=<%=rs("id_agenda")%>&source=page1'>
+                <table style="width: 100%">  
+                    <tr class="fade-in" style="animation-duration: 400ms;">
+                        <td style="width: 25%"><%=rs("moede_navn")%></td>
+                        <td style="width: 25%"><%=FormatDateTime(rs("moede_dato"))%></td>
+                        <td style="width: 25%"><%=FormatTime(rs("moede_tidspunkt"))%></td>
 
-<ul data-role="listview" data-inset="false" data-filter="false">
-				
-<%
-if not rs.eof then
-%>
-<%
-do while not rs.eof
-%>
-<li style="animation: fadeIn 2s ease;"id="agenda-<%=rs("id_agenda")%>">
-			<!--	<a data-ajax="false" href='../reg_list/list_my.asp?oprettetdato=<%'=rs(("oprettetdato_string"))%>'> -->
-    <a data-ajax="false" href='../reg/list_my.asp?action=show&amp;id_agenda=<%=rs("id_agenda")%>'>	
-        <table style="width: 100%;">
-	        <tr>             
-                <td style="width: 20%; padding-left: 10px;">  <%=FormatDateTime(rs("moede_dato"))%> <br> <%= FormatTime(rs("moede_tidspunkt"))%> <br> </td>
-                <td style="width: 40%; font-weight: bold;"> <%=rs("moede_navn")%> </td>
-		    </tr>
-               <!-- Your delete button for each agenda -->
+                        
+                    </tr>
+                      <!-- Delete button for each agenda -->
                <% If session("administrator") = True Then %>
-<button class="delete-button" data-id="<%=rs("id_agenda")%>">Delete</button>
+            <button onclick='del("<%=rs("id_agenda")%>")' class="delete-button" style="animation: fade-in 2s; animation-duration: 500ms;" >Delete</button>
 <%end if%>
-        </table>
-         
-    </a>
+                </table>
+            </a>
+        </li>
+        <%
+                rs.MoveNext
+            Loop
+        Else
+            ' Recordset is empty, display a message to the user
+        %>
+        <li>
+            <span>No data</span>
+        </li>
+        <%
+        End If
 
-</li>
-
-<%
- rs.movenext
-loop
-%> 
-<%
-else
-%>
-<h3>None</h3>
-<%
-end if 
-%>
-</ul>
-
-<!-- Delete confirmation dialog -->
-<div id="delete-confirmation" title="Confirm Delete" style="background-color:#f9f9f9; color:#333;">
+        ' Close the recordset
+        rs.Close
+        Set rs = Nothing
+        %>
+    </ul>
+    <!--<div id="delete-confirmation" title="Confirm Delete" style="background-color:#f9f9f9; color:#333;">
  
         Are you sure you want to delete this agenda?
 
 
-</div>
+</div>-->
+<%
+Function FormatTime(time)
+    Dim timeString
+    timeString = CStr(time)
+    FormatTime = Left(timeString, 5)
+End Function
 
+%>
 <script>
 $(document).ready(function() {
     // Initialize the dialog
@@ -162,19 +220,174 @@ $(document).ready(function() {
         });
     }
 });
-
 </script>
-    <%
-Function FormatTime(time)
-    Dim timeString
-    timeString = CStr(time)
-    FormatTime = Left(timeString, 5)
-End Function
+</div>
+<script>
+function redirectToNextPage() {
+    var selectedAgendaId = document.getElementById("id_agenda").value;
+    if (selectedAgendaId) {
+        // Redirect to the next page with the selected agenda ID
+        window.location.href = "agendapoint_page.asp?id_agenda=" + selectedAgendaId + "&action=newpoint";
+    } else {
+        alert("Please select a meeting before proceeding.");
+    }
+}
 
-%>
+function updateAgendaTitle() {
+    var selectedAgendaName = document.getElementById("id_agenda").options[document.getElementById("id_agenda").selectedIndex].getAttribute("data-agenda-name");
+    var selectedAgendaNameSpan = document.getElementById("selectedAgendaName");
+    
+    if (selectedAgendaNameSpan) {
+        selectedAgendaNameSpan.innerText = selectedAgendaName;
+    }
+    
+    var agendaTitle = document.getElementById("agendaTitle");
+    if (agendaTitle) {
+        agendaTitle.innerText = "Existing agenda Points for: " + selectedAgendaName;
+    }
+}
+
+function filterAgendaPoints() {
+    var selectedAgendaId = document.getElementById("id_agenda").value;
+    var agendaPoints = document.querySelectorAll("#agendaList li");
+
+    // Hide all agenda points initially
+    for (var i = 0; i < agendaPoints.length; i++) {
+        agendaPoints[i].style.display = "none";
+    }
+
+    // Show only agenda points for the selected agenda
+    if (selectedAgendaId) {
+        var selectedAgendaPoints = document.querySelectorAll("#agendaList li[data-agenda-id='" + selectedAgendaId + "']");
+        for (var j = 0; j < selectedAgendaPoints.length; j++) {
+            selectedAgendaPoints[j].style.display = "block";
+        }
+    }
+}
+</script>
+</body>
+
 <style>
 
-    @keyframes fadeIn {
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fade-in 1s;
+}
+
+
+          @keyframes fadeInLogo {
+  0% {
+    opacity: 0; /* Start with 0% opacity */
+    transform: scale(1); /* Start slightly scaled down */
+  }
+  100% {
+    opacity: 1; /* End with 100% opacity */
+    transform: scale(0.8); /* End with original scale (1) */
+  }
+}
+
+#logo{
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 1000px;
+margin-right: 900px;
+
+}
+
+#imglogo{
+  height: 500px;
+  width: 500px;
+  margin-right: 250px;
+  margin-top: -150px;
+  transform: scale(0.8);
+  margin-bottom: -120px;
+  animation: fadeInLogo 2s ease;
+  
+}
+@media (max-width: 800px) {
+  #imglogo img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
+}
+
+/* applying  fadeIn animation to element */
+.element {
+    animation: fadeIn 2s ease-in-out;
+}
+
+   .savedmeeting-table{
+    animation: fadeIn 2s ease;
+}
+   /* Style for the smaller button */
+  .small-button-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1% 1%;
+    animation: fadeIn 2s ease;
+  }
+
+  .small-button {
+    padding: .6% 2%; /* Adjust padding to control button size */
+    background-color: #E9E9E9; 
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none;
+    margin-bottom: .5%;
+  }
+
+  /* Hover effect for the smaller button */
+  .small-button:hover {
+    background-color: transparent;
+    text-decoration: none;
+	  box-shadow: 0px 4px 6px rgba(0, 0, 0.2, 0.2);
+
+  }
+
+  /* Style for the plus sign */
+  .plus-sign::before {
+    content: "+"; /* Content is a plus sign */
+    font-weight: bold;
+    margin-right: 5px; /* Add spacing between plus sign and text */
+    animation: fade-in 2s;
+    animation-duration: 
+  }
+
+a {
+            text-decoration: none;
+            color: blue;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .delete-button {
+           max-width: 100px;
+           float: right;
+        }
+
+        .confirm-dialog{
+
+            z-index: 1000;
+        }
+
+  @keyframes fadeIn {
     0% {
         opacity: 0;
     }

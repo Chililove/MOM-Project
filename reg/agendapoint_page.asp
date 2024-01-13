@@ -2,13 +2,6 @@
 <!--#include file="../login/protect.inc"-->
 <!--#include file="../opendb.asp"-->
 <!DOCTYPE>
-<%
-' Check if the user is an administrator
-If Not session("administrator") Then
-    ' If not an administrator, redirect them to an error page or some other action
-    Response.Redirect("../default.asp?accessDenied=true") 
-End If
-%>
 <html>
 
 <head>
@@ -112,7 +105,16 @@ End If
 	.checkuser{
 		width: 50%;
 	}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 
+   
 
 </style>
 </head>
@@ -165,10 +167,11 @@ Else
 End If
 %>
 
-<!--#include file="../reg/agendapoint_form.asp"-->			
+<!--#include file="../reg/agendapoint_form.asp"-->
+ 		
 <!--#include file="../shared/footer.asp"-->
 </div>
-
+ 
 </body>
 </html>
 

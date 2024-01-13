@@ -12,7 +12,7 @@
         var idValue = id
         
         if (idValue !== null) {
-            var firstConfirm = window.confirm("Are you sure you want to delete this user?");
+            var firstConfirm = window.confirm("Are you sure you want to delete this agenda point?");
             
             if (firstConfirm) {
             var secondConfirm = window.confirm("This action is irreversible. Are you absolutely sure?");
@@ -70,6 +70,41 @@
     margin-right: 5px; /* Add spacing between plus sign and text */
   }
 
+a {
+            text-decoration: none;
+            color: blue;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .delete-button {
+           max-width: 100px;
+           float: right;
+        }
+
+        .confirm-dialog{
+
+            z-index: 1000;
+        }
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fade-in 1s;
+}
+
+
   @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -78,8 +113,52 @@
         opacity: 1;
     }
 }
-</style>
 
+      @keyframes fadeInLogo {
+  0% {
+    opacity: 0; /* Start with 0% opacity */
+    transform: scale(1); /* Start slightly scaled down */
+  }
+  100% {
+    opacity: 1; /* End with 100% opacity */
+    transform: scale(0.8); /* End with original scale (1) */
+  }
+}
+
+  #logo{
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 1000px;
+margin-right: 900px;
+
+}
+
+#imglogo{
+  height: 500px;
+  width: 500px;
+  margin-right: 250px;
+  margin-top: -260px;
+  transform: scale(0.8);
+  margin-bottom: -120px;
+  animation: fadeInLogo 2s ease;
+  
+}
+@media (max-width: 800px) {
+  #imglogo img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
+}
+
+/* applying  fadeIn animation to element */
+.element {
+    animation: fadeIn 2s ease-in-out;
+}
+</style>
 <body>
 <div data-role="header" data-id="header" data-position="fixed">
 		<h1>Agenda points</h1>
@@ -88,6 +167,8 @@
 			</a>
 	</div>
 
+
+<div id="agendaPointsContainer">
 <div style="display:flex; justify-content:center; align-items: center; margin-top: 3.5%; margin-left: 1%; margin-right: 1%; animation: fadeIn 2s ease; ">
     <select id="id_agenda" required onchange="updateAgendaTitle(); filterAgendaPoints();">
         <option value="">Select a meeting</option>
@@ -100,6 +181,7 @@
             Dim moede_navn
             id_agenda = objRS3("id_agenda")
             moede_navn = objRS3("moede_navn")
+
         %>
         <option value="<%=id_agenda%>" data-agenda-name="<%=moede_navn%>"><%=moede_navn%></option>
         <% 
@@ -111,22 +193,24 @@
     </select>
 
 </div>
-<div id="agendaPointsContainer">
+<div id="logo">
+        <img id="imglogo"src="../Login/Game-On.png" />
+    </div>
  <div class="small-button-container">
-<!--<h2>Add your agendapoints here</h2>-->
     <a class="small-button" data-ajax="false" onclick="redirectToNextPage()">
       <span class="plus-sign"></span> Add an agenda point
     </a>
   </div>
+
     <h3 id="agendaTitle" style="margin-left: .4%; animation: fadeIn 2s ease;">Existing agendapoints<span id="selectedAgendaName" style="font-size: 16px !important;"></span></h3>
-    <table class="agenda-table" style="width: 100%; background-color: #E9E9E9; padding: .5%;" >
-        <tr style="text-align: left;">
+    <table class="agenda-table" style="width: 100%; background-color: #E9E9E9; padding: .5%;">
+        <tr class="fade-in" style="text-align: left; animation-duration: 200ms;">
             <th style="width: 25%">Point</th>
             <th style="width: 25%">Date</th>
             <th style="width: 25%">Assigned</th>
         </tr>
     </table>
-    <ul id="agendaList" data-role="listview" data-inset="false">
+    <ul id="agendaList" data-role="listview" data-inset="false" data-filter="true">
         <% 
         ' Initialize your database query
         SQL = "SELECT * FROM tbl_agendapoints" ' Fetch all agenda points
@@ -135,7 +219,7 @@
         Set cmd = Server.CreateObject("ADODB.Command")
         Set cmd.ActiveConnection = conn
         cmd.CommandText = SQL
-        ' Create a Recordset object and open it using the Command object
+        ' Creating a Recordset object and i open it using the Command object
         'response.write SQL
         Set rs = cmd.Execute
 
@@ -147,13 +231,26 @@
         <li style="animation: fadeIn 2s ease;" data-agenda-id="<%=rs("id_agenda")%>">
             <a data-ajax="false" href='agendapoint_page.asp?action=show&amp;id_agendapoint=<%=rs("id_agendapoint")%>&source=page1'>
                 <table style="width: 100%">  
-                    <tr>
+                    <tr class="fade-in" atyle="animation-duration: 300ms;">
                         <td style="width: 25%"><%=rs("point_name")%></td>
-                        <td style="width: 25%"><%=rs("dato")%></td>
+                        <td style="width: 25%"><%=FormatDateTime(rs("dato"))%></td>
+                        <td style="width: 25%">
+                        
+                        <% 
+                            If Not IsNull(rs("id_login"))=true And rs("id_login") <> "" Then 
+                                participants = Split(rs("id_login"), ",")
+                                For Each participant In participants
+                                        SQL="SELECT * FROM tbllogin WHERE id_login = "& participant &" "
+                                        'response.write SQL
+                                        Set RSparticipants = Conn.Execute(SQL) %>
+                                        <%=RSparticipants("fornavn")%>&nbsp;<%=RSparticipants("efternavn")%>,&nbsp;
+                                <% Next
+                            End If %>
+                        </td>
                     </tr>
                       <!-- Delete button for each agenda -->
                <% If session("administrator") = True Then %>
-            <button onclick='del("<%=rs("id_agendapoint")%>")' class="delete-button" >Delete</button>
+            <button onclick='del("<%=rs("id_agendapoint")%>")' class="delete-button" style="animation: fade-in 2s; animation-duration: 400ms;" >Delete</button>
 <%end if%>
                 </table>
             </a>

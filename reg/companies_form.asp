@@ -1,6 +1,13 @@
 <!--#include file="../login/protect.inc"-->
 
 <!DOCTYPE html>
+<%
+' Check if the user is an administrator
+If Not session("administrator") Then
+    ' If not an administrator, redirect them to an error page or some other action
+    Response.Redirect("../default.asp?accessDenied=true") 
+End If
+%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -26,7 +33,59 @@ $(document).ready(function() {
 
 </script>
 </head>
+<style>
 
+  @keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+          @keyframes fadeInLogo {
+  0% {
+    opacity: 1; /* Start with 0% opacity */
+    transform: scale(1); 
+  }
+  100% {
+    opacity: 1; /* End with 100% opacity */
+    transform: scale(0.8); /* End with original scale (1) */
+  }
+}
+
+#logo{
+display: flex;
+justify-content: center;
+align-items: center;
+perspective: 1000px;
+
+}
+
+#imglogo{
+  height: 40%;
+  width: 40%;
+  margin-top: -13%;
+  transform: scale(0.8);
+  animation: fadeInLogo 2s ease;
+  
+}
+@media (max-width: 800px) {
+  #imglogo img {
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    width: 250px;
+  }
+}
+
+/* applying  fadeIn animation to element */
+.element {
+    animation: fadeIn 2s ease-in-out;
+}
+</style>
 <body>
 <%
 ' Check if we are updating an existing company
@@ -75,7 +134,9 @@ End If
     <% End If %>
 
 </form>
-
+<div id="logo">
+                <img id="imglogo"src="../Login/Game-On.png" />
+            </div>	
 <%
 sql = "SELECT * FROM tbl_companies ORDER BY company_name DESC"
 Set rs = Conn.Execute(sql)

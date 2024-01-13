@@ -105,15 +105,13 @@
 .checkuser{
 	width: 50%;
 }
-
-
+  
 </style>
 </head>
 
 <body>
-
-	<div id="page1" data-role="page">
 		<div data-role="header" data-id="header" data-position="fixed">
+		
 			<%if request("action")="show" then%>
 			<h1>Saved meeting</h1>
 			<%else%>
@@ -121,9 +119,7 @@
 			<%end if%>
 <a class="ui-btn-left" href="../default.asp" data-ajax="false" data-icon="home">Home</a>
 	</div>
-	<!--<div id='fpimg'>
-        <img src="..\Login\Game-On.png"/>
-</div>-->
+	
 <% sql="SELECT * FROM qry_agenda WHERE id_agenda = "& request.QueryString("id_agenda") &" "
 	'response.write sql
 	set rs = Conn.Execute(sql)

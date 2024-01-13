@@ -57,7 +57,7 @@ a {
     </div>
     
     <div style="display:flex; justify-content:center; align-items: center;">
-        <a href="../default.asp"><button>Save agenda and go back <br> to default homepage</button></a>
+        <a href="../default.asp"  data-ajax="false"><button>Save agenda and go back <br> to default homepage</button></a>
         
         <a href="./list_my.asp?action=show&id1=1&id_agenda=<%=id_agenda%>" data-ajax="false">
             <% sql="SELECT * FROM qry_agenda WHERE id_agenda= "& id_agenda &" "
